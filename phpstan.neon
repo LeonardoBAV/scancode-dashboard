@@ -1,0 +1,47 @@
+includes:
+    - vendor/pestphp/pest/extension.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+parameters:
+    level: 10
+    paths:
+        - app
+        - tests
+        - database
+        - routes
+    ignoreErrors:
+        # Pest Ignores
+        -
+            message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::expect\(\)\.#'
+            path: tests/*
+        -
+            message: '#Cannot access property \$not on mixed\.#'
+            path: tests/*
+        -
+            message: '#Cannot call method toUse\(\) on mixed\.#'
+            path: tests/*
+        -
+            message: '#Cannot call method toUseStrictTypes\(\) on mixed\.#'
+            path: tests/*
+        -
+            message: '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertSeeLivewire\(\)\.#'
+            path: tests/*
+        -
+            message: '#Call to an undefined method Pest\\PendingCalls\\TestCall.*::with\(\)\.#'
+            path: tests/*
+        -
+            message: '#Call to an undefined method.*TestResponse.*::assertSchema.*\(\)\.#'
+            path: tests/*
+        -
+            message: '#Dynamic call to static method.*\.#'
+            path: tests/*
+
+#    stubFiles:
+#        - stubs/Pest.stub
+#        - stubs/LivewireTestable.stub
+ 
+#    excludePaths:
+#        - stubs/
+#    stubFiles:
+#        - stubs/Pest.stub
