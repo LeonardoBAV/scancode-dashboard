@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('sales_representatives', function (Blueprint $table) {
             $table->id();
 
-            $table->string('cpf_cnpj')->unique();
-            $table->string('corporate_name')->nullable();
-            $table->string('fantasy_name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('cpf')->unique();
+            $table->string('name');
+            $table->string('email');
 
+            $table->string('password');
+
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('sales_representatives');
     }
 };

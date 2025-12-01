@@ -8,6 +8,30 @@ return [
         'navigation_label' => 'Clientes',
         'plural_model_label' => 'Clientes',
         'model_label' => 'Cliente',
+        'table' => [
+            'cpf_cnpj' => 'CPF/CNPJ',
+            'corporate_name' => 'Razão Social',
+            'fantasy_name' => 'Nome Fantasia',
+            'email' => 'Email',
+            'phone' => 'Telefone',
+        ],
+        'infolist' => [
+            'title' => 'Informações do cliente',
+            'cpf_cnpj' => 'CPF/CNPJ',
+            'corporate_name' => 'Razão Social',
+            'fantasy_name' => 'Nome Fantasia',
+            'email' => 'Email',
+            'phone' => 'Telefone',
+            'timestamps_title' => 'Dados Temporais',
+        ],
+        'form' => [
+            'title' => 'Dados do cliente',
+            'cpf_cnpj' => 'CPF/CNPJ',
+            'corporate_name' => 'Razão Social',
+            'fantasy_name' => 'Nome Fantasia',
+            'email' => 'Email',
+            'phone' => 'Telefone',
+        ],
     ],
 
 ];

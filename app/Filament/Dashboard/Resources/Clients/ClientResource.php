@@ -12,6 +12,7 @@ use App\Filament\Dashboard\Resources\Clients\Schemas\ClientForm;
 use App\Filament\Dashboard\Resources\Clients\Schemas\ClientInfolist;
 use App\Filament\Dashboard\Resources\Clients\Tables\ClientsTable;
 use App\Models\Client;
+use App\Traits\Filament\Resources\HasTranslatableLabels;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -20,26 +21,13 @@ use Filament\Tables\Table;
 
 class ClientResource extends Resource
 {
+    use HasTranslatableLabels;
+
     protected static ?string $model = Client::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'corporate_name';
-
-    public static function getNavigationLabel(): string
-    {
-        return __('resources.client.navigation_label');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('resources.client.plural_model_label');
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('resources.client.model_label');
-    }
 
     public static function form(Schema $schema): Schema
     {
