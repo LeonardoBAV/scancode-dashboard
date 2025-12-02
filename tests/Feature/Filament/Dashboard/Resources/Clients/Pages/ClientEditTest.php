@@ -47,7 +47,7 @@ describe('Client Edit', function (): void {
                 'phone' => '11111111111',
             ]);
 
-            $client_update_data = Client::factory()->make([
+            $clientUpdateData = Client::factory()->make([
                 'cpf_cnpj' => '22222222222',
                 'corporate_name' => 'Original Company 2',
                 'fantasy_name' => 'Updated Fantasy 2',
@@ -56,16 +56,16 @@ describe('Client Edit', function (): void {
             ]);
 
             livewire(EditClient::class, ['record' => $client->getRouteKey()])
-                ->fillForm($client_update_data->toArray())
+                ->fillForm($clientUpdateData->toArray())
                 ->call('save')
                 ->assertNotified();
 
             $client = $client->refresh();
-            expect($client->cpf_cnpj)->toBe($client_update_data->cpf_cnpj)
-                ->and($client->corporate_name)->toBe($client_update_data->corporate_name)
-                ->and($client->fantasy_name)->toBe($client_update_data->fantasy_name)
-                ->and($client->email)->toBe($client_update_data->email)
-                ->and($client->phone)->toBe($client_update_data->phone);
+            expect($client->cpf_cnpj)->toBe($clientUpdateData->cpf_cnpj)
+                ->and($client->corporate_name)->toBe($clientUpdateData->corporate_name)
+                ->and($client->fantasy_name)->toBe($clientUpdateData->fantasy_name)
+                ->and($client->email)->toBe($clientUpdateData->email)
+                ->and($client->phone)->toBe($clientUpdateData->phone);
 
         });
 
@@ -87,10 +87,10 @@ describe('Client Edit', function (): void {
         it('cpf cnpj unique validation ignores the current client', function (): void {
 
             $client = Client::factory()->create(['cpf_cnpj' => '11111111111']);
-            $client_update_data = Client::factory()->make(['cpf_cnpj' => '11111111111']);
+            $clientUpdateData = Client::factory()->make(['cpf_cnpj' => '11111111111']);
 
             livewire(EditClient::class, ['record' => $client->getRouteKey()])
-                ->fillForm($client_update_data->toArray())
+                ->fillForm($clientUpdateData->toArray())
                 ->call('save')
                 ->assertHasNoFormErrors()
                 ->assertNotified();

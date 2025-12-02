@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('cpf_cnpj')->unique();
-            $table->string('corporate_name')->nullable();
+            $table->string('corporate_name');
             $table->string('fantasy_name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

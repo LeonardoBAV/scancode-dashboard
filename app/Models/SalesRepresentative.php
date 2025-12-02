@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesRepresentative extends Model
 {
-    /** @use HasFactory<ClientFactory> */
+    /** @use HasFactory<\Database\Factories\SalesRepresentativeFactory> */
     use HasFactory;
 
     protected $fillable = [

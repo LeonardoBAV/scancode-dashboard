@@ -44,7 +44,7 @@ describe('Client Create', function (): void {
                     ->assertNotNotified()
                     ->assertNoRedirect();
 
-            })->with('validations');
+            })->with('client_validations');
 
             it('cpf cnpj unique validation is working', function (): void {
 
@@ -79,7 +79,7 @@ describe('Client Create', function (): void {
                 ->assertRedirect();
 
             assertDatabaseHas(Client::class, $client->toArray());
-        })->with('make_five_clients');
+        })->with('client_make_five_clients');
 
     });
 

@@ -18,11 +18,11 @@ describe('Client View', function (): void {
     it('can load the page', function (): void {
 
         $client = Client::firstOrFail();
-        $client_data = Arr::except($client->toArray(), ['id', 'created_at', 'updated_at']);
+        $clientData = Arr::except($client->toArray(), ['id', 'created_at', 'updated_at']);
 
         livewire(ViewClient::class, ['record' => $client->getRouteKey()])
             ->assertOk()
-            ->assertSchemaStateSet($client_data);
+            ->assertSchemaStateSet($clientData);
 
     });
 

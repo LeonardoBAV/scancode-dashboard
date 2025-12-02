@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 use App\Models\SalesRepresentative;
 
-/*
-dataset('protected_columns', [
+dataset('sales_representative_protected_columns', [
     'protected_columns' => [
-        ['id', 'created_at', 'updated_at'],
+        ['id', 'created_at', 'updated_at', 'remember_token'],
     ],
 ]);
 
-dataset('make_five_clients', [
+dataset('sales_representative_make_five_sales_representatives', [
     fn () => SalesRepresentative::factory()->make(),
     fn () => SalesRepresentative::factory()->make(),
     fn () => SalesRepresentative::factory()->make(),
@@ -19,25 +18,31 @@ dataset('make_five_clients', [
     fn () => SalesRepresentative::factory()->make(),
 ]);
 
-dataset('validations', [
-    'required' => [
-        fn () => Client::factory()->make(['cpf_cnpj' => null]),
-        'errors' => ['cpf_cnpj' => 'required'],
+dataset('sales_representative_validations', [
+    'cpf required' => [
+        fn () => SalesRepresentative::factory()->make(['cpf' => null]),
+        'errors' => ['cpf' => 'required'],
     ],
-    'email' => [
-        fn () => Client::factory()->make(['email' => 'invalid-email']),
+    'name required' => [
+        fn () => SalesRepresentative::factory()->make(['name' => null]),
+        'errors' => ['name' => 'required'],
+    ],
+    'email required' => [
+        fn () => SalesRepresentative::factory()->make(['email' => null]),
+        'errors' => ['email' => 'required'],
+    ],
+    'email invalid format' => [
+        fn () => SalesRepresentative::factory()->make(['email' => 'invalid-email']),
         'errors' => ['email' => 'email'],
     ],
-    'phone' => [
-        fn () => Client::factory()->make(['phone' => 'invalid-phone']),
-        'errors' => ['phone' => 'regex'],
+    'password required' => [
+        fn () => SalesRepresentative::factory()->make(['password' => null]),
+        'errors' => ['password' => 'required'],
     ],
 ]);
 
-dataset('searchable_columns', [
-    'by cpf_cnpj' => ['cpf_cnpj'],
-    'by corporate_name' => ['corporate_name'],
-    'by fantasy_name' => ['fantasy_name'],
+dataset('sales_representative_searchable_columns', [
+    'by cpf' => ['cpf'],
+    'by name' => ['name'],
     'by email' => ['email'],
-    'by phone' => ['phone'],
-]);*/
+]);

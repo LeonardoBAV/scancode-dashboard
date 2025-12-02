@@ -7,18 +7,18 @@ use Illuminate\Support\Facades\Schema;
 
 describe('SalesRepresentative model:', function (): void {
 
-    test('check fillable attributes and protected attributes', function (array $protected_columns): void {
-        $table_columns = Schema::getColumnListing((new SalesRepresentative)->getTable());
-        $model_fillables = (new SalesRepresentative)->getFillable();
+    test('check fillable attributes and protected attributes', function (array $protectedColumns): void {
+        $tableColumns = Schema::getColumnListing((new SalesRepresentative)->getTable());
+        $modelFillables = (new SalesRepresentative)->getFillable();
 
-        $expected_in_fillables = array_diff($table_columns, $protected_columns);
+        $expectedInFillables = array_diff($tableColumns, $protectedColumns);
 
-        $attributes_missing = array_diff($expected_in_fillables, $model_fillables);
-        $attributes_overfilled = array_intersect($model_fillables, $protected_columns);
+        $attributesMissing = array_diff($expectedInFillables, $modelFillables);
+        $attributesOverfilled = array_intersect($modelFillables, $protectedColumns);
 
-        expect($attributes_missing)->toBeEmpty('ERRO: Some columns are missing in the fillable array: '.implode(', ', $attributes_missing));
-        expect($attributes_overfilled)->toBeEmpty('ERRO: The following attibutes cannot be included in the fillable array: '.implode(', ', $attributes_overfilled));
+        expect($attributesMissing)->toBeEmpty('ERRO: Some columns are missing in the fillable array: '.implode(', ', $attributesMissing));
+        expect($attributesOverfilled)->toBeEmpty('ERRO: The following attibutes cannot be included in the fillable array: '.implode(', ', $attributesOverfilled));
 
-    })->with('protected_columns');
+    })->with('sales_representative_protected_columns');
 
 });

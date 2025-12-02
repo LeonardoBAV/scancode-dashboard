@@ -50,16 +50,16 @@ describe('Client List', function (): void {
 
             it('search is working', function (string $field): void {
                 $client = Client::firstOrFail();
-                $client_not_found = Client::where('id', '!=', $client->id)->first(); // obs: remove
+                $clientNotFound = Client::where('id', '!=', $client->id)->first(); // obs: remove
 
                 $value = $client->getAttribute($field);
-                $search_value = is_string($value) ? $value : null;
+                $searchValue = is_string($value) ? $value : null;
 
                 livewire(ListClients::class)
-                    ->searchTable($search_value)
+                    ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$client])
-                    ->assertCanNotSeeTableRecords([$client_not_found]);
-            })->with('searchable_columns');
+                    ->assertCanNotSeeTableRecords([$clientNotFound]);
+            })->with('client_searchable_columns');
 
         });
 

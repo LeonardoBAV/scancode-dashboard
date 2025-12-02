@@ -41,7 +41,8 @@ class ClientForm
     protected static function corporateNameInput(): TextInput
     {
         return TextInput::make('corporate_name')
-            ->label(__('resources.client.form.corporate_name'));
+            ->label(__('resources.client.form.corporate_name'))
+            ->required();
     }
 
     protected static function fantasyNameInput(): TextInput

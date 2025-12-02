@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use App\Models\Client;
 
-dataset('protected_columns', [
+dataset('client_protected_columns', [
     'protected_columns' => [
         ['id', 'created_at', 'updated_at'],
     ],
 ]);
 
-dataset('make_five_clients', [
+dataset('client_make_five_clients', [
     fn () => Client::factory()->make(),
     fn () => Client::factory()->make(),
     fn () => Client::factory()->make(),
@@ -18,10 +18,10 @@ dataset('make_five_clients', [
     fn () => Client::factory()->make(),
 ]);
 
-dataset('validations', [
+dataset('client_validations', [
     'required' => [
-        fn () => Client::factory()->make(['cpf_cnpj' => null]),
-        'errors' => ['cpf_cnpj' => 'required'],
+        fn () => Client::factory()->make(['cpf_cnpj' => null, 'corporate_name' => null]),
+        'errors' => ['cpf_cnpj' => 'required', 'corporate_name' => 'required'],
     ],
     'email' => [
         fn () => Client::factory()->make(['email' => 'invalid-email']),
@@ -33,7 +33,7 @@ dataset('validations', [
     ],
 ]);
 
-dataset('searchable_columns', [
+dataset('client_searchable_columns', [
     'by cpf_cnpj' => ['cpf_cnpj'],
     'by corporate_name' => ['corporate_name'],
     'by fantasy_name' => ['fantasy_name'],
