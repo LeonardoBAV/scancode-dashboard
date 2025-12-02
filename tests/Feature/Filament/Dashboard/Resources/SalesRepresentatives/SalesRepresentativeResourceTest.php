@@ -14,6 +14,10 @@ use function Pest\Laravel\actingAs;
 
 describe('Resource - SalesRepresentative:', function (): void {
 
+    beforeEach(function (): void {
+        SalesRepresentative::factory()->create();
+    });
+
     test('resource has correct model', function (): void {
         expect(SalesRepresentativeResource::getModel())->toBe(SalesRepresentative::class);
     });
@@ -56,7 +60,7 @@ describe('Resource - SalesRepresentative:', function (): void {
     });
 
     test('view page loads correctly', function (): void {
-        $salesRepresentative = SalesRepresentative::factory()->create();
+        $salesRepresentative = SalesRepresentative::firstOrFail();
 
         $url = SalesRepresentativeResource::getUrl('view', ['record' => $salesRepresentative]);
 
@@ -67,7 +71,7 @@ describe('Resource - SalesRepresentative:', function (): void {
     });
 
     test('edit page loads correctly', function (): void {
-        $salesRepresentative = SalesRepresentative::factory()->create();
+        $salesRepresentative = SalesRepresentative::firstOrFail();
 
         $url = SalesRepresentativeResource::getUrl('edit', ['record' => $salesRepresentative]);
 

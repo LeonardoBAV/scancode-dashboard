@@ -14,6 +14,10 @@ use function Pest\Laravel\actingAs;
 
 describe('Resource - Client:', function (): void {
 
+    beforeEach(function (): void {
+        Client::factory()->create();
+    });
+
     test('resource has correct model', function (): void {
         expect(ClientResource::getModel())->toBe(Client::class);
     });
@@ -56,7 +60,7 @@ describe('Resource - Client:', function (): void {
     });
 
     test('view page loads correctly', function (): void {
-        $client = Client::factory()->create();
+        $client = Client::firstOrFail();
 
         $url = ClientResource::getUrl('view', ['record' => $client]);
 
@@ -67,7 +71,7 @@ describe('Resource - Client:', function (): void {
     });
 
     test('edit page loads correctly', function (): void {
-        $client = Client::factory()->create();
+        $client = Client::firstOrFail();
 
         $url = ClientResource::getUrl('edit', ['record' => $client]);
 
