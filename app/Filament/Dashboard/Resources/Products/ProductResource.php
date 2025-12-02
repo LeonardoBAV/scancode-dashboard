@@ -12,6 +12,7 @@ use App\Filament\Dashboard\Resources\Products\Schemas\ProductForm;
 use App\Filament\Dashboard\Resources\Products\Schemas\ProductInfolist;
 use App\Filament\Dashboard\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
+use App\Traits\Filament\Resources\HasTranslatableLabels;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -20,11 +21,15 @@ use Filament\Tables\Table;
 
 class ProductResource extends Resource
 {
+    use HasTranslatableLabels;
+
     protected static ?string $model = Product::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
 
     protected static ?string $recordTitleAttribute = 'sku';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

@@ -48,15 +48,11 @@ describe('Client Create', function (): void {
 
             it('cpf cnpj unique validation is working', function (): void {
 
-                $client_one = Client::factory()->make(['cpf_cnpj' => '12345678901']);
-                $client_two = Client::factory()->make(['cpf_cnpj' => '12345678901']);
+                $clientOne = Client::factory()->create(['cpf_cnpj' => '12345678901']);
+                $clientTwo = Client::factory()->make(['cpf_cnpj' => $clientOne->cpf_cnpj]);
 
                 livewire(CreateClient::class)
-                    ->fillForm($client_one->toArray())
-                    ->call('create');
-
-                livewire(CreateClient::class)
-                    ->fillForm($client_two->toArray())
+                    ->fillForm($clientTwo->toArray())
                     ->call('create')
                     ->assertHasFormErrors(['cpf_cnpj' => 'unique'])
                     ->assertNotNotified()
@@ -71,7 +67,7 @@ describe('Client Create', function (): void {
     describe('Actions', function (): void {
 
         it('can create a client', function (Client $client): void {
-            $component = livewire(CreateClient::class)
+            livewire(CreateClient::class)
                 ->fillForm($client->toArray())
                 ->call('create')
                 ->assertHasNoFormErrors()
@@ -84,5 +80,3 @@ describe('Client Create', function (): void {
     });
 
 });
-
-// obs: melhorar datasets de validacoes apenas para required, para email para phone, lembrando que tem validacao de cpf cnpj unico tbm

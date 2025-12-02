@@ -16,16 +16,13 @@ return [
             'phone' => 'Telefone',
         ],
         'infolist' => [
-            'title' => 'Informações do cliente',
             'cpf_cnpj' => 'CPF/CNPJ',
             'corporate_name' => 'Razão Social',
             'fantasy_name' => 'Nome Fantasia',
             'email' => 'Email',
             'phone' => 'Telefone',
-            'timestamps_title' => 'Dados Temporais',
         ],
         'form' => [
-            'title' => 'Dados do cliente',
             'cpf_cnpj' => 'CPF/CNPJ',
             'corporate_name' => 'Razão Social',
             'fantasy_name' => 'Nome Fantasia',
@@ -43,19 +40,41 @@ return [
             'email' => 'Email',
         ],
         'infolist' => [
-            'title' => 'Informações do representante',
             'cpf' => 'CPF',
             'name' => 'Nome',
             'email' => 'Email',
-            'timestamps_title' => 'Dados Temporais',
         ],
         'form' => [
-            'title' => 'Dados do representante',
             'cpf' => 'CPF',
             'name' => 'Nome',
             'email' => 'Email',
             'password' => 'Senha',
         ],
     ],
-
+    'product' => [
+        'navigation_label' => 'Produtos',
+        'plural_model_label' => 'Produtos',
+        'model_label' => 'Produto',
+        'table' => [
+            'sku' => 'SKU',
+            'barcode' => 'Código de Barras',
+            'name' => 'Nome',
+            'price' => 'Preço',
+            'product_category_name' => 'Categoria do Produto',
+        ],
+        'infolist' => [
+            'sku' => 'SKU',
+            'barcode' => 'Código de Barras',
+            'name' => 'Nome',
+            'price' => 'Preço',
+            'product_category_name' => 'Categoria do Produto',
+        ],
+        'form' => [
+            'sku' => 'SKU',
+            'barcode' => 'Código de Barras',
+            'name' => 'Nome',
+            'price' => 'Preço',
+            'product_category_name' => 'Categoria do Produto',
+        ],
+    ],
 ];

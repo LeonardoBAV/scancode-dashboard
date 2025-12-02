@@ -47,12 +47,8 @@ describe('SalesRepresentative Create', function (): void {
 
             it('cpf unique validation is working', function (): void {
 
-                $salesRepresentativeOne = SalesRepresentative::factory()->make(['cpf' => '12345678901']);
-                $salesRepresentativeTwo = SalesRepresentative::factory()->make(['cpf' => '12345678901']);
-
-                livewire(CreateSalesRepresentative::class)
-                    ->fillForm($salesRepresentativeOne->toArray())
-                    ->call('create');
+                $salesRepresentativeOne = SalesRepresentative::factory()->create(['cpf' => '12345678901']);
+                $salesRepresentativeTwo = SalesRepresentative::factory()->make(['cpf' => $salesRepresentativeOne->cpf]);
 
                 livewire(CreateSalesRepresentative::class)
                     ->fillForm($salesRepresentativeTwo->toArray())
