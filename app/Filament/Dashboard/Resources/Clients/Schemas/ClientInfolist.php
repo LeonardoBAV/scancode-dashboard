@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Dashboard\Resources\Clients\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 
 class ClientInfolist
 {
@@ -15,24 +13,13 @@ class ClientInfolist
     {
         return $schema
             ->components([
-                Section::make(__('resources.client.infolist.title'))
-                    ->icon(Heroicon::OutlinedUsers)
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->schema([
-                        self::cpfCnpjEntry(),
-                        self::corporateNameEntry(),
-                        self::fantasyNameEntry(),
-                        self::emailEntry(),
-                        self::phoneEntry(),
-                        Section::make(__('resources.client.infolist.timestamps_title'))
-                            ->icon(Heroicon::OutlinedClock)
-                            ->columns(2)
-                            ->schema([
-                                self::createdAtEntry(),
-                                self::updatedAtEntry(),
-                            ])->secondary()->columnSpanFull(),
-                    ]),
+                self::cpfCnpjEntry(),
+                self::corporateNameEntry(),
+                self::fantasyNameEntry(),
+                self::emailEntry(),
+                self::phoneEntry(),
+                self::createdAtEntry(),
+                self::updatedAtEntry(),
             ]);
     }
 
@@ -67,7 +54,8 @@ class ClientInfolist
     {
         return TextEntry::make('phone')
             ->label(__('resources.client.infolist.phone'))
-            ->placeholder('-');
+            ->placeholder('-')
+            ->columnSpanFull();
     }
 
     protected static function createdAtEntry(): TextEntry

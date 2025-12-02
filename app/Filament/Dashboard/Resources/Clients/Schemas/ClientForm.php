@@ -6,9 +6,7 @@ namespace App\Filament\Dashboard\Resources\Clients\Schemas;
 
 use App\Models\Client;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 
 class ClientForm
 {
@@ -16,17 +14,11 @@ class ClientForm
     {
         return $schema
             ->components([
-                Section::make(__('resources.client.form.title'))
-                    ->icon(Heroicon::OutlinedUsers)
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->schema([
-                        self::cpfCnpjInput(),
-                        self::corporateNameInput(),
-                        self::fantasyNameInput(),
-                        self::emailInput(),
-                        self::phoneInput(),
-                    ]),
+                self::cpfCnpjInput(),
+                self::corporateNameInput(),
+                self::fantasyNameInput(),
+                self::emailInput(),
+                self::phoneInput(),
             ]);
     }
 

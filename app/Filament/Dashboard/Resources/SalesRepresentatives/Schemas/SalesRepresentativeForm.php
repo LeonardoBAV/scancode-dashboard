@@ -6,9 +6,7 @@ namespace App\Filament\Dashboard\Resources\SalesRepresentatives\Schemas;
 
 use App\Models\SalesRepresentative;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 
 class SalesRepresentativeForm
 {
@@ -16,16 +14,10 @@ class SalesRepresentativeForm
     {
         return $schema
             ->components([
-                Section::make(__('resources.sales_representative.form.title'))
-                    ->icon(Heroicon::OutlinedUserGroup)
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->schema([
-                        self::cpfInput(),
-                        self::nameInput(),
-                        self::emailInput(),
-                        self::passwordInput(),
-                    ]),
+                self::cpfInput(),
+                self::nameInput(),
+                self::emailInput(),
+                self::passwordInput(),
             ]);
     }
 
