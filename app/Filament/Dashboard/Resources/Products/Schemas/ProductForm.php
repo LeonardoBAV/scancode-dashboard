@@ -14,11 +14,11 @@ class ProductForm
     {
         return $schema
             ->components([
-                self::skuInput(),
-                self::barcodeInput(),
                 self::nameInput(),
+                self::skuInput(),
+                self::productCategoryInput(),
                 self::priceInput(),
-                self::productCategoryIdInput(),
+                self::barcodeInput(),
             ]);
     }
 
@@ -33,7 +33,6 @@ class ProductForm
     {
         return TextInput::make('barcode')
             ->label(__('resources.product.form.barcode'))
-            ->required()
             ->unique(ignoreRecord: true);
     }
 
@@ -53,11 +52,25 @@ class ProductForm
             ->prefix('$');
     }
 
-    protected static function productCategoryIdInput(): Select
+    protected static function productCategoryInput(): Select
     {
         return Select::make('product_category_id')
-            ->label(__('resources.product.form.product_category_id'))
-            ->relationship('productCategory', 'id')
+            ->label(__('resources.product.form.product_category_name'))
+            ->searchable()
+            ->preload()
+            ->relationship('productCategory', 'name')
+            ->createOptionForm([
+                self::productCategoryNameInput(),
+            ])
+            ->editOptionForm([
+                self::productCategoryNameInput(),
+            ]);
+    }
+
+    protected static function productCategoryNameInput(): TextInput
+    {
+        return TextInput::make('name')
+            ->label(__('resources.product.form.product_category_name'))
             ->required();
     }
 }

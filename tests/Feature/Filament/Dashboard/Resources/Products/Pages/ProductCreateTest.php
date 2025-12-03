@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Products\Pages\CreateProduct;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use Filament\Actions\Testing\TestAction;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -79,4 +81,31 @@ describe('Product Create', function (): void {
 
     });
 
+    describe('Product Category', function (): void {
+
+        it('can create a new product category', function (): void {
+
+            $productCategory = ProductCategory::factory()->make();
+
+            livewire(CreateProduct::class)
+                ->callAction(
+                    TestAction::make('createOption')
+                        ->schemaComponent('product_category_id'),
+                    data: $productCategory->toArray())
+                ->assertHasNoFormErrors()
+                ->assertNotified();
+
+            assertDatabaseHas(ProductCategory::class, $productCategory->toArray());
+        });
+
+        it('validation is working', function (): void {
+
+            livewire(CreateProduct::class)
+                ->callAction(
+                    TestAction::make('createOption')
+                        ->schemaComponent('product_category_id'),
+                    data: ['name' => null])
+                ->assertHasFormErrors(['name' => 'required']);
+        });
+    });
 });

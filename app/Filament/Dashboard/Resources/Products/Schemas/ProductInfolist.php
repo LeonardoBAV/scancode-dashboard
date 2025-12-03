@@ -13,11 +13,11 @@ class ProductInfolist
     {
         return $schema
             ->components([
-                self::skuEntry(),
-                self::barcodeEntry(),
                 self::nameEntry(),
+                self::skuEntry(),
+                self::productCategoryEntry(),
                 self::priceEntry(),
-                self::productCategoryIdEntry(),
+                self::barcodeEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
             ]);
@@ -27,12 +27,6 @@ class ProductInfolist
     {
         return TextEntry::make('sku')
             ->label(__('resources.product.infolist.sku'));
-    }
-
-    protected static function barcodeEntry(): TextEntry
-    {
-        return TextEntry::make('barcode')
-            ->label(__('resources.product.infolist.barcode'));
     }
 
     protected static function nameEntry(): TextEntry
@@ -45,13 +39,22 @@ class ProductInfolist
     {
         return TextEntry::make('price')
             ->label(__('resources.product.infolist.price'))
-            ->money();
+            ->money('BRL', locale: 'pt_BR')
+            ->badge()
+            ->color('primary');
     }
 
-    protected static function productCategoryIdEntry(): TextEntry
+    protected static function productCategoryEntry(): TextEntry
     {
         return TextEntry::make('productCategory.name')
-            ->label(__('resources.product.infolist.product_category_id'));
+            ->label(__('resources.product.infolist.product_category_name'));
+    }
+
+    protected static function barcodeEntry(): TextEntry
+    {
+        return TextEntry::make('barcode')
+            ->label(__('resources.product.infolist.barcode'))
+            ->columnSpanFull();
     }
 
     protected static function createdAtEntry(): TextEntry

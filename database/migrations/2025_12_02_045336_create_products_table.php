@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
 
-            $table->string('sku')->index();
-            $table->string('barcode')->unique();
+            $table->string('sku')->index()->unique();
+            $table->string('barcode')->unique()->nullable();
 
             $table->string('name');
             $table->decimal('price', 10, 2);
 
-            $table->foreignId('product_category_id')->constrained('product_categories')->restrictOnDelete()->restrictOnUpdate();
+            $table->foreignId('product_category_id')->nullable()->constrained('product_categories')->restrictOnDelete()->restrictOnUpdate();
 
             $table->timestamps();
         });

@@ -32,11 +32,9 @@ describe('Product List', function (): void {
 
         it('can render columns', function (): void {
             livewire(ListProducts::class)
-                ->assertCanRenderTableColumn('sku')
-                ->assertCanRenderTableColumn('barcode')
                 ->assertCanRenderTableColumn('name')
-                ->assertCanRenderTableColumn('price')
                 ->assertCanRenderTableColumn('productCategory.name')
+                ->assertCanRenderTableColumn('price')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 

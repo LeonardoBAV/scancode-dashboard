@@ -22,4 +22,3 @@ describe('ProductCategory model:', function (): void {
     })->with('product_category_protected_columns');
 
 });
-

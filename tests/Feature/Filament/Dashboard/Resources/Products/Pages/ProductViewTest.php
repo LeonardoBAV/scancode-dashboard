@@ -24,7 +24,7 @@ describe('Product View', function (): void {
                 'barcode' => $product->barcode,
                 'name' => $product->name,
                 'price' => $product->price,
-                'productCategory.name' => $product->productCategory->name,
+                'productCategory.name' => $product->productCategory?->name,
                 'created_at' => $product->created_at,
                 'updated_at' => $product->updated_at,
             ]);

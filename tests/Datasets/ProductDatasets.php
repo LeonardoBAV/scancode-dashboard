@@ -20,29 +20,11 @@ dataset('product_make_five_products', [
 
 dataset('product_validations', [
     'sku required' => [
-        fn () => Product::factory()->make(['sku' => null]),
-        'errors' => ['sku' => 'required'],
-    ],
-    'barcode required' => [
-        fn () => Product::factory()->make(['barcode' => null]),
-        'errors' => ['barcode' => 'required'],
-    ],
-    'name required' => [
-        fn () => Product::factory()->make(['name' => null]),
-        'errors' => ['name' => 'required'],
-    ],
-    'price required' => [
-        fn () => Product::factory()->make(['price' => null]),
-        'errors' => ['price' => 'required'],
-    ],
-    'product_category_id required' => [
-        fn () => Product::factory()->make(['product_category_id' => null]),
-        'errors' => ['product_category_id' => 'required'],
+        fn () => Product::factory()->make(['sku' => null, 'name' => null, 'price' => null]),
+        'errors' => ['sku' => 'required', 'name' => 'required', 'price' => 'required'],
     ],
 ]);
 
 dataset('product_searchable_columns', [
-    'by sku' => ['sku'],
-    'by barcode' => ['barcode'],
     'by name' => ['name'],
 ]);

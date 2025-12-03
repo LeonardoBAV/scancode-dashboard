@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Filament\Dashboard\Resources\Products\Pages\EditProduct;
 use App\Filament\Dashboard\Resources\Products\ProductResource;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\Testing\TestAction;
 
 use function Pest\Livewire\livewire;
 
@@ -61,7 +63,7 @@ describe('Product Edit', function (): void {
             expect($product->sku)->toBe($productUpdateData->sku)
                 ->and($product->barcode)->toBe($productUpdateData->barcode)
                 ->and($product->name)->toBe($productUpdateData->name)
-                ->and((float) $product->price)->toBe((float) $productUpdateData->price);
+                ->and($product->price)->toBe($productUpdateData->price);
 
         });
 
@@ -93,6 +95,43 @@ describe('Product Edit', function (): void {
 
         });
 
+    });
+
+    describe('Product Category', function (): void {
+
+        beforeEach(function (): void {
+            ProductCategory::factory()->create();
+        });
+
+        it('can update a product category', function (): void {
+
+            $productCategory = ProductCategory::firstOrFail();
+            $name = "{$productCategory->name} Updated";
+
+            livewire(EditProduct::class, ['record' => $productCategory->getRouteKey()])
+                ->callAction(
+                    TestAction::make('editOption')
+                        ->schemaComponent('product_category_id'),
+                    data: ['name' => $name])
+                ->assertHasNoFormErrors()
+                ->assertNotified();
+
+            $productCategory = $productCategory->refresh();
+            expect($productCategory->name)->toBe($name);
+
+        });
+
+        it('validation is working', function (): void {
+
+            $productCategory = ProductCategory::firstOrFail();
+
+            livewire(EditProduct::class, ['record' => $productCategory->getRouteKey()])
+                ->callAction(
+                    TestAction::make('createOption')
+                        ->schemaComponent('product_category_id'),
+                    data: ['name' => null])
+                ->assertHasFormErrors(['name' => 'required']);
+        });
     });
 
 });

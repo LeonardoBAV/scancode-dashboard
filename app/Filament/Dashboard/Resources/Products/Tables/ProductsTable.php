@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Products\Tables;
 
+use App\Models\Product;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
@@ -16,11 +17,9 @@ class ProductsTable
     {
         return $table
             ->columns([
-                self::skuColumn(),
-                self::barcodeColumn(),
                 self::nameColumn(),
+                self::productCategoryColumn(),
                 self::priceColumn(),
-                self::productCategoryIdColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -37,24 +36,18 @@ class ProductsTable
             ]);
     }
 
-    protected static function skuColumn(): TextColumn
-    {
-        return TextColumn::make('sku')
-            ->label(__('resources.product.table.sku'))
-            ->searchable();
-    }
-
-    protected static function barcodeColumn(): TextColumn
-    {
-        return TextColumn::make('barcode')
-            ->label(__('resources.product.table.barcode'))
-            ->searchable();
-    }
-
     protected static function nameColumn(): TextColumn
     {
         return TextColumn::make('name')
             ->label(__('resources.product.table.name'))
+            ->description(fn (Product $record): string => $record->sku)
+            ->searchable();
+    }
+
+    protected static function productCategoryColumn(): TextColumn
+    {
+        return TextColumn::make('productCategory.name')
+            ->label(__('resources.product.table.product_category_name'))
             ->searchable();
     }
 
@@ -62,15 +55,11 @@ class ProductsTable
     {
         return TextColumn::make('price')
             ->label(__('resources.product.table.price'))
-            ->money()
+            ->money('BRL', locale: 'pt_BR')
+            ->badge()
+            ->color('primary')
+            ->alignCenter()
             ->sortable();
-    }
-
-    protected static function productCategoryIdColumn(): TextColumn
-    {
-        return TextColumn::make('productCategory.name')
-            ->label(__('resources.product.table.product_category_name'))
-            ->searchable();
     }
 
     protected static function createdAtColumn(): TextColumn

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use Andreia\FilamentUiSwitcher\FilamentUiSwitcherPlugin;
+use App\Constants\ColorConstant;
 use Filafly\Themes\Lucent\LucentTheme;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -35,6 +36,7 @@ class DashboardPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Indigo,
+                'danger' => ColorConstant::MEDIUM_RED,
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\Filament\Dashboard\Pages')

@@ -201,5 +201,7 @@
   "created_at": "Criado em",
   "updated_at": "Atualizado em",
   "Created at": "Criado em",
-  "Updated at": "Atualizado em"
+  "Updated at": "Atualizado em",
+  "loading_select": "Carregando :attribute... kkkkk",
+  "categories": "Categorias"
 }
