@@ -41,7 +41,8 @@ class ProductsTable
         return TextColumn::make('name')
             ->label(__('resources.product.table.name'))
             ->description(fn (Product $record): string => $record->sku)
-            ->searchable();
+            ->searchable()
+            ->sortable();
     }
 
     protected static function productCategoryColumn(): TextColumn

@@ -28,3 +28,8 @@ dataset('product_validations', [
 dataset('product_searchable_columns', [
     'by name' => ['name'],
 ]);
+
+dataset('product_sortable_columns', [
+    'by price' => 'price',
+    'name' => 'name',
+]);

@@ -60,6 +60,20 @@ describe('Product List', function (): void {
 
         });
 
+        describe('Sortable:', function (): void {
+
+            it('can sort products', function (string $column): void {
+                $productsAsc = Product::query()->orderBy($column, 'asc')->get();
+                $productsDesc = Product::query()->orderBy($column, 'desc')->get();
+
+                livewire(ListProducts::class)
+                    ->sortTable($column, 'asc')
+                    ->assertCanSeeTableRecords($productsAsc, inOrder: true)
+                    ->sortTable($column, 'desc')
+                    ->assertCanSeeTableRecords($productsDesc, inOrder: true);
+            })->with('product_sortable_columns');
+        });
+
         describe('Bulk Actions:', function (): void {
 
             it('can bulk delete products', function (): void {
