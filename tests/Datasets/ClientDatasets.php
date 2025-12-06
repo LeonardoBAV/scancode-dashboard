@@ -39,4 +39,5 @@ dataset('client_searchable_columns', [
     'by fantasy_name' => ['fantasy_name'],
     'by email' => ['email'],
     'by phone' => ['phone'],
+    'by carrier' => ['carrier'],
 ]);

@@ -45,6 +45,7 @@ describe('Client Edit', function (): void {
                 'fantasy_name' => 'Original Fantasy 1',
                 'email' => 'original1@example.com',
                 'phone' => '11111111111',
+                'carrier' => 'Original Carrier 1',
             ]);
 
             $clientUpdateData = Client::factory()->make([
@@ -53,6 +54,7 @@ describe('Client Edit', function (): void {
                 'fantasy_name' => 'Updated Fantasy 2',
                 'email' => 'updated2@example.com',
                 'phone' => '22222222222',
+                'carrier' => 'Updated Carrier 2',
             ]);
 
             livewire(EditClient::class, ['record' => $client->getRouteKey()])
@@ -65,7 +67,8 @@ describe('Client Edit', function (): void {
                 ->and($client->corporate_name)->toBe($clientUpdateData->corporate_name)
                 ->and($client->fantasy_name)->toBe($clientUpdateData->fantasy_name)
                 ->and($client->email)->toBe($clientUpdateData->email)
-                ->and($client->phone)->toBe($clientUpdateData->phone);
+                ->and($client->phone)->toBe($clientUpdateData->phone)
+                ->and($client->carrier)->toBe($clientUpdateData->carrier);
 
         });
 

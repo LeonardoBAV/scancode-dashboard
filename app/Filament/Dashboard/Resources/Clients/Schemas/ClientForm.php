@@ -19,6 +19,7 @@ class ClientForm
                 self::fantasyNameInput(),
                 self::emailInput(),
                 self::phoneInput(),
+                self::carrierInput(),
             ]);
     }
 
@@ -55,5 +56,11 @@ class ClientForm
         return TextInput::make('phone')
             ->label(__('resources.client.form.phone'))
             ->tel();
+    }
+
+    protected static function carrierInput(): TextInput
+    {
+        return TextInput::make('carrier')
+            ->label(__('resources.client.form.carrier'));
     }
 }

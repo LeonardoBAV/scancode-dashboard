@@ -27,6 +27,7 @@ class ClientFactory extends Factory
             'fantasy_name' => fake()->companySuffix().' '.fake()->word(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
+            'carrier' => fake()->optional()->company(),
         ];
     }
 

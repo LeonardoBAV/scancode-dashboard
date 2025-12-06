@@ -38,6 +38,7 @@ describe('Client List', function (): void {
                 ->assertCanRenderTableColumn('fantasy_name')
                 ->assertCanRenderTableColumn('email')
                 ->assertCanRenderTableColumn('phone')
+                ->assertCanRenderTableColumn('carrier')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 

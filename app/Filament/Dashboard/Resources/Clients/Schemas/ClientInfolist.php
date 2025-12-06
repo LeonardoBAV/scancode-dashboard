@@ -18,6 +18,7 @@ class ClientInfolist
                 self::fantasyNameEntry(),
                 self::emailEntry(),
                 self::phoneEntry(),
+                self::carrierEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
             ]);
@@ -54,8 +55,14 @@ class ClientInfolist
     {
         return TextEntry::make('phone')
             ->label(__('resources.client.infolist.phone'))
-            ->placeholder('-')
-            ->columnSpanFull();
+            ->placeholder('-');
+    }
+
+    protected static function carrierEntry(): TextEntry
+    {
+        return TextEntry::make('carrier')
+            ->label(__('resources.client.infolist.carrier'))
+            ->placeholder('-');
     }
 
     protected static function createdAtEntry(): TextEntry

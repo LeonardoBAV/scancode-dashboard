@@ -29,7 +29,8 @@ describe('Client Create', function (): void {
                 ->assertFormFieldExists('corporate_name')
                 ->assertFormFieldExists('fantasy_name')
                 ->assertFormFieldExists('email')
-                ->assertFormFieldExists('phone');
+                ->assertFormFieldExists('phone')
+                ->assertFormFieldExists('carrier');
 
         });
 

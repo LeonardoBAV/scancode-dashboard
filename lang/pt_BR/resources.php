@@ -14,6 +14,8 @@ return [
             'fantasy_name' => 'Nome Fantasia',
             'email' => 'Email',
             'phone' => 'Telefone',
+            'carrier' => 'Transportadora',
+            'carrier_placeholder' => 'Nenhuma transportadora',
         ],
         'infolist' => [
             'cpf_cnpj' => 'CPF/CNPJ',
@@ -21,6 +23,7 @@ return [
             'fantasy_name' => 'Nome Fantasia',
             'email' => 'Email',
             'phone' => 'Telefone',
+            'carrier' => 'Transportadora',
         ],
         'form' => [
             'cpf_cnpj' => 'CPF/CNPJ',
@@ -28,6 +31,7 @@ return [
             'fantasy_name' => 'Nome Fantasia',
             'email' => 'Email',
             'phone' => 'Telefone',
+            'carrier' => 'Transportadora',
         ],
     ],
     'sales_representative' => [

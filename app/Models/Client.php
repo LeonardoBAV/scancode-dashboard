@@ -19,6 +19,7 @@ class Client extends Model
         'fantasy_name',
         'email',
         'phone',
+        'carrier',
     ];
 
     protected $casts = [

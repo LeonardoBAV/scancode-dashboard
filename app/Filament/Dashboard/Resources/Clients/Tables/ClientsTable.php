@@ -21,6 +21,7 @@ class ClientsTable
                 self::fantasyNameColumn(),
                 self::emailColumn(),
                 self::phoneColumn(),
+                self::carrierColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -69,6 +70,14 @@ class ClientsTable
     {
         return TextColumn::make('phone')
             ->label(__('resources.client.table.phone'))
+            ->searchable();
+    }
+
+    protected static function carrierColumn(): TextColumn
+    {
+        return TextColumn::make('carrier')
+            ->label(__('resources.client.table.carrier'))
+            ->placeholder(__('resources.client.table.carrier_placeholder'))
             ->searchable();
     }
 
