@@ -77,4 +77,18 @@ return [
             'product_category_name' => 'Categoria do Produto',
         ],
     ],
+    'payment_method' => [
+        'navigation_label' => 'Métodos de Pagamento',
+        'plural_model_label' => 'Métodos de Pagamento',
+        'model_label' => 'Método de Pagamento',
+        'table' => [
+            'name' => 'Nome',
+        ],
+        'infolist' => [
+            'name' => 'Nome',
+        ],
+        'form' => [
+            'name' => 'Nome',
+        ],
+    ],
 ];

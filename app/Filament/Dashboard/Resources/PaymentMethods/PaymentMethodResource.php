@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Dashboard\Resources\PaymentMethods;
 
 use App\Filament\Dashboard\Resources\PaymentMethods\Pages\CreatePaymentMethod;
@@ -10,6 +12,7 @@ use App\Filament\Dashboard\Resources\PaymentMethods\Schemas\PaymentMethodForm;
 use App\Filament\Dashboard\Resources\PaymentMethods\Schemas\PaymentMethodInfolist;
 use App\Filament\Dashboard\Resources\PaymentMethods\Tables\PaymentMethodsTable;
 use App\Models\PaymentMethod;
+use App\Traits\Filament\Resources\HasTranslatableLabels;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,11 +21,15 @@ use Filament\Tables\Table;
 
 class PaymentMethodResource extends Resource
 {
+    use HasTranslatableLabels;
+
     protected static ?string $model = PaymentMethod::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
