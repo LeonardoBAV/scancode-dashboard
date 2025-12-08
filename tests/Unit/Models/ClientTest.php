@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\Client;
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 
 describe('Client model:', function (): void {
@@ -20,5 +22,22 @@ describe('Client model:', function (): void {
         expect($attributesOverfilled)->toBeEmpty('ERRO: The following attibutes cannot be included in the fillable array: '.implode(', ', $attributesOverfilled));
 
     })->with('client_protected_columns');
+
+    describe('Relations', function (): void {
+
+        beforeEach(function (): void {
+            $client = Client::factory()->create();
+            Order::factory()->count(3)->create(['client_id' => $client->id]);
+        });
+
+        test('client has many orders', function (): void {
+            $orders = Client::firstOrFail()->orders;
+
+            expect($orders)->toBeInstanceOf(Collection::class);
+            expect($orders)->toHaveCount(3);
+            expect($orders)->each->toBeInstanceOf(Order::class);
+        });
+
+    });
 
 });

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Order;
 use App\Models\SalesRepresentative;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 
 describe('SalesRepresentative model:', function (): void {
@@ -20,5 +22,22 @@ describe('SalesRepresentative model:', function (): void {
         expect($attributesOverfilled)->toBeEmpty('ERRO: The following attibutes cannot be included in the fillable array: '.implode(', ', $attributesOverfilled));
 
     })->with('sales_representative_protected_columns');
+
+    describe('Relations', function (): void {
+
+        beforeEach(function (): void {
+            $salesRepresentative = SalesRepresentative::factory()->create();
+            Order::factory()->count(3)->create(['sales_representative_id' => $salesRepresentative->id]);
+        });
+
+        test('sales representative has many orders', function (): void {
+            $orders = SalesRepresentative::firstOrFail()->orders;
+
+            expect($orders)->toBeInstanceOf(Collection::class);
+            expect($orders)->toHaveCount(3);
+            expect($orders)->each->toBeInstanceOf(Order::class);
+        });
+
+    });
 
 });

@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\Testing\TestAction;
 
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 describe('Product Edit', function (): void {
@@ -38,34 +39,20 @@ describe('Product Edit', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can update a product', function (): void {
+        it('can update a product', function (callable $fnProductUpdated): void {
 
-            $product = Product::factory()->create([
-                'sku' => 'SKU-111111',
-                'barcode' => '1111111111111',
-                'name' => 'Original Product 1',
-                'price' => 100.00,
-            ]);
-
-            $productUpdateData = Product::factory()->make([
-                'sku' => 'SKU-222222',
-                'barcode' => '2222222222222',
-                'name' => 'Updated Product 2',
-                'price' => 200.00,
-            ]);
+            $product = Product::firstOrFail();
+            $productUpdated = $fnProductUpdated($product);
 
             livewire(EditProduct::class, ['record' => $product->getRouteKey()])
-                ->fillForm($productUpdateData->toArray())
+                ->fillForm($productUpdated->toArray())
                 ->call('save')
-                ->assertNotified();
+                ->assertNotified()
+                ->assertHasNoFormErrors();
 
-            $product = $product->refresh();
-            expect($product->sku)->toBe($productUpdateData->sku)
-                ->and($product->barcode)->toBe($productUpdateData->barcode)
-                ->and($product->name)->toBe($productUpdateData->name)
-                ->and($product->price)->toBe($productUpdateData->price);
+            assertDatabaseHas(Product::class, $productUpdated->toArray());
 
-        });
+        })->with('product_updated');
 
         it('can delete a product', function (): void {
             $product = Product::firstOrFail();
@@ -103,23 +90,22 @@ describe('Product Edit', function (): void {
             ProductCategory::factory()->create();
         });
 
-        it('can update a product category', function (): void {
+        it('can update a product category', function (callable $fnProductCategoryUpdated): void {
 
             $productCategory = ProductCategory::firstOrFail();
-            $name = "{$productCategory->name} Updated";
+            $productCategoryUpdated = $fnProductCategoryUpdated($productCategory);
 
             livewire(EditProduct::class, ['record' => $productCategory->getRouteKey()])
                 ->callAction(
                     TestAction::make('editOption')
                         ->schemaComponent('product_category_id'),
-                    data: ['name' => $name])
+                    data: $productCategoryUpdated->toArray())
                 ->assertHasNoFormErrors()
                 ->assertNotified();
 
-            $productCategory = $productCategory->refresh();
-            expect($productCategory->name)->toBe($name);
+            assertDatabaseHas(ProductCategory::class, $productCategoryUpdated->toArray());
 
-        });
+        })->with('product_category_updated');
 
         it('validation is working', function (): void {
 

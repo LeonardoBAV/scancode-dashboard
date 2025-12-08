@@ -23,7 +23,6 @@ describe('Client List', function (): void {
 
     it('can list clients', function (): void {
 
-        // obs: if start with filter by default test record that no fit in this default with ->assertCanNotSeeTableRecords(...)
         livewire(ListClients::class)
             ->assertCanSeeTableRecords(Client::all())
             ->assertCountTableRecords(Client::count());

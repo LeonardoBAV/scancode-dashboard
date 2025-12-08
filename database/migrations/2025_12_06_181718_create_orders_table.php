@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->string('status')->default(OrderStatusEnum::Pending->value);
+            $table->string('status')->default(OrderStatusEnum::PENDING->value);
             $table->text('notes')->nullable();
             $table->foreignId('client_id')->constrained()->restrictOnDelete();
             $table->foreignId('sales_representative_id')->constrained()->restrictOnDelete();

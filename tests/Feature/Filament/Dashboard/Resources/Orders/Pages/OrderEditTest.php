@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Filament\Dashboard\Resources\Orders\Pages\EditOrder;
 use App\Models\Order;
 
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 describe('Order Edit', function (): void {
@@ -40,21 +41,20 @@ describe('Order Edit', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can update an order', function (): void {// obs: all fields can be updated
+        it('can update an order', function (callable $fnOrderUpdated): void {
 
-            $order = Order::factory()->create();
-
-            $notes = 'Updated order notes';
+            $order = Order::firstOrFail();
+            $orderUpdated = $fnOrderUpdated($order);
 
             livewire(EditOrder::class, ['record' => $order->getRouteKey()])
-                ->fillForm(['notes' => $notes])
+                ->fillForm($orderUpdated->toArray())
                 ->call('save')
-                ->assertNotified();
+                ->assertNotified()
+                ->assertHasNoFormErrors();
 
-            $order = $order->refresh();
-            expect($order->notes)->toBe($notes);
+            assertDatabaseHas(Order::class, $orderUpdated->toArray());
 
-        });
+        })->with('order_updated');
 
     });
 

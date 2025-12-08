@@ -36,3 +36,9 @@ dataset('payment_method_searchable_columns', [
 dataset('payment_method_sortable_columns', [
     'by name' => 'name',
 ]);
+
+dataset('payment_method_updated', [
+    fn (PaymentMethod $paymentMethod) => PaymentMethod::factory()->make([
+        'name' => "{$paymentMethod->name} test",
+    ]),
+]);

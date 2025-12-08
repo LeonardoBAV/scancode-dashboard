@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 
 describe('ProductCategory model:', function (): void {
@@ -21,4 +23,20 @@ describe('ProductCategory model:', function (): void {
 
     })->with('product_category_protected_columns');
 
+    describe('Relations', function (): void {
+
+        beforeEach(function (): void {
+            $productCategory = ProductCategory::factory()->create();
+            Product::factory()->count(3)->create(['product_category_id' => $productCategory->id]);
+        });
+
+        test('product category has many products', function (): void {
+            $products = ProductCategory::firstOrFail()->products;
+
+            expect($products)->toBeInstanceOf(Collection::class);
+            expect($products)->toHaveCount(3);
+            expect($products)->each->toBeInstanceOf(Product::class);
+        });
+
+    });
 });

@@ -28,7 +28,7 @@ class OrderForm
         return Select::make('status')
             ->label(__('resources.order.form.status'))
             ->options(OrderStatusEnum::class)
-            ->default(OrderStatusEnum::Pending->value)
+            ->default(OrderStatusEnum::PENDING->value)
             ->required();
     }
 

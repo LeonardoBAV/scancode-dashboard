@@ -7,6 +7,7 @@ use App\Filament\Dashboard\Resources\PaymentMethods\PaymentMethodResource;
 use App\Models\PaymentMethod;
 use Filament\Actions\DeleteAction;
 
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 describe('PaymentMethod Edit', function (): void {
@@ -36,21 +37,19 @@ describe('PaymentMethod Edit', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can update a payment method', function (): void {
+        it('can update a payment method', function (callable $fnPaymentMethodUpdated): void {
 
-            $paymentMethod = PaymentMethod::factory()->create();
-
-            $name = "{$paymentMethod->name} updated";
+            $paymentMethod = PaymentMethod::firstOrFail();
+            $paymentMethodUpdated = $fnPaymentMethodUpdated($paymentMethod);
 
             livewire(EditPaymentMethod::class, ['record' => $paymentMethod->getRouteKey()])
-                ->fillForm(['name' => $name])
+                ->fillForm($paymentMethodUpdated->toArray())
                 ->call('save')
-                ->assertNotified();
+                ->assertNotified()
+                ->assertHasNoFormErrors();
 
-            $paymentMethod = $paymentMethod->refresh();
-            expect($paymentMethod->name)->toBe($name);
-
-        });
+            assertDatabaseHas(PaymentMethod::class, $paymentMethodUpdated->toArray());
+        })->with('payment_method_updated');
 
         it('can delete a payment method', function (): void {
             $paymentMethod = PaymentMethod::firstOrFail();

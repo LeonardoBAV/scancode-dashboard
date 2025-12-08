@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -61,4 +62,11 @@ dataset('order_searchable_columns', [
 
 dataset('order_sortable_columns', [
     'by status' => 'status',
+]);
+
+dataset('order_updated', [
+    fn (Order $order) => Order::factory()->make([
+        'status' => ($order->status === OrderStatusEnum::PENDING) ? OrderStatusEnum::COMPLETED : OrderStatusEnum::PENDING,
+        'notes' => "{$order->notes} test",
+    ]),
 ]);

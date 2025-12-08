@@ -8,6 +8,7 @@ use App\Models\Client;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 
+use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 describe('Client Edit', function (): void {
@@ -37,7 +38,7 @@ describe('Client Edit', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can update a client', function (callable $fnClientUpdated): void { // obs: can be improved get registter already exists and update it
+        it('can update a client', function (callable $fnClientUpdated): void {
 
             $client = Client::firstOrFail();
             $clientUpdated = $fnClientUpdated($client);
@@ -48,13 +49,7 @@ describe('Client Edit', function (): void {
                 ->assertNotified()
                 ->assertHasNoFormErrors();
 
-            $client = $client->refresh();
-            expect($client->cpf_cnpj)->toBe($clientUpdated->cpf_cnpj)
-                ->and($client->corporate_name)->toBe($clientUpdated->corporate_name)
-                ->and($client->fantasy_name)->toBe($clientUpdated->fantasy_name)
-                ->and($client->email)->toBe($clientUpdated->email)
-                ->and($client->phone)->toBe($clientUpdated->phone)
-                ->and($client->carrier)->toBe($clientUpdated->carrier);
+            assertDatabaseHas(Client::class, $clientUpdated->toArray());
 
         })->with('client_updated');
 

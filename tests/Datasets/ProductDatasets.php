@@ -37,3 +37,12 @@ dataset('product_sortable_columns', [
     'by price' => 'price',
     'name' => 'name',
 ]);
+
+dataset('product_updated', [
+    fn (Product $product) => Product::factory()->make([
+        'sku' => "{$product->sku}test",
+        'barcode' => "{$product->barcode}1",
+        'name' => "{$product->name} test",
+        'price' => $product->price + 100,
+    ]),
+]);

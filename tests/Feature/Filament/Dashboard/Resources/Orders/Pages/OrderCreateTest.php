@@ -3,10 +3,7 @@
 declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Orders\Pages\CreateOrder;
-use App\Models\Client;
 use App\Models\Order;
-use App\Models\PaymentMethod;
-use App\Models\SalesRepresentative;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -55,34 +52,17 @@ describe('Order Create', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can create an order', function (): void {// obs: colcoar no dataset
-
-            $client = Client::factory()->create();
-            $salesRepresentative = SalesRepresentative::factory()->create();
-            $paymentMethod = PaymentMethod::factory()->create();
-
-            $orderData = [
-                'status' => 'pending',
-                'client_id' => $client->id,
-                'sales_representative_id' => $salesRepresentative->id,
-                'payment_method_id' => $paymentMethod->id,
-                'notes' => 'Test order notes',
-            ];
+        it('can create an order', function (): void {
+            $order = Order::factory()->make();
 
             livewire(CreateOrder::class)
-                ->fillForm($orderData)
+                ->fillForm($order->toArray())
                 ->call('create')
                 ->assertHasNoFormErrors()
                 ->assertNotified()
                 ->assertRedirect();
 
-            assertDatabaseHas(Order::class, [
-                'status' => 'pending',
-                'client_id' => $client->id,
-                'sales_representative_id' => $salesRepresentative->id,
-                'payment_method_id' => $paymentMethod->id,
-                'notes' => 'Test order notes',
-            ]);
+            assertDatabaseHas(Order::class, $order->toArray());
         });
 
     });

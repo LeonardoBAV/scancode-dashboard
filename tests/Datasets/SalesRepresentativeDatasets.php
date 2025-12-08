@@ -58,3 +58,11 @@ dataset('sales_representative_searchable_columns', [
         fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->email,
     ],
 ]);
+
+dataset('sales_representative_updated', [
+    fn (SalesRepresentative $salesRepresentative) => SalesRepresentative::factory()->make([
+        'cpf' => "{$salesRepresentative->cpf}1",
+        'name' => "{$salesRepresentative->name}test",
+        'email' => "{$salesRepresentative->email}test"
+    ]),
+]);

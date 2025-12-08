@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 
 describe('Order model:', function (): void {
@@ -24,28 +26,32 @@ describe('Order model:', function (): void {
 
     })->with('order_protected_columns');
 
-    test('order belongs to a client', function (): void {
-        $order = Order::factory()->create();
+    describe('Relations', function (): void {
 
-        expect($order->client)->toBeInstanceOf(Client::class);
-    });
+        beforeEach(function (): void {
+            $order = Order::factory()->create();
+            OrderItem::factory()->count(3)->create(['order_id' => $order->id]);
+        });
 
-    test('order belongs to a sales representative', function (): void {
-        $order = Order::factory()->create();
+        test('order belongs to a client', function (): void {
+            expect(Order::firstOrFail()->client)->toBeInstanceOf(Client::class);
+        });
 
-        expect($order->salesRepresentative)->toBeInstanceOf(SalesRepresentative::class);
-    });
+        test('order belongs to a sales representative', function (): void {
+            expect(Order::firstOrFail()->salesRepresentative)->toBeInstanceOf(SalesRepresentative::class);
+        });
 
-    test('order belongs to a payment method', function (): void {
-        $order = Order::factory()->create();
+        test('order belongs to a payment method', function (): void {
+            expect(Order::firstOrFail()->paymentMethod)->toBeInstanceOf(PaymentMethod::class);
+        });
 
-        expect($order->paymentMethod)->toBeInstanceOf(PaymentMethod::class);
-    });
+        test('order has many order items', function (): void {
+            $orderItems = Order::firstOrFail()->orderItems;
 
-    test('order can have many order items', function (): void {//obs: este nao esta muito correto e aproveitar verificar testes de outra relacoes de outra models
-        $order = Order::factory()->create();
-
-        expect($order->orderItems)->toBeEmpty();
+            expect($orderItems)->toBeInstanceOf(Collection::class);
+            expect($orderItems)->toHaveCount(3);
+            expect($orderItems)->each->toBeInstanceOf(OrderItem::class);
+        });
     });
 
 });
