@@ -38,26 +38,24 @@ dataset('order_validations', [
 
 dataset('order_searchable_columns', [
     'by client fantasy name' => [
+        fn () => Order::whereHas('client', fn (Builder $q) => $q->whereNotNull('fantasy_name'))->first(),
+        fn (string $searchValue) => Order::whereHas('client', fn (Builder $q) => $q->where('fantasy_name', '!=', $searchValue))->first(),
         fn (Order $order) => $order->client->fantasy_name,
-        fn (string $searchValue) => Order::whereHas('client', function (Builder $query) use ($searchValue) {
-            $query->where('fantasy_name', '!=', $searchValue);
-        })->first(),
     ],
     'by sales representative name' => [
+        fn () => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->whereNotNull('name'))->first(),
+        fn (string $searchValue) => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->where('name', '!=', $searchValue))->first(),
         fn (Order $order) => $order->salesRepresentative->name,
-        fn (string $searchValue) => Order::whereHas('salesRepresentative', function (Builder $query) use ($searchValue) {
-            $query->where('name', '!=', $searchValue);
-        })->first(),
     ],
     'by payment method name' => [
+        fn () => Order::whereHas('paymentMethod', fn (Builder $q) => $q->whereNotNull('name'))->first(),
+        fn (string $searchValue) => Order::whereHas('paymentMethod', fn (Builder $q) => $q->where('name', '!=', $searchValue))->first(),
         fn (Order $order) => $order->paymentMethod->name,
-        fn (string $searchValue) => Order::whereHas('paymentMethod', function (Builder $query) use ($searchValue) {
-            $query->where('name', '!=', $searchValue);
-        })->first(),
     ],
     'by status' => [
-        fn (Order $order) => $order->status->value,
+        fn () => Order::whereNotNull('status')->first(),
         fn (string $searchValue) => Order::where('status', '!=', $searchValue)->first(),
+        fn (Order $order) => $order->status->value,
     ],
 ]);
 

@@ -27,8 +27,9 @@ dataset('payment_method_validations', [
 
 dataset('payment_method_searchable_columns', [
     'by name' => [
-        fn (PaymentMethod $paymentMethod) => $paymentMethod->name,
+        fn () => PaymentMethod::whereNotNull('name')->first(),
         fn (string $searchValue) => PaymentMethod::where('name', '!=', $searchValue)->first(),
+        fn (PaymentMethod $paymentMethod) => $paymentMethod->name,
     ],
 ]);
 

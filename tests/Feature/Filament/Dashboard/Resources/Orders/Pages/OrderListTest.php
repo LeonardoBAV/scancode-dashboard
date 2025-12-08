@@ -46,10 +46,10 @@ describe('Order List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (callable $getValue, callable $loadNotFound): void {
-                $order = Order::firstOrFail();
-                $searchValue = $getValue($order);
-                $orderNotFound = $loadNotFound($searchValue);
+            it('search is working', function (callable $fnOrder, callable $fnOrderNotFound, callable $fnValue): void {
+                $order = $fnOrder();
+                $searchValue = $fnValue($order);
+                $orderNotFound = $fnOrderNotFound($searchValue);
 
                 livewire(ListOrders::class)
                     ->assertCanSeeTableRecords(Order::all())

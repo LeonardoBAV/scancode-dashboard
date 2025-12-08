@@ -45,10 +45,10 @@ describe('SalesRepresentative List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (callable $getValue, callable $loadNotFound): void {
-                $salesRepresentative = SalesRepresentative::firstOrFail();
-                $searchValue = $getValue($salesRepresentative);
-                $salesRepresentativeNotFound = $loadNotFound($searchValue);
+            it('search is working', function (callable $fnSalesRepresentative, callable $fnSalesRepresentativeNotFound, callable $fnValue): void {
+                $salesRepresentative = $fnSalesRepresentative();
+                $searchValue = $fnValue($salesRepresentative);
+                $salesRepresentativeNotFound = $fnSalesRepresentativeNotFound($searchValue);
 
                 livewire(ListSalesRepresentatives::class)
                     ->assertCanSeeTableRecords(SalesRepresentative::all())

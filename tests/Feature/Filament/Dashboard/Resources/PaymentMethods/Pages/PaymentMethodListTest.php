@@ -43,10 +43,10 @@ describe('PaymentMethod List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (callable $getValue, callable $loadNotFound): void {
-                $paymentMethod = PaymentMethod::firstOrFail();
-                $searchValue = $getValue($paymentMethod);
-                $paymentMethodNotFound = $loadNotFound($searchValue);
+            it('search is working', function (callable $fnPaymentMethod, callable $fnPaymentMethodNotFound, callable $fnValue): void {
+                $paymentMethod = $fnPaymentMethod();
+                $searchValue = $fnValue($paymentMethod);
+                $paymentMethodNotFound = $fnPaymentMethodNotFound($searchValue);
 
                 livewire(ListPaymentMethods::class)
                     ->assertCanSeeTableRecords(PaymentMethod::all())

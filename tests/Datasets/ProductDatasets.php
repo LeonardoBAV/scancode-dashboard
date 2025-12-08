@@ -27,8 +27,9 @@ dataset('product_validations', [
 
 dataset('product_searchable_columns', [
     'by name' => [
-        fn (Product $product) => $product->name,
+        fn () => Product::whereNotNull('name')->first(),
         fn (string $searchValue) => Product::where('name', '!=', $searchValue)->first(),
+        fn (Product $product) => $product->name,
     ],
 ]);
 
