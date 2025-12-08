@@ -42,7 +42,16 @@ dataset('sales_representative_validations', [
 ]);
 
 dataset('sales_representative_searchable_columns', [
-    'by cpf' => ['cpf'],
-    'by name' => ['name'],
-    'by email' => ['email'],
+    'by cpf' => [
+        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->cpf,
+        fn (string $searchValue) => SalesRepresentative::where('cpf', '!=', $searchValue)->first(),
+    ],
+    'by name' => [
+        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->name,
+        fn (string $searchValue) => SalesRepresentative::where('name', '!=', $searchValue)->first(),
+    ],
+    'by email' => [
+        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->email,
+        fn (string $searchValue) => SalesRepresentative::where('email', '!=', $searchValue)->first(),
+    ],
 ]);

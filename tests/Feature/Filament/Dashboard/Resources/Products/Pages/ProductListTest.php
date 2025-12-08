@@ -45,14 +45,13 @@ describe('Product List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (string $field): void {
+            it('search is working', function (callable $getValue, callable $loadNotFound): void {
                 $product = Product::firstOrFail();
-                $productNotFound = Product::where('id', '!=', $product->id)->first();
-
-                $value = $product->getAttribute($field);
-                $searchValue = is_string($value) ? $value : null;
+                $searchValue = $getValue($product);
+                $productNotFound = $loadNotFound($searchValue);
 
                 livewire(ListProducts::class)
+                    ->assertCanSeeTableRecords(Product::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$product])
                     ->assertCanNotSeeTableRecords([$productNotFound]);

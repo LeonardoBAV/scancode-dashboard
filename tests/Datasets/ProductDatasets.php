@@ -26,7 +26,10 @@ dataset('product_validations', [
 ]);
 
 dataset('product_searchable_columns', [
-    'by name' => ['name'],
+    'by name' => [
+        fn (Product $product) => $product->name,
+        fn (string $searchValue) => Product::where('name', '!=', $searchValue)->first(),
+    ],
 ]);
 
 dataset('product_sortable_columns', [

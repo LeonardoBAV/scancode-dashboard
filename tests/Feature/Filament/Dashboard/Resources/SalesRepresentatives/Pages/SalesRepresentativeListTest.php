@@ -45,14 +45,13 @@ describe('SalesRepresentative List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (string $field): void {
+            it('search is working', function (callable $getValue, callable $loadNotFound): void {
                 $salesRepresentative = SalesRepresentative::firstOrFail();
-                $salesRepresentativeNotFound = SalesRepresentative::where('id', '!=', $salesRepresentative->id)->first();
-
-                $value = $salesRepresentative->getAttribute($field);
-                $searchValue = is_string($value) ? $value : null;
+                $searchValue = $getValue($salesRepresentative);
+                $salesRepresentativeNotFound = $loadNotFound($searchValue);
 
                 livewire(ListSalesRepresentatives::class)
+                    ->assertCanSeeTableRecords(SalesRepresentative::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$salesRepresentative])
                     ->assertCanNotSeeTableRecords([$salesRepresentativeNotFound]);

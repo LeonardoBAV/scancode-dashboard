@@ -34,10 +34,34 @@ dataset('client_validations', [
 ]);
 
 dataset('client_searchable_columns', [
-    'by cpf_cnpj' => ['cpf_cnpj'],
-    'by corporate_name' => ['corporate_name'],
-    'by fantasy_name' => ['fantasy_name'],
-    'by email' => ['email'],
-    'by phone' => ['phone'],
-    'by carrier' => ['carrier'],
+    'by cpf_cnpj' => [
+        fn () => Client::whereNotNull('cpf_cnpj')->first(),
+        fn (string $searchValue) => Client::where('cpf_cnpj', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->cpf_cnpj,
+    ],
+    'by corporate_name' => [
+        fn () => Client::whereNotNull('corporate_name')->first(),
+        fn (string $searchValue) => Client::where('corporate_name', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->corporate_name,
+    ],
+    'by fantasy_name' => [
+        fn () => Client::whereNotNull('fantasy_name')->first(),
+        fn (string $searchValue) => Client::where('fantasy_name', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->fantasy_name,
+    ],
+    'by email' => [
+        fn () => Client::whereNotNull('email')->first(),
+        fn (string $searchValue) => Client::where('email', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->email,
+    ],
+    'by phone' => [
+        fn () => Client::whereNotNull('phone')->first(),
+        fn (string $searchValue) => Client::where('phone', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->phone,
+    ],
+    'by carrier' => [
+        fn () => Client::whereNotNull('carrier')->first(),
+        fn (string $searchValue) => Client::where('carrier', '!=', $searchValue)->first(),
+        fn (Client $client) => $client->carrier,
+    ],
 ]);

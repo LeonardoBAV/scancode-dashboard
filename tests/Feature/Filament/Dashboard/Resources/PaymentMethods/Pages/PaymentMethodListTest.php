@@ -43,14 +43,13 @@ describe('PaymentMethod List', function (): void {
 
         describe('Searchable:', function (): void {
 
-            it('search is working', function (string $field): void {
+            it('search is working', function (callable $getValue, callable $loadNotFound): void {
                 $paymentMethod = PaymentMethod::firstOrFail();
-                $paymentMethodNotFound = PaymentMethod::where('id', '!=', $paymentMethod->id)->first();
-
-                $value = $paymentMethod->getAttribute($field);
-                $searchValue = is_string($value) ? $value : null;
+                $searchValue = $getValue($paymentMethod);
+                $paymentMethodNotFound = $loadNotFound($searchValue);
 
                 livewire(ListPaymentMethods::class)
+                    ->assertCanSeeTableRecords(PaymentMethod::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$paymentMethod])
                     ->assertCanNotSeeTableRecords([$paymentMethodNotFound]);
@@ -89,4 +88,3 @@ describe('PaymentMethod List', function (): void {
     });
 
 });
-

@@ -26,10 +26,12 @@ dataset('payment_method_validations', [
 ]);
 
 dataset('payment_method_searchable_columns', [
-    'by name' => ['name'],
+    'by name' => [
+        fn (PaymentMethod $paymentMethod) => $paymentMethod->name,
+        fn (string $searchValue) => PaymentMethod::where('name', '!=', $searchValue)->first(),
+    ],
 ]);
 
 dataset('payment_method_sortable_columns', [
     'by name' => 'name',
 ]);
-
