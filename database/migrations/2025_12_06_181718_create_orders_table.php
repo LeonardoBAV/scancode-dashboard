@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->foreignId('client_id')->constrained()->restrictOnDelete();
             $table->foreignId('sales_representative_id')->constrained()->restrictOnDelete();
-            $table->foreignId('payment_method_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignId('payment_method_id')->constrained()->restrictOnDelete();
 
             $table->timestamps();
         });

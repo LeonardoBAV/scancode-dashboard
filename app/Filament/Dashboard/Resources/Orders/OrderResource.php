@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Dashboard\Resources\Orders;
 
 use App\Filament\Dashboard\Resources\Orders\Pages\CreateOrder;
@@ -10,6 +12,7 @@ use App\Filament\Dashboard\Resources\Orders\Schemas\OrderForm;
 use App\Filament\Dashboard\Resources\Orders\Schemas\OrderInfolist;
 use App\Filament\Dashboard\Resources\Orders\Tables\OrdersTable;
 use App\Models\Order;
+use App\Traits\Filament\Resources\HasTranslatableLabels;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,11 +21,15 @@ use Filament\Tables\Table;
 
 class OrderResource extends Resource
 {
+    use HasTranslatableLabels;
+
     protected static ?string $model = Order::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static ?string $recordTitleAttribute = 'id';
+
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {

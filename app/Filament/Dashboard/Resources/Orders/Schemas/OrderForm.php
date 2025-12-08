@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Dashboard\Resources\Orders\Schemas;
 
 use App\Enums\OrderStatusEnum;
@@ -13,20 +15,57 @@ class OrderForm
     {
         return $schema
             ->components([
-                Select::make('status')
-                    ->options(OrderStatusEnum::class)
-                    ->default('pending')
-                    ->required(),
-                Textarea::make('notes')
-                    ->columnSpanFull(),
-                Select::make('client_id')
-                    ->relationship('client', 'id')
-                    ->required(),
-                Select::make('sales_representative_id')
-                    ->relationship('salesRepresentative', 'name')
-                    ->required(),
-                Select::make('payment_method_id')
-                    ->relationship('paymentMethod', 'name'),
+                self::statusInput(),
+                self::clientInput(),
+                self::salesRepresentativeInput(),
+                self::paymentMethodInput(),
+                self::notesInput(),
             ]);
+    }
+
+    protected static function statusInput(): Select
+    {
+        return Select::make('status')
+            ->label(__('resources.order.form.status'))
+            ->options(OrderStatusEnum::class)
+            ->default(OrderStatusEnum::Pending->value)
+            ->required();
+    }
+
+    protected static function clientInput(): Select
+    {
+        return Select::make('client_id')
+            ->label(__('resources.order.form.client'))
+            ->relationship('client', 'fantasy_name')
+            ->searchable()
+            ->preload()
+            ->required();
+    }
+
+    protected static function salesRepresentativeInput(): Select
+    {
+        return Select::make('sales_representative_id')
+            ->label(__('resources.order.form.sales_representative'))
+            ->relationship('salesRepresentative', 'name')
+            ->searchable()
+            ->preload()
+            ->required();
+    }
+
+    protected static function paymentMethodInput(): Select
+    {
+        return Select::make('payment_method_id')
+            ->label(__('resources.order.form.payment_method'))
+            ->relationship('paymentMethod', 'name')
+            ->searchable()
+            ->preload()
+            ->required();
+    }
+
+    protected static function notesInput(): Textarea
+    {
+        return Textarea::make('notes')
+            ->label(__('resources.order.form.notes'))
+            ->columnSpanFull();
     }
 }

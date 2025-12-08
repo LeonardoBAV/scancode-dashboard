@@ -27,7 +27,7 @@ class OrderFactory extends Factory
     {
         return [
             'status' => fake()->randomElement(OrderStatusEnum::cases())->value,
-            'observation' => fake()->optional()->sentence(),
+            'notes' => fake()->optional()->sentence(),
             'client_id' => Client::factory(),
             'sales_representative_id' => SalesRepresentative::factory(),
             'payment_method_id' => PaymentMethod::factory(),

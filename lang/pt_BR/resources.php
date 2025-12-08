@@ -95,4 +95,30 @@ return [
             'name' => 'Nome',
         ],
     ],
+    'order' => [
+        'navigation_label' => 'Pedidos',
+        'plural_model_label' => 'Pedidos',
+        'model_label' => 'Pedido',
+        'table' => [
+            'status' => 'Status',
+            'client' => 'Cliente',
+            'sales_representative' => 'Representante',
+            'payment_method' => 'Método de Pagamento',
+            'payment_method_placeholder' => 'Nenhum método',
+        ],
+        'infolist' => [
+            'status' => 'Status',
+            'client' => 'Cliente',
+            'sales_representative' => 'Representante',
+            'payment_method' => 'Método de Pagamento',
+            'notes' => 'Observações',
+        ],
+        'form' => [
+            'status' => 'Status',
+            'client' => 'Cliente',
+            'sales_representative' => 'Representante',
+            'payment_method' => 'Método de Pagamento',
+            'notes' => 'Observações',
+        ],
+    ],
 ];
