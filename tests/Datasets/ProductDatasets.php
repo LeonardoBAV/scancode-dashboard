@@ -35,7 +35,7 @@ dataset('product_searchable_columns', [
 
 dataset('product_sortable_columns', [
     'by price' => 'price',
-    'name' => 'name',
+    'by name' => 'name',
 ]);
 
 dataset('product_updated', [

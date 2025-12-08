@@ -42,16 +42,14 @@ class OrdersTable
     {
         return TextColumn::make('client.fantasy_name')
             ->label(__('resources.order.table.client'))
-            ->searchable()
-            ->sortable();
+            ->searchable();
     }
 
     protected static function salesRepresentativeColumn(): TextColumn
     {
         return TextColumn::make('salesRepresentative.name')
             ->label(__('resources.order.table.sales_representative'))
-            ->searchable()
-            ->sortable();
+            ->searchable();
     }
 
     protected static function paymentMethodColumn(): TextColumn

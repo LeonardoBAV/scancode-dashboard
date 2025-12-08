@@ -62,6 +62,8 @@ dataset('order_searchable_columns', [
 
 dataset('order_sortable_columns', [
     'by status' => 'status',
+    'by created at' => 'created_at',
+    'by updated at' => 'updated_at',
 ]);
 
 dataset('order_updated', [

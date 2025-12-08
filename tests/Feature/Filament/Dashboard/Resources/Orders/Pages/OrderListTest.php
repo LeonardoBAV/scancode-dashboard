@@ -61,19 +61,17 @@ describe('Order List', function (): void {
 
         describe('Sortable:', function (): void {
 
-            /*it('can sort orders by status', function (): void {//obs: verificar mais colunas para ser ordenado
-                Order::query()->delete();
-                Order::factory()->count(3)->create();
-
-                $ordersAsc = Order::query()->orderBy('status', 'asc')->get();
-                $ordersDesc = Order::query()->orderBy('status', 'desc')->get();
+            it('can sort orders by status', function (string $column): void {
+                $ordersAsc = Order::query()->orderBy($column, 'asc')->orderBy('id', 'asc')->get();
+                $ordersDesc = Order::query()->orderBy($column, 'desc')->orderBy('id', 'desc')->get();
 
                 livewire(ListOrders::class)
-                    ->sortTable('status', 'asc')
+                    ->sortTable($column, 'asc')
                     ->assertCanSeeTableRecords($ordersAsc, inOrder: true)
-                    ->sortTable('status', 'desc')
+                    ->sortTable($column, 'desc')
                     ->assertCanSeeTableRecords($ordersDesc, inOrder: true);
-            });*/
+            })->with('order_sortable_columns');
+
         });
 
         describe('Bulk Actions:', function (): void { // obs: action passar para cancelar
