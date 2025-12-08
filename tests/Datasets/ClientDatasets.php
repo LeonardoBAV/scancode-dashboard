@@ -65,3 +65,14 @@ dataset('client_searchable_columns', [
         fn (Client $client) => $client->carrier,
     ],
 ]);
+
+dataset('client_updated', [
+    fn (Client $client) => Client::factory()->make([
+        'cpf_cnpj' => "{$client->cpf_cnpj}test",
+        'corporate_name' => "{$client->corporate_name} test",
+        'fantasy_name' => "{$client->fantasy_name} test",
+        'email' => "{$client->email}test",
+        'phone' => "{$client->phone}1",
+        'carrier' => "{$client->carrier} test",
+    ]),
+]);

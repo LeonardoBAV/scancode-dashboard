@@ -37,40 +37,26 @@ describe('Client Edit', function (): void {
 
     describe('Actions', function (): void {
 
-        it('can update a client', function (): void { // obs: can be improved get registter already exists and update it
+        it('can update a client', function (callable $fnClientUpdated): void { // obs: can be improved get registter already exists and update it
 
-            $client = Client::factory()->create([
-                'cpf_cnpj' => '11111111111',
-                'corporate_name' => 'Original Company 1',
-                'fantasy_name' => 'Original Fantasy 1',
-                'email' => 'original1@example.com',
-                'phone' => '11111111111',
-                'carrier' => 'Original Carrier 1',
-            ]);
-
-            $clientUpdateData = Client::factory()->make([
-                'cpf_cnpj' => '22222222222',
-                'corporate_name' => 'Original Company 2',
-                'fantasy_name' => 'Updated Fantasy 2',
-                'email' => 'updated2@example.com',
-                'phone' => '22222222222',
-                'carrier' => 'Updated Carrier 2',
-            ]);
+            $client = Client::firstOrFail();
+            $clientUpdated = $fnClientUpdated($client);
 
             livewire(EditClient::class, ['record' => $client->getRouteKey()])
-                ->fillForm($clientUpdateData->toArray())
+                ->fillForm($clientUpdated->toArray())
                 ->call('save')
-                ->assertNotified();
+                ->assertNotified()
+                ->assertHasNoFormErrors();
 
             $client = $client->refresh();
-            expect($client->cpf_cnpj)->toBe($clientUpdateData->cpf_cnpj)
-                ->and($client->corporate_name)->toBe($clientUpdateData->corporate_name)
-                ->and($client->fantasy_name)->toBe($clientUpdateData->fantasy_name)
-                ->and($client->email)->toBe($clientUpdateData->email)
-                ->and($client->phone)->toBe($clientUpdateData->phone)
-                ->and($client->carrier)->toBe($clientUpdateData->carrier);
+            expect($client->cpf_cnpj)->toBe($clientUpdated->cpf_cnpj)
+                ->and($client->corporate_name)->toBe($clientUpdated->corporate_name)
+                ->and($client->fantasy_name)->toBe($clientUpdated->fantasy_name)
+                ->and($client->email)->toBe($clientUpdated->email)
+                ->and($client->phone)->toBe($clientUpdated->phone)
+                ->and($client->carrier)->toBe($clientUpdated->carrier);
 
-        });
+        })->with('client_updated');
 
         it('can delete a client', function (): void {
             $client = Client::firstOrFail();
