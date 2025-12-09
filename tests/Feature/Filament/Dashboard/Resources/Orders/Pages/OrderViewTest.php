@@ -22,9 +22,9 @@ describe('Order View', function (): void {
             ->assertSchemaStateSet([
                 'status' => $order->status,
                 'notes' => $order->notes,
-                'client.fantasy_name' => $order->client->fantasy_name,
-                'salesRepresentative.name' => $order->salesRepresentative->name,
-                'paymentMethod.name' => $order->paymentMethod->name,
+                'client.fantasy_name' => $order->client?->fantasy_name,
+                'salesRepresentative.name' => $order->salesRepresentative?->name,
+                'paymentMethod.name' => $order->paymentMethod?->name,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
             ]);

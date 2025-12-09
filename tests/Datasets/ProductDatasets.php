@@ -27,9 +27,9 @@ dataset('product_validations', [
 
 dataset('product_searchable_columns', [
     'by name' => [
-        fn () => Product::whereNotNull('name')->first(),
-        fn (string $searchValue) => Product::where('name', '!=', $searchValue)->first(),
-        fn (Product $product) => $product->name,
+        fn (): Product => Product::whereNotNull('name')->firstOrFail(),
+        fn (string $searchValue): Product => Product::where('name', '!=', $searchValue)->firstOrFail(),
+        fn (Product $product): string => $product->name,
     ],
 ]);
 
@@ -39,7 +39,7 @@ dataset('product_sortable_columns', [
 ]);
 
 dataset('product_updated', [
-    fn (Product $product) => Product::factory()->make([
+    fn (Product $product): Product => Product::factory()->make([
         'sku' => "{$product->sku}test",
         'barcode' => "{$product->barcode}1",
         'name' => "{$product->name} test",

@@ -11,7 +11,7 @@ dataset('product_category_protected_columns', [
 ]);
 
 dataset('product_category_updated', [
-    fn (ProductCategory $productCategory) => ProductCategory::factory()->make([
+    fn (ProductCategory $productCategory): ProductCategory => ProductCategory::factory()->make([
         'name' => "{$productCategory->name} test",
     ]),
 ]);

@@ -44,6 +44,11 @@ describe('PaymentMethod List', function (): void {
         describe('Searchable:', function (): void {
 
             it('search is working', function (callable $fnPaymentMethod, callable $fnPaymentMethodNotFound, callable $fnValue): void {
+                /**
+                 * @var callable():PaymentMethod $fnPaymentMethod
+                 * @var callable(string):PaymentMethod $fnPaymentMethodNotFound
+                 * @var callable(PaymentMethod):string $fnValue
+                 */
                 $paymentMethod = $fnPaymentMethod();
                 $searchValue = $fnValue($paymentMethod);
                 $paymentMethodNotFound = $fnPaymentMethodNotFound($searchValue);

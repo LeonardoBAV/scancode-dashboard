@@ -25,8 +25,11 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var OrderStatusEnum $status */
+        $status = fake()->randomElement(OrderStatusEnum::cases());
+
         return [
-            'status' => fake()->randomElement(OrderStatusEnum::cases())->value,
+            'status' => $status->value,
             'notes' => fake()->optional()->sentence(),
             'client_id' => Client::factory(),
             'sales_representative_id' => SalesRepresentative::factory(),

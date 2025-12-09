@@ -24,13 +24,6 @@ return RectorConfig::configure()
     ->withSets([
         LevelSetList::UP_TO_PHP_84,
     ])
-
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    // ->withTypeCoverageLevel(0)
-    // ->withDeadCodeLevel(0)
-    // ->withCodeQualityLevel(0)
-
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,

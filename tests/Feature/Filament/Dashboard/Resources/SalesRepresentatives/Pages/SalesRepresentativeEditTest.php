@@ -38,7 +38,9 @@ describe('SalesRepresentative Edit', function (): void {
     describe('Actions', function (): void {
 
         it('can update a sales representative', function (callable $fnSalesRepresentativeUpdated): void {
-
+            /**
+             * @var callable(SalesRepresentative):SalesRepresentative $fnSalesRepresentativeUpdated
+             */
             $salesRepresentative = SalesRepresentative::firstOrFail();
             $salesRepresentativeUpdated = $fnSalesRepresentativeUpdated($salesRepresentative);
 

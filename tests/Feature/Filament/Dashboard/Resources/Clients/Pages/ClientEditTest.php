@@ -39,7 +39,9 @@ describe('Client Edit', function (): void {
     describe('Actions', function (): void {
 
         it('can update a client', function (callable $fnClientUpdated): void {
-
+            /**
+             * @var callable(Client):Client $fnClientUpdated
+             */
             $client = Client::firstOrFail();
             $clientUpdated = $fnClientUpdated($client);
 

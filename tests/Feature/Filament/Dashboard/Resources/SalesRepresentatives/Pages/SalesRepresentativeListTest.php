@@ -46,6 +46,11 @@ describe('SalesRepresentative List', function (): void {
         describe('Searchable:', function (): void {
 
             it('search is working', function (callable $fnSalesRepresentative, callable $fnSalesRepresentativeNotFound, callable $fnValue): void {
+                /**
+                 * @var callable():SalesRepresentative $fnSalesRepresentative
+                 * @var callable(string):SalesRepresentative $fnSalesRepresentativeNotFound
+                 * @var callable(SalesRepresentative):string $fnValue
+                 */
                 $salesRepresentative = $fnSalesRepresentative();
                 $searchValue = $fnValue($salesRepresentative);
                 $salesRepresentativeNotFound = $fnSalesRepresentativeNotFound($searchValue);

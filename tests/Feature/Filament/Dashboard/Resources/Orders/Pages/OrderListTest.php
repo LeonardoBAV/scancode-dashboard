@@ -47,6 +47,11 @@ describe('Order List', function (): void {
         describe('Searchable:', function (): void {
 
             it('search is working', function (callable $fnOrder, callable $fnOrderNotFound, callable $fnValue): void {
+                /**
+                 * @var callable():Order $fnOrder
+                 * @var callable(string):Order $fnOrderNotFound
+                 * @var callable(Order):string $fnValue
+                 */
                 $order = $fnOrder();
                 $searchValue = $fnValue($order);
                 $orderNotFound = $fnOrderNotFound($searchValue);

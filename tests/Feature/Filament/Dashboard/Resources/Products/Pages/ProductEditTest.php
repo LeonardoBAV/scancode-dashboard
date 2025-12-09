@@ -40,7 +40,9 @@ describe('Product Edit', function (): void {
     describe('Actions', function (): void {
 
         it('can update a product', function (callable $fnProductUpdated): void {
-
+            /**
+             * @var callable(Product):Product $fnProductUpdated
+             */
             $product = Product::firstOrFail();
             $productUpdated = $fnProductUpdated($product);
 
@@ -91,7 +93,9 @@ describe('Product Edit', function (): void {
         });
 
         it('can update a product category', function (callable $fnProductCategoryUpdated): void {
-
+            /**
+             * @var callable(ProductCategory):ProductCategory $fnProductCategoryUpdated
+             */
             $productCategory = ProductCategory::firstOrFail();
             $productCategoryUpdated = $fnProductCategoryUpdated($productCategory);
 

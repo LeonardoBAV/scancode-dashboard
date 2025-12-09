@@ -27,9 +27,9 @@ dataset('payment_method_validations', [
 
 dataset('payment_method_searchable_columns', [
     'by name' => [
-        fn () => PaymentMethod::whereNotNull('name')->first(),
-        fn (string $searchValue) => PaymentMethod::where('name', '!=', $searchValue)->first(),
-        fn (PaymentMethod $paymentMethod) => $paymentMethod->name,
+        fn (): PaymentMethod => PaymentMethod::whereNotNull('name')->firstOrFail(),
+        fn (string $searchValue): PaymentMethod => PaymentMethod::where('name', '!=', $searchValue)->firstOrFail(),
+        fn (PaymentMethod $paymentMethod): string => $paymentMethod->name,
     ],
 ]);
 
@@ -38,7 +38,7 @@ dataset('payment_method_sortable_columns', [
 ]);
 
 dataset('payment_method_updated', [
-    fn (PaymentMethod $paymentMethod) => PaymentMethod::factory()->make([
+    fn (PaymentMethod $paymentMethod): PaymentMethod => PaymentMethod::factory()->make([
         'name' => "{$paymentMethod->name} test",
     ]),
 ]);

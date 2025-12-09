@@ -39,24 +39,24 @@ dataset('order_validations', [
 
 dataset('order_searchable_columns', [
     'by client fantasy name' => [
-        fn () => Order::whereHas('client', fn (Builder $q) => $q->whereNotNull('fantasy_name'))->first(),
-        fn (string $searchValue) => Order::whereHas('client', fn (Builder $q) => $q->where('fantasy_name', '!=', $searchValue))->first(),
-        fn (Order $order) => $order->client->fantasy_name,
+        fn (): Order => Order::whereHas('client', fn (Builder $q) => $q->whereNotNull('fantasy_name'))->firstOrFail(),
+        fn (string $searchValue): Order => Order::whereHas('client', fn (Builder $q) => $q->where('fantasy_name', '!=', $searchValue))->firstOrFail(),
+        fn (Order $order): string => $order->client->fantasy_name ?? throw new UnexpectedValueException('Client not found'),
     ],
     'by sales representative name' => [
-        fn () => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->whereNotNull('name'))->first(),
-        fn (string $searchValue) => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->where('name', '!=', $searchValue))->first(),
-        fn (Order $order) => $order->salesRepresentative->name,
+        fn (): Order => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->whereNotNull('name'))->firstOrFail(),
+        fn (string $searchValue): Order => Order::whereHas('salesRepresentative', fn (Builder $q) => $q->where('name', '!=', $searchValue))->firstOrFail(),
+        fn (Order $order): string => $order->salesRepresentative->name ?? throw new UnexpectedValueException('Sales representative not found'),
     ],
     'by payment method name' => [
-        fn () => Order::whereHas('paymentMethod', fn (Builder $q) => $q->whereNotNull('name'))->first(),
-        fn (string $searchValue) => Order::whereHas('paymentMethod', fn (Builder $q) => $q->where('name', '!=', $searchValue))->first(),
-        fn (Order $order) => $order->paymentMethod->name,
+        fn (): Order => Order::whereHas('paymentMethod', fn (Builder $q) => $q->whereNotNull('name'))->firstOrFail(),
+        fn (string $searchValue): Order => Order::whereHas('paymentMethod', fn (Builder $q) => $q->where('name', '!=', $searchValue))->firstOrFail(),
+        fn (Order $order): string => $order->paymentMethod->name ?? throw new UnexpectedValueException('Payment method not found'),
     ],
     'by status' => [
-        fn () => Order::whereNotNull('status')->first(),
-        fn (string $searchValue) => Order::where('status', '!=', $searchValue)->first(),
-        fn (Order $order) => $order->status->value,
+        fn (): Order => Order::whereNotNull('status')->firstOrFail(),
+        fn (string $searchValue): Order => Order::where('status', '!=', $searchValue)->firstOrFail(),
+        fn (Order $order): string => $order->status->value,
     ],
 ]);
 
@@ -67,7 +67,7 @@ dataset('order_sortable_columns', [
 ]);
 
 dataset('order_updated', [
-    fn (Order $order) => Order::factory()->make([
+    fn (Order $order): Order => Order::factory()->make([
         'status' => ($order->status === OrderStatusEnum::PENDING) ? OrderStatusEnum::COMPLETED : OrderStatusEnum::PENDING,
         'notes' => "{$order->notes} test",
     ]),

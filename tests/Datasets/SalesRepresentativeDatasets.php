@@ -41,28 +41,28 @@ dataset('sales_representative_validations', [
     ],
 ]);
 
-dataset('sales_representative_searchable_columns', [
+dataset('sales_representative_searchable_columns', [// OBS: COLOCAR OS TIPOS DE RETORNOS
     'by cpf' => [
-        fn () => SalesRepresentative::whereNotNull('cpf')->first(),
-        fn (string $searchValue) => SalesRepresentative::where('cpf', '!=', $searchValue)->first(),
-        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->cpf,
+        fn (): SalesRepresentative => SalesRepresentative::whereNotNull('cpf')->firstOrFail(),
+        fn (string $searchValue): SalesRepresentative => SalesRepresentative::where('cpf', '!=', $searchValue)->firstOrFail(),
+        fn (SalesRepresentative $salesRepresentative): string => $salesRepresentative->cpf,
     ],
     'by name' => [
-        fn () => SalesRepresentative::whereNotNull('name')->first(),
-        fn (string $searchValue) => SalesRepresentative::where('name', '!=', $searchValue)->first(),
-        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->name,
+        fn (): SalesRepresentative => SalesRepresentative::whereNotNull('name')->firstOrFail(),
+        fn (string $searchValue): SalesRepresentative => SalesRepresentative::where('name', '!=', $searchValue)->firstOrFail(),
+        fn (SalesRepresentative $salesRepresentative): string => $salesRepresentative->name,
     ],
     'by email' => [
-        fn () => SalesRepresentative::whereNotNull('email')->first(),
-        fn (string $searchValue) => SalesRepresentative::where('email', '!=', $searchValue)->first(),
-        fn (SalesRepresentative $salesRepresentative) => $salesRepresentative->email,
+        fn (): SalesRepresentative => SalesRepresentative::whereNotNull('email')->firstOrFail(),
+        fn (string $searchValue): SalesRepresentative => SalesRepresentative::where('email', '!=', $searchValue)->firstOrFail(),
+        fn (SalesRepresentative $salesRepresentative): string => $salesRepresentative->email,
     ],
 ]);
 
 dataset('sales_representative_updated', [
-    fn (SalesRepresentative $salesRepresentative) => SalesRepresentative::factory()->make([
+    fn (SalesRepresentative $salesRepresentative): SalesRepresentative => SalesRepresentative::factory()->make([
         'cpf' => "{$salesRepresentative->cpf}1",
         'name' => "{$salesRepresentative->name}test",
-        'email' => "{$salesRepresentative->email}test"
+        'email' => "{$salesRepresentative->email}test",
     ]),
 ]);

@@ -38,7 +38,9 @@ describe('PaymentMethod Edit', function (): void {
     describe('Actions', function (): void {
 
         it('can update a payment method', function (callable $fnPaymentMethodUpdated): void {
-
+            /**
+             * @var callable(PaymentMethod):PaymentMethod $fnPaymentMethodUpdated
+             */
             $paymentMethod = PaymentMethod::firstOrFail();
             $paymentMethodUpdated = $fnPaymentMethodUpdated($paymentMethod);
 

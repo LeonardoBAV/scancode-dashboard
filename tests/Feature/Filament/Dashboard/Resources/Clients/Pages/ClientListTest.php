@@ -49,6 +49,11 @@ describe('Client List', function (): void {
         describe('Searchable:', function (): void {
 
             it('search is working', function (callable $fnClient, callable $fnClientNotFound, callable $fnValue): void {
+                /**
+                 * @var callable():Client $fnClient
+                 * @var callable(string):Client $fnClientNotFound
+                 * @var callable(Client):string $fnValue
+                 */
                 $client = $fnClient();
                 $searchValue = $fnValue($client);
                 $clientNotFound = $fnClientNotFound($searchValue);

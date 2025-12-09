@@ -42,7 +42,9 @@ describe('Order Edit', function (): void {
     describe('Actions', function (): void {
 
         it('can update an order', function (callable $fnOrderUpdated): void {
-
+            /**
+             * @var callable(Order):Order $fnOrderUpdated
+             */
             $order = Order::firstOrFail();
             $orderUpdated = $fnOrderUpdated($order);
 

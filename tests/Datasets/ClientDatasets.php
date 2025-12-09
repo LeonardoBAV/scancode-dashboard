@@ -35,39 +35,39 @@ dataset('client_validations', [
 
 dataset('client_searchable_columns', [
     'by cpf_cnpj' => [
-        fn () => Client::whereNotNull('cpf_cnpj')->first(),
-        fn (string $searchValue) => Client::where('cpf_cnpj', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->cpf_cnpj,
+        fn (): Client => Client::whereNotNull('cpf_cnpj')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('cpf_cnpj', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->cpf_cnpj ?? throw new UnexpectedValueException('CPF/CNPJ not found'),
     ],
     'by corporate_name' => [
-        fn () => Client::whereNotNull('corporate_name')->first(),
-        fn (string $searchValue) => Client::where('corporate_name', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->corporate_name,
+        fn (): Client => Client::whereNotNull('corporate_name')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('corporate_name', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->corporate_name ?? throw new UnexpectedValueException('Corporate name not found'),
     ],
     'by fantasy_name' => [
-        fn () => Client::whereNotNull('fantasy_name')->first(),
-        fn (string $searchValue) => Client::where('fantasy_name', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->fantasy_name,
+        fn (): Client => Client::whereNotNull('fantasy_name')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('fantasy_name', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->fantasy_name ?? throw new UnexpectedValueException('Fantasy name not found'),
     ],
     'by email' => [
-        fn () => Client::whereNotNull('email')->first(),
-        fn (string $searchValue) => Client::where('email', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->email,
+        fn (): Client => Client::whereNotNull('email')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('email', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->email ?? throw new UnexpectedValueException('Email not found'),
     ],
     'by phone' => [
-        fn () => Client::whereNotNull('phone')->first(),
-        fn (string $searchValue) => Client::where('phone', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->phone,
+        fn (): Client => Client::whereNotNull('phone')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('phone', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->phone ?? throw new UnexpectedValueException('Phone not found'),
     ],
     'by carrier' => [
-        fn () => Client::whereNotNull('carrier')->first(),
-        fn (string $searchValue) => Client::where('carrier', '!=', $searchValue)->first(),
-        fn (Client $client) => $client->carrier,
+        fn (): Client => Client::whereNotNull('carrier')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('carrier', '!=', $searchValue)->firstOrFail(),
+        fn (Client $client): string => $client->carrier ?? throw new UnexpectedValueException('Carrier not found'),
     ],
 ]);
 
 dataset('client_updated', [
-    fn (Client $client) => Client::factory()->make([
+    fn (Client $client): Client => Client::factory()->make([
         'cpf_cnpj' => "{$client->cpf_cnpj}test",
         'corporate_name' => "{$client->corporate_name} test",
         'fantasy_name' => "{$client->fantasy_name} test",

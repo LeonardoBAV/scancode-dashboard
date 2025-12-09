@@ -46,6 +46,11 @@ describe('Product List', function (): void {
         describe('Searchable:', function (): void {
 
             it('search is working', function (callable $fnProduct, callable $fnProductNotFound, callable $fnValue): void {
+                /**
+                 * @var callable():Product $fnProduct
+                 * @var callable(string):Product $fnProductNotFound
+                 * @var callable(Product):string $fnValue
+                 */
                 $product = $fnProduct();
                 $searchValue = $fnValue($product);
                 $productNotFound = $fnProductNotFound($searchValue);
