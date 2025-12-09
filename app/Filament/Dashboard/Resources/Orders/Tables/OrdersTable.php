@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Orders\Tables;
 
+use App\Models\Order;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -26,6 +30,12 @@ class OrdersTable
             ])
             ->recordActions([
                 ViewAction::make(),
+                DeleteAction::make()->visible(fn (Order $record): bool => $record->canBeDeleted()),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -34,6 +44,8 @@ class OrdersTable
         return TextColumn::make('status')
             ->label(__('resources.order.table.status'))
             ->badge()
+            ->state(fn (Order $record): string => $record->status->label())
+            ->color(fn (Order $record): string => $record->status->color())
             ->searchable()
             ->sortable();
     }

@@ -25,7 +25,7 @@ class ClientResource extends Resource
 
     protected static ?string $model = Client::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+    protected static string|BackedEnum|null $navigationIcon = 'phosphor-users'; // Lucide::User; // Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'corporate_name';
 

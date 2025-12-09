@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Observers\OrderItemObserver;
 use Database\Factories\OrderItemFactory;
+use Exception;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([OrderItemObserver::class])]
 class OrderItem extends Model
 {
     /** @use HasFactory<OrderItemFactory> */
@@ -43,5 +47,41 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function canBeCreated(): bool
+    {
+        return $this->order->canBeUpdated();
+    }
+
+    public function canBeUpdated(): bool
+    {
+        return $this->order->canBeUpdated();
+    }
+
+    public function canBeDeleted(): bool
+    {
+        return $this->order->canBeUpdated();
+    }
+
+    public function ensureCanBeCreated(): void
+    {
+        if (! $this->canBeCreated()) {
+            throw new Exception(__('exceptions.order_item_creating_order_not_pending'));
+        }
+    }
+
+    public function ensureCanBeUpdated(): void
+    {
+        if (! $this->canBeUpdated()) {
+            throw new Exception(__('exceptions.order_item_updating_order_not_pending'));
+        }
+    }
+
+    public function ensureCanBeDeleted(): void
+    {
+        if (! $this->canBeDeleted()) {
+            throw new Exception(__('exceptions.order_item_deleting_order_not_pending'));
+        }
     }
 }

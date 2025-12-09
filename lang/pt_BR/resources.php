@@ -121,4 +121,36 @@ return [
             'notes' => 'Observações',
         ],
     ],
+    'order_item' => [
+        'navigation_label' => 'Itens do Pedido',
+        'plural_model_label' => 'Itens do Pedido',
+        'model_label' => 'Item do Pedido',
+        'table' => [
+            'order_id' => 'Pedido',
+            'product_name' => 'Produto',
+            'price' => 'Preço',
+            'qty' => 'Quantidade',
+            'total' => 'Total',
+            'created_at' => 'Criado em',
+            'updated_at' => 'Atualizado em',
+            'summarize' => [
+                'qty' => 'Quantidade',
+                'total' => 'Total',
+            ],
+        ],
+        'form' => [
+            'product_name' => 'Produto',
+            'price' => 'Preço',
+            'qty' => 'Quantidade',
+            'notes' => 'Observações',
+        ],
+        'infolist' => [
+            'order_id' => 'Pedido',
+            'product_name' => 'Produto',
+            'price' => 'Preço',
+            'qty' => 'Quantidade',
+            'notes' => 'Observações',
+        ],
+    ],
+
 ];

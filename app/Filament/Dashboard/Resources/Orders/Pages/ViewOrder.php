@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Dashboard\Resources\Orders\Pages;
 
 use App\Filament\Dashboard\Resources\Orders\OrderResource;
+use App\Models\Order;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -15,7 +16,7 @@ class ViewOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()->visible(fn (Order $record): bool => $record->canBeUpdated()),
         ];
     }
 }

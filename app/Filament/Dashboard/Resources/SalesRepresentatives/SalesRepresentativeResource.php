@@ -16,7 +16,6 @@ use App\Traits\Filament\Resources\HasTranslatableLabels;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class SalesRepresentativeResource extends Resource
@@ -25,7 +24,7 @@ class SalesRepresentativeResource extends Resource
 
     protected static ?string $model = SalesRepresentative::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+    protected static string|BackedEnum|null $navigationIcon = 'phosphor-users-three';
 
     protected static ?string $recordTitleAttribute = 'name';
 

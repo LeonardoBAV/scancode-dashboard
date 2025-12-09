@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Orders\Schemas;
 
+use App\Models\Order;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -27,7 +28,9 @@ class OrderInfolist
     {
         return TextEntry::make('status')
             ->label(__('resources.order.infolist.status'))
-            ->badge();
+            ->state(fn (Order $record): string => $record->status->label())
+            ->badge()
+            ->color(fn (Order $record): string => $record->status->color());
     }
 
     protected static function clientEntry(): TextEntry

@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
+use App\Observers\OrderObserver;
 use Database\Factories\OrderFactory;
+use Exception;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy([OrderObserver::class])]
 class Order extends Model
 {
     /** @use HasFactory<OrderFactory> */
@@ -60,5 +64,34 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === OrderStatusEnum::PENDING;
+    }
+
+    public function canBeDeleted(): bool
+    {
+        return $this->isPending();
+    }
+
+    public function canBeUpdated(): bool
+    {
+        return $this->isPending();
+    }
+
+    public function ensureCanBeDeleted(): void
+    {
+        if (! $this->canBeDeleted()) {
+            throw new Exception(__('exceptions.order_status_deleting_not_pending'));
+        }
+    }
+
+    public function ensureCanBeUpdated(): void
+    {
+        if (! $this->canBeUpdated()) {
+            throw new Exception(__('exceptions.order_status_updating_not_pending'));
+        }
     }
 }
