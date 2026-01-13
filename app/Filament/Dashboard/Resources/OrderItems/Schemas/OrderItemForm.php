@@ -35,9 +35,9 @@ class OrderItemForm
     {
         return TextInput::make('price')
             ->label(__('resources.order_item.form.price'))
+            ->prefix('$')
             ->required()
-            ->numeric()
-            ->prefix('$');
+            ->numeric();
     }
 
     protected static function qtyInput(): TextInput

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Filament\Dashboard\Resources\Orders\Pages\CreateOrder;
 use App\Models\Order;
 
@@ -25,7 +26,6 @@ describe('Order Create', function (): void {
         it('has all fields', function (): void {
 
             livewire(CreateOrder::class)
-                ->assertFormFieldExists('status')
                 ->assertFormFieldExists('client_id')
                 ->assertFormFieldExists('sales_representative_id')
                 ->assertFormFieldExists('payment_method_id')
@@ -53,7 +53,7 @@ describe('Order Create', function (): void {
     describe('Actions', function (): void {
 
         it('can create an order', function (): void {
-            $order = Order::factory()->make();
+            $order = Order::factory()->make(['status' => OrderStatusEnum::PENDING]);
 
             livewire(CreateOrder::class)
                 ->fillForm($order->toArray())

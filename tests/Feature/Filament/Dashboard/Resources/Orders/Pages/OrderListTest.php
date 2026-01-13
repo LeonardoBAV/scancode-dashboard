@@ -12,7 +12,10 @@ use function Pest\Livewire\livewire;
 describe('Order List', function (): void {
 
     beforeEach(function (): void {
-        Order::factory()->count(10)->create();
+        // Order::factory()->count(10)->create();
+        Order::factory()->count(4)->create(); // PENDING
+        Order::factory()->count(3)->completed()->create();
+        Order::factory()->count(3)->cancelled()->create();
     });
 
     it('can load the page', function (): void {

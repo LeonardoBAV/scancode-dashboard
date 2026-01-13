@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+/*
 namespace App\Filament\Dashboard\Resources\OrderItems\Pages;
 
 use App\Filament\Dashboard\Resources\OrderItems\OrderItemResource;
@@ -17,3 +19,5 @@ class ViewOrderItem extends ViewRecord
         ];
     }
 }
+
+*/

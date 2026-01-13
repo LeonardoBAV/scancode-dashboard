@@ -28,7 +28,7 @@ describe('Product model:', function (): void {
 
         beforeEach(function (): void {
             $product = Product::factory()->create();
-            OrderItem::factory()->count(3)->create(['product_id' => $product->id]);
+            OrderItem::factory()->count(3)->createQuietly(['product_id' => $product->id]);
         });
 
         test('product belongs to a product category', function (): void {

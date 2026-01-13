@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Enums\OrderStatusEnum;
+use App\Models\Client;
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use App\Models\SalesRepresentative;
 use Illuminate\Database\Eloquent\Builder;
 
 dataset('order_protected_columns', [
     'protected_columns' => [
-        ['id', 'created_at', 'updated_at'],
+        ['id', 'status', 'created_at', 'updated_at'],
     ],
 ]);
 
@@ -23,13 +25,11 @@ dataset('order_make_five', [
 dataset('order_validations', [
     'required' => [
         fn () => Order::factory()->make([
-            'status' => null,
             'client_id' => null,
             'sales_representative_id' => null,
             'payment_method_id' => null,
         ]),
         'errors' => [
-            'status' => 'required',
             'client_id' => 'required',
             'sales_representative_id' => 'required',
             'payment_method_id' => 'required',
@@ -68,7 +68,10 @@ dataset('order_sortable_columns', [
 
 dataset('order_updated', [
     fn (Order $order): Order => Order::factory()->make([
-        'status' => ($order->status === OrderStatusEnum::PENDING) ? OrderStatusEnum::COMPLETED : OrderStatusEnum::PENDING,
+        'status' => $order->status,
         'notes' => "{$order->notes} test",
+        'client_id' => Client::factory(),
+        'sales_representative_id' => SalesRepresentative::factory(),
+        'payment_method_id' => PaymentMethod::factory(),
     ]),
 ]);

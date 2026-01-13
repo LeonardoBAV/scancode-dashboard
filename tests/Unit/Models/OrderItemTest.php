@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -26,7 +27,8 @@ describe('OrderItem model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            OrderItem::factory()->create();
+            $order = Order::factory()->create(['status' => OrderStatusEnum::PENDING]);
+            OrderItem::factory()->create(['order_id' => $order->id]);
         });
 
         test('order item belongs to an order', function (): void {

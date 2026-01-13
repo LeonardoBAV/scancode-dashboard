@@ -120,6 +120,11 @@ return [
             'payment_method' => 'Método de Pagamento',
             'notes' => 'Observações',
         ],
+        'actions' => [
+            'cancel' => 'Cancelar',
+            'complete' => 'Completar',
+            'pending' => 'Pendente',
+        ],
     ],
     'order_item' => [
         'navigation_label' => 'Itens do Pedido',

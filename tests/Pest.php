@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Filament\Actions\Testing\TestAction;
+use Illuminate\Database\Eloquent\Model;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -51,3 +54,26 @@ expect()->extend('toBeOne', fn () =>
 {
     // ..
 }*/
+
+/**
+ * Assert that a table record action is visible or hidden.
+ *
+ * @param  mixed  $livewire  The Livewire test instance
+ * @param  \Illuminate\Database\Eloquent\Model  $record  The record to test
+ * @param  string  $actionClass  The action class (e.g., EditAction::class)
+ * @param  bool  $shouldBeVisible  Whether the action should be visible
+ */
+function assertTableRecordActionVisibility(
+    $livewire,
+    Model $record,
+    string $actionClass,
+    bool $shouldBeVisible
+): void {
+    $testAction = TestAction::make($actionClass)->table($record);
+
+    if ($shouldBeVisible) {
+        $livewire->assertActionVisible($testAction);
+    } else {
+        $livewire->assertActionHidden($testAction);
+    }
+}

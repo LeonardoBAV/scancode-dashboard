@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Orders;
 
-use App\Filament\Dashboard\Resources\Orders\Pages\CreateOrder;
-use App\Filament\Dashboard\Resources\Orders\Pages\EditOrder;
 use App\Filament\Dashboard\Resources\Orders\Pages\ListOrders;
 use App\Filament\Dashboard\Resources\Orders\Pages\ViewOrder;
 use App\Filament\Dashboard\Resources\Orders\RelationManagers\OrderItemsRelationManager;
@@ -57,9 +55,7 @@ class OrderResource extends Resource
     {
         return [
             'index' => ListOrders::route('/'),
-            'create' => CreateOrder::route('/create'),
             'view' => ViewOrder::route('/{record}'),
-            'edit' => EditOrder::route('/{record}/edit'),
         ];
     }
 }

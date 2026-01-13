@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+/*
+declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\OrderItems\Pages;
 
@@ -19,3 +21,4 @@ class ListOrderItems extends ListRecords
         ];
     }
 }
+*/

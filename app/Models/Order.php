@@ -21,7 +21,6 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'status',
         'notes',
         'client_id',
         'sales_representative_id',
@@ -71,6 +70,16 @@ class Order extends Model
         return $this->status === OrderStatusEnum::PENDING;
     }
 
+    public function isCompleted(): bool
+    {
+        return $this->status === OrderStatusEnum::COMPLETED;
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === OrderStatusEnum::CANCELLED;
+    }
+
     public function canBeDeleted(): bool
     {
         return $this->isPending();
@@ -93,5 +102,23 @@ class Order extends Model
         if (! $this->canBeUpdated()) {
             throw new Exception(__('exceptions.order_status_updating_not_pending'));
         }
+    }
+
+    public function toComplete(): void
+    {
+        $this->status = OrderStatusEnum::COMPLETED;
+        $this->saveQuietly();
+    }
+
+    public function toCancel(): void
+    {
+        $this->status = OrderStatusEnum::CANCELLED;
+        $this->saveQuietly();
+    }
+
+    public function toPending(): void
+    {
+        $this->status = OrderStatusEnum::PENDING;
+        $this->saveQuietly();
     }
 }

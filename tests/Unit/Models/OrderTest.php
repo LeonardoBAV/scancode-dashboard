@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -29,7 +30,7 @@ describe('Order model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            $order = Order::factory()->create();
+            $order = Order::factory()->create(['status' => OrderStatusEnum::PENDING]);
             OrderItem::factory()->count(3)->create(['order_id' => $order->id]);
         });
 

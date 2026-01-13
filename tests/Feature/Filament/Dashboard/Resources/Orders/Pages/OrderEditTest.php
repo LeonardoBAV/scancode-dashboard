@@ -30,7 +30,6 @@ describe('Order Edit', function (): void {
         livewire(EditOrder::class, ['record' => $order->getRouteKey()])
             ->assertSchemaExists('form')
             ->assertSchemaStateSet([
-                'status' => $order->status,
                 'client_id' => $order->client_id,
                 'sales_representative_id' => $order->sales_representative_id,
                 'payment_method_id' => $order->payment_method_id,

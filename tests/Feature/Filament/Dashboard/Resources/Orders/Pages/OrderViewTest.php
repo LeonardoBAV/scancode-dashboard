@@ -20,7 +20,7 @@ describe('Order View', function (): void {
         livewire(ViewOrder::class, ['record' => $order->getRouteKey()])
             ->assertOk()
             ->assertSchemaStateSet([
-                'status' => $order->status,
+                'status' => $order->status->label(), // obs: remover label e testar
                 'notes' => $order->notes,
                 'client.fantasy_name' => $order->client?->fantasy_name,
                 'salesRepresentative.name' => $order->salesRepresentative?->name,

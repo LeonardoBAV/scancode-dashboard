@@ -25,15 +25,25 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        /** @var OrderStatusEnum $status */
-        $status = fake()->randomElement(OrderStatusEnum::cases());
+        // /** @var OrderStatusEnum $status */
+        // $status = fake()->randomElement(OrderStatusEnum::cases());
 
         return [
-            'status' => $status->value,
+            'status' => OrderStatusEnum::PENDING, // $status->value,
             'notes' => fake()->optional()->sentence(),
             'client_id' => Client::factory(),
             'sales_representative_id' => SalesRepresentative::factory(),
             'payment_method_id' => PaymentMethod::factory(),
         ];
+    }
+
+    public function completed(): static
+    {
+        return $this->state(fn () => ['status' => OrderStatusEnum::COMPLETED]);
+    }
+
+    public function cancelled(): static
+    {
+        return $this->state(fn () => ['status' => OrderStatusEnum::CANCELLED]);
     }
 }

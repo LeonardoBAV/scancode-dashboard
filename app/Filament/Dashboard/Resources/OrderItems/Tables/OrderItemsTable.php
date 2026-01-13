@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Dashboard\Resources\OrderItems\Tables;
 
 use App\Models\OrderItem;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -37,11 +35,6 @@ class OrderItemsTable
                 ViewAction::make(),
                 EditAction::make()->slideOver()->visible(fn (OrderItem $record): bool => $record->canBeUpdated()),
                 DeleteAction::make()->visible(fn (OrderItem $record): bool => $record->canBeDeleted()),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -79,7 +72,6 @@ class OrderItemsTable
             ->state(fn (OrderItem $record): string => strval($record->price * $record->qty))
             ->badge()
             ->color('success')
-            ->sortable()
             ->default(0)
             ->summarize(Summarizer::make()->label(__('resources.order_item.table.summarize.total'))->using(fn (Builder $query): string => strval($query->sum(DB::raw('price * qty'))))->money('BRL', locale: 'pt_BR'));
     }

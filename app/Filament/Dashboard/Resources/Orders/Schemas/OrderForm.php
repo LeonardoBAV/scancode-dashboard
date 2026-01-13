@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Orders\Schemas;
 
-use App\Enums\OrderStatusEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
@@ -15,21 +14,11 @@ class OrderForm
     {
         return $schema
             ->components([
-                self::statusInput(),
                 self::clientInput(),
                 self::salesRepresentativeInput(),
                 self::paymentMethodInput(),
                 self::notesInput(),
             ]);
-    }
-
-    protected static function statusInput(): Select
-    {
-        return Select::make('status')
-            ->label(__('resources.order.form.status'))
-            ->options(OrderStatusEnum::class)
-            ->default(OrderStatusEnum::PENDING->value)
-            ->required();
     }
 
     protected static function clientInput(): Select
@@ -59,6 +48,7 @@ class OrderForm
             ->relationship('paymentMethod', 'name')
             ->searchable()
             ->preload()
+            ->columnSpanFull()
             ->required();
     }
 
@@ -66,6 +56,7 @@ class OrderForm
     {
         return Textarea::make('notes')
             ->label(__('resources.order.form.notes'))
-            ->columnSpanFull();
+            ->columnSpanFull()
+            ->rows(4);
     }
 }
