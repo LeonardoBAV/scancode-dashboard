@@ -39,13 +39,15 @@ class PaymentMethodsChart extends ChartWidget
 
         $labels = [];
         $data = [];
+        
+        // Paleta variada com tons suaves (não muito luminosos)
         $colors = [
-            'rgb(99, 102, 241)',   // Indigo
-            'rgb(34, 197, 94)',    // Green
-            'rgb(251, 191, 36)',   // Yellow
-            'rgb(239, 68, 68)',    // Red
-            'rgb(168, 85, 247)',   // Purple
-            'rgb(236, 72, 153)',   // Pink
+            'rgb(99, 102, 241)',   // Indigo suave (primary)
+            'rgb(34, 197, 94)',    // Verde suave (green-500)
+            'rgb(251, 146, 60)',   // Laranja suave (orange-400)
+            'rgb(168, 85, 247)',   // Roxo suave (purple-500)
+            'rgb(14, 165, 233)',   // Azul céu suave (sky-500)
+            'rgb(236, 72, 153)',   // Rosa suave (pink-500)
         ];
 
         foreach ($paymentMethods as $index => $method) {
@@ -59,6 +61,7 @@ class PaymentMethodsChart extends ChartWidget
                     'label' => __('widgets.payment_methods.label'),
                     'data' => $data,
                     'backgroundColor' => array_slice($colors, 0, count($data)),
+                    'borderWidth' => 0,
                 ],
             ],
             'labels' => $labels,

@@ -40,10 +40,11 @@ class OrdersByStatusChart extends ChartWidget
                     'label' => __('widgets.orders_by_status.label'),
                     'data' => [$pending, $completed, $cancelled],
                     'backgroundColor' => [
-                        'rgb(251, 191, 36)',  // warning (pending)
-                        'rgb(99, 102, 241)',  // primary (completed)
-                        'rgb(239, 68, 68)',   // danger (cancelled)
+                        'rgb(251, 146, 60)',   // Pending - Laranja suave (orange-400)
+                        'rgb(99, 102, 241)',   // Completed - Indigo (primary theme)
+                        'rgb(248, 113, 113)',  // Cancelled - Vermelho suave (red-400)
                     ],
+                    'borderWidth' => 0,
                 ],
             ],
             'labels' => [

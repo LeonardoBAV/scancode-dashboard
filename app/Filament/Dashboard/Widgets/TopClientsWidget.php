@@ -53,9 +53,9 @@ class TopClientsWidget extends BaseWidget
                     ->description(fn (Client $record): string => $record->corporate_name)
                     ->default(fn (Client $record): string => $record->corporate_name),
 
-                TextColumn::make('cpf_cnpj')
+                /* TextColumn::make('cpf_cnpj')
                     ->label(__('widgets.top_clients.document'))
-                    ->toggleable(),
+                    ->toggleable(),*/
 
                 TextColumn::make('orders_count')
                     ->label(__('widgets.top_clients.orders'))
