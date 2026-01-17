@@ -42,12 +42,7 @@ class TopProductsWidget extends BaseWidget
                 TextColumn::make('position')
                     ->label(__('widgets.top_products.position'))
                     ->state(function (Product $record, $rowLoop): string {
-                        return match ($rowLoop->iteration) {
-                            1 => '🥇',
-                            2 => '🥈',
-                            3 => '🥉',
-                            default => "#{$rowLoop->iteration}",
-                        };
+                        return "#{$rowLoop->iteration}";
                     })
                     ->alignCenter()
                     ->grow(false),

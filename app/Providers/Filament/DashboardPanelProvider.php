@@ -6,6 +6,7 @@ namespace App\Providers\Filament;
 
 use Andreia\FilamentUiSwitcher\FilamentUiSwitcherPlugin;
 use App\Constants\ColorConstant;
+use Filafly\Icons\Phosphor\PhosphorIcons;
 use Filafly\Themes\Lucent\LucentTheme;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -68,6 +69,7 @@ class DashboardPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->plugin(LucentTheme::make())
-            ->plugin(FilamentUiSwitcherPlugin::make());
+            ->plugin(FilamentUiSwitcherPlugin::make())
+            ->plugin(PhosphorIcons::make());
     }
 }

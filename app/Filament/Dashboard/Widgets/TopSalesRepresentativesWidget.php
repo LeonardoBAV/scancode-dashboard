@@ -38,12 +38,7 @@ class TopSalesRepresentativesWidget extends BaseWidget
                 TextColumn::make('position')
                     ->label(__('widgets.top_sales_representatives.position'))
                     ->state(function (SalesRepresentative $record, $rowLoop): string {
-                        return match ($rowLoop->iteration) {
-                            1 => '🥇',
-                            2 => '🥈',
-                            3 => '🥉',
-                            default => "#{$rowLoop->iteration}",
-                        };
+                        return "#{$rowLoop->iteration}";
                     })
                     ->alignCenter()
                     ->grow(false),

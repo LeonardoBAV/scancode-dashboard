@@ -33,7 +33,7 @@ return [
     ],
 
     'top_sales_representatives' => [
-        'heading' => '🏆 Top Representantes de Vendas',
+        'heading' => 'Top Representantes de Vendas',
         'position' => '#',
         'name' => 'Nome',
         'orders' => 'Pedidos',
@@ -41,7 +41,7 @@ return [
     ],
 
     'top_products' => [
-        'heading' => '📦 Produtos Mais Vendidos',
+        'heading' => 'Produtos Mais Vendidos',
         'position' => '#',
         'name' => 'Produto',
         'category' => 'Categoria',
@@ -50,7 +50,7 @@ return [
     ],
 
     'top_clients' => [
-        'heading' => '🏪 Top Clientes',
+        'heading' => 'Top Clientes',
         'position' => '#',
         'name' => 'Nome',
         'document' => 'CPF/CNPJ',
@@ -59,12 +59,12 @@ return [
     ],
 
     'payment_methods' => [
-        'heading' => '💳 Formas de Pagamento',
+        'heading' => 'Formas de Pagamento',
         'label' => 'Valor (R$)',
     ],
 
     'sales_evolution' => [
-        'heading' => '📈 Evolução de Vendas',
+        'heading' => 'Evolução de Vendas',
         'orders' => 'Pedidos',
         'value' => 'Faturamento (R$)',
         'filters' => [
