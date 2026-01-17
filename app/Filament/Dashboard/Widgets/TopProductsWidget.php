@@ -61,17 +61,12 @@ class TopProductsWidget extends BaseWidget
 
                 TextColumn::make('total_quantity')
                     ->label(__('widgets.top_products.quantity'))
-                    ->alignCenter()
+                    ->alignRight()
                     ->badge()
                     ->color('warning')
-                    ->suffix(' un'),
-
-                TextColumn::make('total_value')
-                    ->label(__('widgets.top_products.total'))
-                    ->money('BRL')
-                    ->weight('bold')
-                    ->color('success')
-                    ->alignEnd(),
+                    ->suffix(' un')
+                    ->description(fn (Product $record): string => 'R$ '.number_format((int) $record->total_value, 2, ',', '.'))
+                    ->weight('medium'),
             ])
             ->paginated(false);
     }
