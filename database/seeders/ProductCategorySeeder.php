@@ -15,16 +15,16 @@ class ProductCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Eletrônicos',
-            'Roupas',
-            'Alimentos',
-            'Bebidas',
-            'Móveis',
-            'Ferramentas',
-            'Cosméticos',
-            'Papelaria',
-            'Brinquedos',
-            'Esportes',
+            'Electronics',
+            'Clothing',
+            'Food',
+            'Drinks',
+            'Furniture',
+            'Tools',
+            'Cosmetics',
+            'Stationery',
+            'Toys',
+            'Sports',
         ];
 
         foreach ($categories as $category) {
@@ -34,4 +34,3 @@ class ProductCategorySeeder extends Seeder
         }
     }
 }
-

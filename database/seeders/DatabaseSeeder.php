@@ -16,13 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        // Executar seeders na ordem correta
         $this->call([
+            UserSeeder::class,
+            PaymentMethodSeeder::class,
             ClientSeeder::class,
             SalesRepresentativeSeeder::class,
             ProductCategorySeeder::class,
             ProductSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
