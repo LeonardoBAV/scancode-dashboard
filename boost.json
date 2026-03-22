@@ -3,9 +3,13 @@
         "cursor"
     ],
     "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "nightwatch_mcp": false,
     "packages": [
         "filament/filament"
     ],
+    "sail": true,
     "skills": [
         "pest-testing",
         "tailwindcss-development"
