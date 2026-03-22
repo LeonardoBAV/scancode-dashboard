@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use Andreia\FilamentUiSwitcher\FilamentUiSwitcherPlugin;
 use App\Constants\ColorConstant;
-use Filafly\Icons\Phosphor\PhosphorIcons;
-use Filafly\Themes\Lucent\LucentTheme;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -65,11 +62,6 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->defaultAvatarProvider(RgbUiAvatarsProvider::class)
             ->spa(true)
-            // ->maxContentWidth(Width::Full);
-            ->maxContentWidth(Width::Full)
-            ->viteTheme('resources/css/filament/dashboard/theme.css')
-            ->plugin(LucentTheme::make())
-            ->plugin(FilamentUiSwitcherPlugin::make())
-            ->plugin(PhosphorIcons::make());
+            ->maxContentWidth(Width::Full);
     }
 }

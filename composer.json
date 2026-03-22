@@ -7,8 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "andreia/filament-ui-switcher": "^1.0",
-        "filafly/lucent": "^2.1",
+        "codeat3/blade-phosphor-icons": "^2.4",
         "filament/filament": "^4.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
@@ -94,10 +93,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [{
-        "name": "lucent",
-        "type": "composer",
-        "url": "https://lucent.composer.sh"
-    }]
+    "prefer-stable": true
 }
