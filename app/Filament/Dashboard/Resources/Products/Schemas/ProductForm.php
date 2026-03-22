@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Products\Schemas;
 
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -59,6 +60,8 @@ class ProductForm
             ->searchable()
             ->preload()
             ->relationship('productCategory', 'name')
+            ->createOptionAction(fn (Action $action): Action => $action->successNotificationTitle(__('filament-actions::create.single.notifications.created.title')))
+            ->editOptionAction(fn (Action $action): Action => $action->successNotificationTitle(__('filament-actions::edit.single.notifications.saved.title')))
             ->createOptionForm([
                 self::productCategoryNameInput(),
             ])
