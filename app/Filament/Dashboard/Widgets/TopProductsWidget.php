@@ -49,7 +49,6 @@ class TopProductsWidget extends BaseWidget
 
                 TextColumn::make('name')
                     ->label(__('widgets.top_products.name'))
-                    ->searchable()
                     ->weight('medium')
                     ->description(fn (Product $record): string => $record->sku),
 

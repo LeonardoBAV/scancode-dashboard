@@ -48,7 +48,6 @@ class TopClientsWidget extends BaseWidget
 
                 TextColumn::make('fantasy_name')
                     ->label(__('widgets.top_clients.name'))
-                    ->searchable()
                     ->weight('medium')
                     ->description(fn (Client $record): string => $record->corporate_name)
                     ->default(fn (Client $record): string => $record->corporate_name),
@@ -67,6 +66,8 @@ class TopClientsWidget extends BaseWidget
                     ->label(__('widgets.top_clients.total'))
                     ->money('BRL')
                     ->weight('bold')
+                    ->badge()
+                    // ->icon('phosphor-money')
                     ->color('success')
                     ->alignEnd(),
             ])

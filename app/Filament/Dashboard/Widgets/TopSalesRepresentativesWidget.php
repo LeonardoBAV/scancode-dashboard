@@ -13,7 +13,12 @@ class TopSalesRepresentativesWidget extends BaseWidget
 {
     protected static ?int $sort = 3;
 
-    protected int|string|array $columnSpan = 'full';
+    // protected int|string|array $columnSpan = 'full';
+
+    public function getColumns(): int|array
+    {
+        return 6;
+    }
 
     public function getTableHeading(): ?string
     {
@@ -59,6 +64,7 @@ class TopSalesRepresentativesWidget extends BaseWidget
                     ->money('BRL')
                     ->weight('bold')
                     ->color('success')
+                    ->badge()
                     ->alignEnd(),
             ])
             ->paginated(false);

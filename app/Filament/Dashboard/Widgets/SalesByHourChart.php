@@ -14,7 +14,13 @@ class SalesByHourChart extends ChartWidget
 
     protected static ?int $sort = 4;
 
-    protected int|string|array $columnSpan = 'full';
+    // protected int|string|array $columnSpan = 'full';
+
+    public function getColumns(): int|array
+    {
+        return 6;
+
+    }
 
     public function getHeading(): ?string
     {
