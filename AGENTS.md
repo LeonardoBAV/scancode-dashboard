@@ -48,6 +48,14 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Stick to existing directory structure; don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
 
+## Project domain context (ScanCode)
+
+**Always carry this mental model:** Filament **dashboard** panel is **multi-tenant**; tenant = **`Distributor`** (URL slug). Users belong to one distributor (`users.distributor_id`). Business data (products, categories, clients, payment methods, sales reps, orders, order items) is isolated by **`distributor_id`**.
+
+**Mandatory for the agent:** At the **start of a conversation** or **before** substantive work on architecture, domain rules, tenancy, new/changed models or migrations, Filament resources, or cross-cutting features, **read** `docs/PROJECT_CONTEXT.md` (use the file read tool) unless the full file is already in the conversation context. Treat it as the narrative map; **verify assumptions against code** (models, migrations, `DashboardPanelProvider`). If code and doc diverge, follow the code and suggest updating `docs/PROJECT_CONTEXT.md`.
+
+**Human habit:** When merging changes that alter tenancy or domain boundaries, update `docs/PROJECT_CONTEXT.md` and add a line under its “Recent changes” table.
+
 ## Frontend Bundling
 
 - If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. Ask them.
@@ -256,6 +264,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - This project uses Pest for testing. Create tests: `vendor/bin/sail artisan make:test --pest {name}`.
 - Run tests: `vendor/bin/sail artisan test --compact` or filter: `vendor/bin/sail artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
+- **Filament dashboard (ScanCode):** in Pest, prefer `use function Pest\Livewire\livewire` and `livewire(Component::class)` over `$this->livewireTenant`; for tenant-scoped assertions prefer `Auth::user()->distributor` / `distributor_id` over `$this->distributor`. Details: `.cursor/skills/pest-testing/SKILL.md` (subsection *ScanCode — Filament dashboard*).
 
 === filament/filament rules ===
 

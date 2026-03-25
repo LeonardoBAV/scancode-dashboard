@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Constants\ColorConstant;
+use App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile;
 use App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor;
 use App\Models\Distributor;
 use Filament\Http\Middleware\Authenticate;
@@ -34,8 +35,11 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->login()
+            ->registration()
+            ->profile()
             ->tenant(Distributor::class, slugAttribute: 'slug')
             ->tenantRegistration(RegisterDistributor::class)
+            ->tenantProfile(EditDistributorProfile::class)
             ->tenantSwitcher(false)
             ->colors([
                 'primary' => Color::Indigo,

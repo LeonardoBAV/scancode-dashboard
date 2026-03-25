@@ -39,6 +39,30 @@ it('is true', function () {
 - Run all tests: `vendor/bin/sail artisan test --compact`.
 - Run file: `vendor/bin/sail artisan test --compact tests/Feature/ExampleTest.php`.
 
+### ScanCode — Filament dashboard (convenções do projeto)
+
+Ao escrever testes Pest para o painel **dashboard** (multi-tenant `Distributor`), siga o padrão já usado nos testes de resources (ex.: `ClientCreateTest`):
+
+1. **`livewire()` em vez de helpers no `$this`** — importe e use a função Pest:
+
+   ```php
+   use function Pest\Livewire\livewire;
+
+   livewire(SomeDashboardPage::class)
+       ->assertOk();
+   ```
+
+   Não use `$this->livewireTenant(...)` para novos testes. O `Tests\TestCase` já define `Filament::setCurrentPanel('dashboard')`, `Filament::setTenant(...)` e `actingAs($user)`; com isso, `livewire(Classe::class)` basta para páginas Livewire do Filament nesse painel.
+
+2. **Contexto do tenant via `Auth`, não `$this->distributor`** — para asserções e dados esperados, prefira o utilizador autenticado e a relação `distributor`, alinhado a `assertDatabaseHas(..., ['distributor_id' => Auth::user()->distributor_id])`:
+
+   ```php
+   use Illuminate\Support\Facades\Auth;
+
+   Auth::user()->distributor->name;
+   Auth::user()->distributor_id;
+   ```
+
 ## Assertions
 
 Use specific assertions (`assertSuccessful()`, `assertNotFound()`) instead of `assertStatus()`:
