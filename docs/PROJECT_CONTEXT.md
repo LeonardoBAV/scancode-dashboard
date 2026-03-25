@@ -18,7 +18,7 @@ Laravel + Filament dashboard for **distributors** to manage **catalog, clients, 
 |--------|------------------|
 | **Tenant** | `App\Models\Distributor` (`distributors`: `name`, `slug`). Route key for URLs: **`slug`**. |
 | **Panel** | Filament **dashboard** panel: id `dashboard`, path `/dashboard`, **default** panel. |
-| **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). |
+| **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). Shown in routing/onboarding only while `users.distributor_id` is null; menu item and `/new` page are hidden once the user has a distributor (one distributor per user). |
 | **Tenant profile** | `App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile` — edit tenant `name` (slug unchanged). Registered via `tenantProfile()` on the dashboard panel. Authorization: `App\Policies\DistributorPolicy::update` + `User::canAccessTenant`. |
 | **Tenant switcher** | Disabled (`tenantSwitcher(false)`): user is bound to one distributor. |
 | **User ↔ tenant** | `users.distributor_id` (nullable). `User` implements `HasTenants`, `HasDefaultTenant`, `canAccessTenant`: user may only access their own distributor. Users with `distributor_id` null get an empty tenant list. |
@@ -74,5 +74,6 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 |------|------|
 | 2026-03-24 | Initial `PROJECT_CONTEXT.md`: Distributor tenancy, dashboard resources, scoped tables. |
 | 2026-03-24 | Tenant profile page `EditDistributorProfile` + `DistributorPolicy::update`. |
+| 2026-03-24 | `RegisterDistributor::canView`: hide tenant registration menu/URL when user already has `distributor_id`. |
 
 *(Append new rows when behavior or architecture shifts.)*

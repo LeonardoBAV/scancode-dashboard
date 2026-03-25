@@ -10,6 +10,8 @@ use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
+use function Pest\Livewire\livewire;
+
 describe('Order List', function (): void {
 
     beforeEach(function (): void {
@@ -32,7 +34,7 @@ describe('Order List', function (): void {
 
     it('can list orders', function (): void {
 
-        $this->livewireTenant(ListOrders::class)
+        livewire(ListOrders::class)
             ->assertCanSeeTableRecords(Order::all())
             ->assertCountTableRecords(Order::count());
     });

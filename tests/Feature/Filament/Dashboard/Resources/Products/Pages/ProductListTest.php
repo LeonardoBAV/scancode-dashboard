@@ -8,6 +8,8 @@ use App\Models\ProductCategory;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
+use function Pest\Livewire\livewire;
+
 describe('Product List', function (): void {
 
     beforeEach(function (): void {
@@ -25,7 +27,7 @@ describe('Product List', function (): void {
 
     it('can list products', function (): void {
 
-        $this->livewireTenant(ListProducts::class)
+        livewire(ListProducts::class)
             ->assertCanSeeTableRecords(Product::all())
             ->assertCountTableRecords(Product::count());
     });

@@ -7,6 +7,8 @@ use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
+use function Pest\Livewire\livewire;
+
 describe('SalesRepresentative List', function (): void {
 
     beforeEach(function (): void {
@@ -21,7 +23,7 @@ describe('SalesRepresentative List', function (): void {
 
     it('can list sales representatives', function (): void {
 
-        $this->livewireTenant(ListSalesRepresentatives::class)
+        livewire(ListSalesRepresentatives::class)
             ->assertCanSeeTableRecords(SalesRepresentative::all())
             ->assertCountTableRecords(SalesRepresentative::count());
     });

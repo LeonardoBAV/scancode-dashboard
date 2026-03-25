@@ -6,11 +6,14 @@ use App\Filament\Dashboard\Resources\Clients\Pages\ListClients;
 use App\Models\Client;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\Auth;
+
+use function Pest\Livewire\livewire;
 
 describe('Client List', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->count(10)->create();
+        Client::factory()->count(5)->for(Auth::user()->distributor)->create();
     });
 
     it('can load the page', function (): void {
@@ -20,8 +23,7 @@ describe('Client List', function (): void {
     });
 
     it('can list clients', function (): void {
-
-        $this->livewireTenant(ListClients::class)
+        livewire(ListClients::class)
             ->assertCanSeeTableRecords(Client::all())
             ->assertCountTableRecords(Client::count());
     });

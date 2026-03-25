@@ -7,6 +7,8 @@ use App\Models\PaymentMethod;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
+use function Pest\Livewire\livewire;
+
 describe('PaymentMethod List', function (): void {
 
     beforeEach(function (): void {
@@ -21,7 +23,7 @@ describe('PaymentMethod List', function (): void {
 
     it('can list payment methods', function (): void {
 
-        $this->livewireTenant(ListPaymentMethods::class)
+        livewire(ListPaymentMethods::class)
             ->assertCanSeeTableRecords(PaymentMethod::all())
             ->assertCountTableRecords(PaymentMethod::count());
     });
