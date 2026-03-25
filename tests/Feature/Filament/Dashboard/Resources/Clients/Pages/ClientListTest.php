@@ -7,8 +7,6 @@ use App\Models\Client;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
-use function Pest\Livewire\livewire;
-
 describe('Client List', function (): void {
 
     beforeEach(function (): void {
@@ -17,13 +15,13 @@ describe('Client List', function (): void {
 
     it('can load the page', function (): void {
 
-        livewire(ListClients::class)
+        $this->livewireTenant(ListClients::class)
             ->assertSuccessful();
     });
 
     it('can list clients', function (): void {
 
-        livewire(ListClients::class)
+        $this->livewireTenant(ListClients::class)
             ->assertCanSeeTableRecords(Client::all())
             ->assertCountTableRecords(Client::count());
     });
@@ -31,7 +29,7 @@ describe('Client List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            livewire(ListClients::class)
+            $this->livewireTenant(ListClients::class)
                 ->assertCanRenderTableColumn('cpf_cnpj')
                 ->assertCanRenderTableColumn('corporate_name')
                 ->assertCanRenderTableColumn('fantasy_name')
@@ -58,7 +56,7 @@ describe('Client List', function (): void {
                 $searchValue = $fnValue($client);
                 $clientNotFound = $fnClientNotFound($searchValue);
 
-                livewire(ListClients::class)
+                $this->livewireTenant(ListClients::class)
                     ->assertCanSeeTableRecords(Client::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$client])
@@ -71,7 +69,7 @@ describe('Client List', function (): void {
 
             it('can bulk delete clients', function (): void {
 
-                livewire(ListClients::class)
+                $this->livewireTenant(ListClients::class)
                     ->assertCanSeeTableRecords(Client::all())
                     ->selectTableRecords(Client::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())

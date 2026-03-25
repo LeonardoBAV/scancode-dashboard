@@ -26,7 +26,7 @@ class SalesRepresentativeForm
         return TextInput::make('cpf')
             ->label(__('resources.sales_representative.form.cpf'))
             ->required()
-            ->unique(SalesRepresentative::class, 'cpf');
+            ->scopedUnique(SalesRepresentative::class, 'cpf', ignoreRecord: true);
     }
 
     protected static function nameInput(): TextInput

@@ -6,24 +6,21 @@ use App\Filament\Dashboard\Resources\PaymentMethods\Pages\ViewPaymentMethod;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Arr;
 
-use function Pest\Livewire\livewire;
-
 describe('PaymentMethod View', function (): void {
 
     beforeEach(function (): void {
-        PaymentMethod::factory()->create();
+        PaymentMethod::factory()->for($this->distributor)->create();
     });
 
     it('can load the page', function (): void {
 
         $paymentMethod = PaymentMethod::firstOrFail();
-        $paymentMethodData = Arr::except($paymentMethod->toArray(), ['id', 'created_at', 'updated_at']);
+        $paymentMethodData = Arr::except($paymentMethod->toArray(), ['id', 'created_at', 'updated_at', 'distributor_id']);
 
-        livewire(ViewPaymentMethod::class, ['record' => $paymentMethod->getRouteKey()])
+        $this->livewireTenant(ViewPaymentMethod::class, ['record' => $paymentMethod->getRouteKey()])
             ->assertOk()
             ->assertSchemaStateSet($paymentMethodData);
 
     });
 
 });
-

@@ -15,11 +15,11 @@ dataset('order_protected_columns', [
 ]);
 
 dataset('order_make_five', [
-    fn () => Order::factory()->make(),
-    fn () => Order::factory()->make(),
-    fn () => Order::factory()->make(),
-    fn () => Order::factory()->make(),
-    fn () => Order::factory()->make(),
+    fn () => Order::factory()->make(['distributor_id' => null]),
+    fn () => Order::factory()->make(['distributor_id' => null]),
+    fn () => Order::factory()->make(['distributor_id' => null]),
+    fn () => Order::factory()->make(['distributor_id' => null]),
+    fn () => Order::factory()->make(['distributor_id' => null]),
 ]);
 
 dataset('order_validations', [
@@ -68,10 +68,11 @@ dataset('order_sortable_columns', [
 
 dataset('order_updated', [
     fn (Order $order): Order => Order::factory()->make([
+        'distributor_id' => $order->distributor_id,
         'status' => $order->status,
         'notes' => "{$order->notes} test",
-        'client_id' => Client::factory(),
-        'sales_representative_id' => SalesRepresentative::factory(),
-        'payment_method_id' => PaymentMethod::factory(),
+        'client_id' => Client::factory()->for($order->distributor),
+        'sales_representative_id' => SalesRepresentative::factory()->for($order->distributor),
+        'payment_method_id' => PaymentMethod::factory()->for($order->distributor),
     ]),
 ]);

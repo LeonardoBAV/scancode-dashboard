@@ -7,8 +7,6 @@ use App\Models\PaymentMethod;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 
-use function Pest\Livewire\livewire;
-
 describe('PaymentMethod List', function (): void {
 
     beforeEach(function (): void {
@@ -17,13 +15,13 @@ describe('PaymentMethod List', function (): void {
 
     it('can load the page', function (): void {
 
-        livewire(ListPaymentMethods::class)
+        $this->livewireTenant(ListPaymentMethods::class)
             ->assertSuccessful();
     });
 
     it('can list payment methods', function (): void {
 
-        livewire(ListPaymentMethods::class)
+        $this->livewireTenant(ListPaymentMethods::class)
             ->assertCanSeeTableRecords(PaymentMethod::all())
             ->assertCountTableRecords(PaymentMethod::count());
     });
@@ -31,7 +29,7 @@ describe('PaymentMethod List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            livewire(ListPaymentMethods::class)
+            $this->livewireTenant(ListPaymentMethods::class)
                 ->assertCanRenderTableColumn('name')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
@@ -53,7 +51,7 @@ describe('PaymentMethod List', function (): void {
                 $searchValue = $fnValue($paymentMethod);
                 $paymentMethodNotFound = $fnPaymentMethodNotFound($searchValue);
 
-                livewire(ListPaymentMethods::class)
+                $this->livewireTenant(ListPaymentMethods::class)
                     ->assertCanSeeTableRecords(PaymentMethod::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$paymentMethod])
@@ -68,7 +66,7 @@ describe('PaymentMethod List', function (): void {
                 $paymentMethodsAsc = PaymentMethod::query()->orderBy($column, 'asc')->get();
                 $paymentMethodsDesc = PaymentMethod::query()->orderBy($column, 'desc')->get();
 
-                livewire(ListPaymentMethods::class)
+                $this->livewireTenant(ListPaymentMethods::class)
                     ->sortTable($column, 'asc')
                     ->assertCanSeeTableRecords($paymentMethodsAsc, inOrder: true)
                     ->sortTable($column, 'desc')
@@ -80,7 +78,7 @@ describe('PaymentMethod List', function (): void {
 
             it('can bulk delete payment methods', function (): void {
 
-                livewire(ListPaymentMethods::class)
+                $this->livewireTenant(ListPaymentMethods::class)
                     ->assertCanSeeTableRecords(PaymentMethod::all())
                     ->selectTableRecords(PaymentMethod::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())

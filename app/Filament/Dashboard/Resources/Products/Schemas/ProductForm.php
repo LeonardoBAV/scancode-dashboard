@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Products\Schemas;
 
+use App\Models\Product;
+use App\Models\ProductCategory;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class ProductForm
 {
@@ -27,14 +31,16 @@ class ProductForm
     {
         return TextInput::make('sku')
             ->label(__('resources.product.form.sku'))
-            ->required();
+            ->required()
+            ->scopedUnique(Product::class, 'sku', ignoreRecord: true);
     }
 
     protected static function barcodeInput(): TextInput
     {
         return TextInput::make('barcode')
             ->label(__('resources.product.form.barcode'))
-            ->unique(ignoreRecord: true);
+            ->nullable()
+            ->scopedUnique(Product::class, 'barcode', ignoreRecord: true);
     }
 
     protected static function nameInput(): TextInput
@@ -64,6 +70,7 @@ class ProductForm
             ->editOptionAction(fn (Action $action): Action => $action->successNotificationTitle(__('filament-actions::edit.single.notifications.saved.title')))
             ->createOptionForm([
                 self::productCategoryNameInput(),
+                self::productCategoryDistributorInput(),
             ])
             ->editOptionForm([
                 self::productCategoryNameInput(),
@@ -74,6 +81,14 @@ class ProductForm
     {
         return TextInput::make('name')
             ->label(__('resources.product.form.product_category_name'))
-            ->required();
+            ->required()
+            ->scopedUnique(ProductCategory::class, 'name');
+    }
+
+    protected static function productCategoryDistributorInput(): Hidden
+    {
+        // hidden input para distribuidora
+        return Hidden::make('distributor_id')
+            ->default(fn () => Auth::user()->distributor_id);
     }
 }

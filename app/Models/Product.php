@@ -16,6 +16,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'sku',
         'barcode',
         'name',
@@ -28,6 +29,14 @@ class Product extends Model
         'updated_at' => 'datetime',
         'price' => 'decimal:2',
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return BelongsTo<ProductCategory, $this>

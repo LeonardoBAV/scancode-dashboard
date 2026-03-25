@@ -7,6 +7,7 @@ namespace App\Models;
 use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
@@ -15,6 +16,7 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'cpf_cnpj',
         'corporate_name',
         'fantasy_name',
@@ -27,6 +29,14 @@ class Client extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return HasMany<Order, $this>

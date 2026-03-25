@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\SalesRepresentativeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SalesRepresentative extends Model
 {
-    /** @use HasFactory<\Database\Factories\SalesRepresentativeFactory> */
+    /** @use HasFactory<SalesRepresentativeFactory> */
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'cpf',
         'name',
         'email',
@@ -24,6 +27,14 @@ class SalesRepresentative extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return HasMany<Order, $this>

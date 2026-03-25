@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Products\Pages\ListProducts;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
-
-use function Pest\Livewire\livewire;
 
 describe('Product List', function (): void {
 
     beforeEach(function (): void {
-        Product::factory()->count(10)->create();
+        Product::factory()->count(10)->create([
+            'distributor_id' => $this->distributor->id,
+            'product_category_id' => ProductCategory::factory()->for($this->distributor),
+        ]);
     });
 
     it('can load the page', function (): void {
 
-        livewire(ListProducts::class)
+        $this->livewireTenant(ListProducts::class)
             ->assertSuccessful();
     });
 
     it('can list products', function (): void {
 
-        livewire(ListProducts::class)
+        $this->livewireTenant(ListProducts::class)
             ->assertCanSeeTableRecords(Product::all())
             ->assertCountTableRecords(Product::count());
     });
@@ -31,7 +33,7 @@ describe('Product List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            livewire(ListProducts::class)
+            $this->livewireTenant(ListProducts::class)
                 ->assertCanRenderTableColumn('name')
                 ->assertCanRenderTableColumn('productCategory.name')
                 ->assertCanRenderTableColumn('price')
@@ -55,7 +57,7 @@ describe('Product List', function (): void {
                 $searchValue = $fnValue($product);
                 $productNotFound = $fnProductNotFound($searchValue);
 
-                livewire(ListProducts::class)
+                $this->livewireTenant(ListProducts::class)
                     ->assertCanSeeTableRecords(Product::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$product])
@@ -70,7 +72,7 @@ describe('Product List', function (): void {
                 $productsAsc = Product::query()->orderBy($column, 'asc')->get();
                 $productsDesc = Product::query()->orderBy($column, 'desc')->get();
 
-                livewire(ListProducts::class)
+                $this->livewireTenant(ListProducts::class)
                     ->sortTable($column, 'asc')
                     ->assertCanSeeTableRecords($productsAsc, inOrder: true)
                     ->sortTable($column, 'desc')
@@ -82,7 +84,7 @@ describe('Product List', function (): void {
 
             it('can bulk delete products', function (): void {
 
-                livewire(ListProducts::class)
+                $this->livewireTenant(ListProducts::class)
                     ->assertCanSeeTableRecords(Product::all())
                     ->selectTableRecords(Product::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())

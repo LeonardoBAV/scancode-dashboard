@@ -5,15 +5,21 @@ declare(strict_types=1);
 use App\Filament\Dashboard\Resources\Orders\OrderResource;
 use App\Filament\Dashboard\Resources\Orders\Pages\ListOrders;
 use App\Filament\Dashboard\Resources\Orders\Pages\ViewOrder;
+use App\Models\Client;
 use App\Models\Order;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
+use App\Models\PaymentMethod;
+use App\Models\SalesRepresentative;
 
 describe('Resource - Order:', function (): void {
 
     beforeEach(function (): void {
-        Order::factory()->create();
+        $client = Client::factory()->for($this->distributor)->create();
+
+        Order::factory()->create([
+            'client_id' => $client->id,
+            'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+        ]);
     });
 
     test('resource has correct model', function (): void {
@@ -36,10 +42,9 @@ describe('Resource - Order:', function (): void {
     });
 
     test('index page loads correctly', function (): void {
-        $url = OrderResource::getUrl('index');
+        $url = OrderResource::getUrl('index', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ListOrders::class);
     });
@@ -47,10 +52,9 @@ describe('Resource - Order:', function (): void {
     test('view page loads correctly', function (): void {
         $order = Order::firstOrFail();
 
-        $url = OrderResource::getUrl('view', ['record' => $order]);
+        $url = OrderResource::getUrl('view', ['record' => $order], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ViewOrder::class);
     });

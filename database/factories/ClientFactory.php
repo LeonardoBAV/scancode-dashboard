@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Client;
+use App\Models\Distributor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
+            'distributor_id' => Distributor::factory(),
             'cpf_cnpj' => fake()->numerify('###########'),
             'corporate_name' => fake()->company(),
             'fantasy_name' => fake()->companySuffix().' '.fake()->word(),

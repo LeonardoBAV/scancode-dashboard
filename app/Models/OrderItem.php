@@ -19,6 +19,7 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'order_id',
         'product_id',
         'price',
@@ -32,6 +33,14 @@ class OrderItem extends Model
         'price' => 'decimal:2',
         'qty' => 'integer',
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return BelongsTo<Order, $this>

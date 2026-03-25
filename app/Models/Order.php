@@ -21,6 +21,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'notes',
         'client_id',
         'sales_representative_id',
@@ -32,6 +33,14 @@ class Order extends Model
         'updated_at' => 'datetime',
         'status' => OrderStatusEnum::class,
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return BelongsTo<Client, $this>

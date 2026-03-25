@@ -6,20 +6,18 @@ use App\Filament\Dashboard\Resources\SalesRepresentatives\Pages\ViewSalesReprese
 use App\Models\SalesRepresentative;
 use Illuminate\Support\Arr;
 
-use function Pest\Livewire\livewire;
-
 describe('SalesRepresentative View', function (): void {
 
     beforeEach(function (): void {
-        SalesRepresentative::factory()->create();
+        SalesRepresentative::factory()->for($this->distributor)->create();
     });
 
     it('can load the page', function (): void {
 
         $salesRepresentative = SalesRepresentative::firstOrFail();
-        $salesRepresentativeData = Arr::except($salesRepresentative->toArray(), ['id', 'created_at', 'updated_at', 'password']);
+        $salesRepresentativeData = Arr::except($salesRepresentative->toArray(), ['id', 'created_at', 'updated_at', 'password', 'distributor_id']);
 
-        livewire(ViewSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+        $this->livewireTenant(ViewSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
             ->assertOk()
             ->assertSchemaStateSet($salesRepresentativeData);
 

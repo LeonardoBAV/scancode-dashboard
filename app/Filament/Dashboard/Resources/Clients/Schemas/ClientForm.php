@@ -28,7 +28,7 @@ class ClientForm
         return TextInput::make('cpf_cnpj')
             ->label(__('resources.client.form.cpf_cnpj'))
             ->required()
-            ->unique(Client::class, 'cpf_cnpj');
+            ->scopedUnique(Client::class, 'cpf_cnpj', ignoreRecord: true);
     }
 
     protected static function corporateNameInput(): TextInput

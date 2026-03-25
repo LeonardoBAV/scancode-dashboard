@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Products\Pages\ViewProduct;
 use App\Models\Product;
-
-use function Pest\Livewire\livewire;
+use App\Models\ProductCategory;
 
 describe('Product View', function (): void {
 
     beforeEach(function (): void {
-        Product::factory()->create();
+        Product::factory()->create([
+            'distributor_id' => $this->distributor->id,
+            'product_category_id' => ProductCategory::factory()->for($this->distributor),
+        ]);
     });
 
     it('can load the page', function (): void {
 
         $product = Product::firstOrFail();
 
-        livewire(ViewProduct::class, ['record' => $product->getRouteKey()])
+        $this->livewireTenant(ViewProduct::class, ['record' => $product->getRouteKey()])
             ->assertOk()
             ->assertSchemaStateSet([
                 'sku' => $product->sku,

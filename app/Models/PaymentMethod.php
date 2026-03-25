@@ -7,6 +7,7 @@ namespace App\Models;
 use Database\Factories\PaymentMethodFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PaymentMethod extends Model
@@ -15,6 +16,7 @@ class PaymentMethod extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
         'name',
     ];
 
@@ -22,6 +24,14 @@ class PaymentMethod extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
 
     /**
      * @return HasMany<Order, $this>

@@ -3,9 +3,13 @@
 declare(strict_types=1);
 
 use App\Enums\OrderStatusEnum;
+use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PaymentMethod;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\SalesRepresentative;
 use Illuminate\Support\Facades\Schema;
 
 describe('OrderItem model:', function (): void {
@@ -27,8 +31,22 @@ describe('OrderItem model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            $order = Order::factory()->create(['status' => OrderStatusEnum::PENDING]);
-            OrderItem::factory()->create(['order_id' => $order->id]);
+            $client = Client::factory()->for($this->distributor)->create();
+
+            $order = Order::factory()->create([
+                'status' => OrderStatusEnum::PENDING,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
+                'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            ]);
+
+            OrderItem::factory()->create([
+                'order_id' => $order->id,
+                'distributor_id' => $order->distributor_id,
+                'product_id' => Product::factory()->state([
+                    'product_category_id' => ProductCategory::factory()->for($this->distributor),
+                ]),
+            ]);
         });
 
         test('order item belongs to an order', function (): void {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Constants\ColorConstant;
+use App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor;
+use App\Models\Distributor;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,6 +34,9 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->login()
+            ->tenant(Distributor::class, slugAttribute: 'slug')
+            ->tenantRegistration(RegisterDistributor::class)
+            ->tenantSwitcher(false)
             ->colors([
                 'primary' => Color::Indigo,
                 'danger' => ColorConstant::MEDIUM_RED,

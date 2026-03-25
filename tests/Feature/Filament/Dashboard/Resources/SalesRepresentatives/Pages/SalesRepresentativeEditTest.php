@@ -6,21 +6,21 @@ use App\Filament\Dashboard\Resources\SalesRepresentatives\Pages\EditSalesReprese
 use App\Filament\Dashboard\Resources\SalesRepresentatives\SalesRepresentativeResource;
 use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteAction;
+use Illuminate\Support\Arr;
 
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Livewire\livewire;
 
 describe('SalesRepresentative Edit', function (): void {
 
     beforeEach(function (): void {
-        SalesRepresentative::factory()->create();
+        SalesRepresentative::factory()->for($this->distributor)->create();
     });
 
     it('can load the page', function (): void {
 
         $salesRepresentative = SalesRepresentative::firstOrFail();
 
-        livewire(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+        $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
             ->assertOk();
 
     });
@@ -29,9 +29,9 @@ describe('SalesRepresentative Edit', function (): void {
 
         $salesRepresentative = SalesRepresentative::firstOrFail();
 
-        livewire(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+        $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
             ->assertSchemaExists('form')
-            ->assertSchemaStateSet($salesRepresentative->toArray());
+            ->assertSchemaStateSet(Arr::except($salesRepresentative->toArray(), ['distributor_id', 'password']));
 
     });
 
@@ -44,20 +44,23 @@ describe('SalesRepresentative Edit', function (): void {
             $salesRepresentative = SalesRepresentative::firstOrFail();
             $salesRepresentativeUpdated = $fnSalesRepresentativeUpdated($salesRepresentative);
 
-            livewire(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+            $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
                 ->fillForm($salesRepresentativeUpdated->toArray())
                 ->call('save')
                 ->assertNotified()
                 ->assertHasNoFormErrors();
 
-            assertDatabaseHas(SalesRepresentative::class, $salesRepresentativeUpdated->toArray());
+            assertDatabaseHas(SalesRepresentative::class, [
+                ...Arr::except($salesRepresentativeUpdated->toArray(), ['distributor_id', 'id']),
+                'distributor_id' => $this->distributor->id,
+            ]);
 
         })->with('sales_representative_updated');
 
         it('can delete a sales representative', function (): void {
             $salesRepresentative = SalesRepresentative::firstOrFail();
 
-            livewire(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+            $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
                 ->callAction(DeleteAction::class)
                 ->assertNotified()
                 ->assertRedirect(SalesRepresentativeResource::getUrl('index'));
@@ -74,7 +77,7 @@ describe('SalesRepresentative Edit', function (): void {
             $salesRepresentative = SalesRepresentative::factory()->create(['cpf' => '11111111111']);
             $salesRepresentativeUpdateData = SalesRepresentative::factory()->make(['cpf' => '11111111111']);
 
-            livewire(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
+            $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
                 ->fillForm($salesRepresentativeUpdateData->toArray())
                 ->call('save')
                 ->assertHasNoFormErrors()

@@ -11,11 +11,11 @@ dataset('client_protected_columns', [
 ]);
 
 dataset('client_make_five_clients', [
-    fn () => Client::factory()->make(),
-    fn () => Client::factory()->make(),
-    fn () => Client::factory()->make(),
-    fn () => Client::factory()->make(),
-    fn () => Client::factory()->make(),
+    fn () => Client::factory()->make(['distributor_id' => null]),
+    fn () => Client::factory()->make(['distributor_id' => null]),
+    fn () => Client::factory()->make(['distributor_id' => null]),
+    fn () => Client::factory()->make(['distributor_id' => null]),
+    fn () => Client::factory()->make(['distributor_id' => null]),
 ]);
 
 dataset('client_validations', [
@@ -67,7 +67,7 @@ dataset('client_searchable_columns', [
 ]);
 
 dataset('client_updated', [
-    fn (Client $client): Client => Client::factory()->make([
+    fn (Client $client): Client => Client::factory()->for($client->distributor)->make([
         'cpf_cnpj' => "{$client->cpf_cnpj}test",
         'corporate_name' => "{$client->corporate_name} test",
         'fantasy_name' => "{$client->fantasy_name} test",

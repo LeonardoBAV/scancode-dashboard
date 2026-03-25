@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Client;
+use App\Models\Distributor;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
@@ -28,12 +29,15 @@ class OrderFactory extends Factory
         // /** @var OrderStatusEnum $status */
         // $status = fake()->randomElement(OrderStatusEnum::cases());
 
+        $distributor = Distributor::factory();
+
         return [
             'status' => OrderStatusEnum::PENDING, // $status->value,
             'notes' => fake()->optional()->sentence(),
-            'client_id' => Client::factory(),
-            'sales_representative_id' => SalesRepresentative::factory(),
-            'payment_method_id' => PaymentMethod::factory(),
+            'distributor_id' => $distributor,
+            'client_id' => Client::factory()->for($distributor),
+            'sales_representative_id' => SalesRepresentative::factory()->for($distributor),
+            'payment_method_id' => PaymentMethod::factory()->for($distributor),
         ];
     }
 

@@ -8,14 +8,15 @@ use App\Filament\Dashboard\Resources\Products\Pages\ListProducts;
 use App\Filament\Dashboard\Resources\Products\Pages\ViewProduct;
 use App\Filament\Dashboard\Resources\Products\ProductResource;
 use App\Models\Product;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
+use App\Models\ProductCategory;
 
 describe('Resource - Product:', function (): void {
 
     beforeEach(function (): void {
-        Product::factory()->create();
+        Product::factory()->create([
+            'distributor_id' => $this->distributor->id,
+            'product_category_id' => ProductCategory::factory()->for($this->distributor),
+        ]);
     });
 
     test('resource has correct model', function (): void {
@@ -42,19 +43,17 @@ describe('Resource - Product:', function (): void {
     });
 
     test('index page loads correctly', function (): void {
-        $url = ProductResource::getUrl('index');
+        $url = ProductResource::getUrl('index', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ListProducts::class);
     });
 
     test('create page loads correctly', function (): void {
-        $url = ProductResource::getUrl('create');
+        $url = ProductResource::getUrl('create', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(CreateProduct::class);
     });
@@ -62,10 +61,9 @@ describe('Resource - Product:', function (): void {
     test('view page loads correctly', function (): void {
         $product = Product::firstOrFail();
 
-        $url = ProductResource::getUrl('view', ['record' => $product]);
+        $url = ProductResource::getUrl('view', ['record' => $product], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ViewProduct::class);
     });
@@ -73,10 +71,9 @@ describe('Resource - Product:', function (): void {
     test('edit page loads correctly', function (): void {
         $product = Product::firstOrFail();
 
-        $url = ProductResource::getUrl('edit', ['record' => $product]);
+        $url = ProductResource::getUrl('edit', ['record' => $product], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(EditProduct::class);
     });

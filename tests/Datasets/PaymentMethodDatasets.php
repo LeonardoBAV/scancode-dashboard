@@ -11,11 +11,11 @@ dataset('payment_method_protected_columns', [
 ]);
 
 dataset('payment_method_make_five', [
-    fn () => PaymentMethod::factory()->make(),
-    fn () => PaymentMethod::factory()->make(),
-    fn () => PaymentMethod::factory()->make(),
-    fn () => PaymentMethod::factory()->make(),
-    fn () => PaymentMethod::factory()->make(),
+    fn () => PaymentMethod::factory()->make(['distributor_id' => null]),
+    fn () => PaymentMethod::factory()->make(['distributor_id' => null]),
+    fn () => PaymentMethod::factory()->make(['distributor_id' => null]),
+    fn () => PaymentMethod::factory()->make(['distributor_id' => null]),
+    fn () => PaymentMethod::factory()->make(['distributor_id' => null]),
 ]);
 
 dataset('payment_method_validations', [
@@ -38,7 +38,7 @@ dataset('payment_method_sortable_columns', [
 ]);
 
 dataset('payment_method_updated', [
-    fn (PaymentMethod $paymentMethod): PaymentMethod => PaymentMethod::factory()->make([
+    fn (PaymentMethod $paymentMethod): PaymentMethod => PaymentMethod::factory()->for($paymentMethod->distributor)->make([
         'name' => "{$paymentMethod->name} test",
     ]),
 ]);
