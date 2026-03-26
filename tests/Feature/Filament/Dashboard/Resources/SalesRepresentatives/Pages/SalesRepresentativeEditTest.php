@@ -45,7 +45,7 @@ describe('SalesRepresentative Edit', function (): void {
             $salesRepresentativeUpdated = $fnSalesRepresentativeUpdated($salesRepresentative);
 
             $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
-                ->fillForm($salesRepresentativeUpdated->toArray())
+                ->fillForm([...$salesRepresentativeUpdated->toArray(), 'password' => 'password'])
                 ->call('save')
                 ->assertNotified()
                 ->assertHasNoFormErrors();
@@ -78,7 +78,7 @@ describe('SalesRepresentative Edit', function (): void {
             $salesRepresentativeUpdateData = SalesRepresentative::factory()->make(['cpf' => '11111111111']);
 
             $this->livewireTenant(EditSalesRepresentative::class, ['record' => $salesRepresentative->getRouteKey()])
-                ->fillForm($salesRepresentativeUpdateData->toArray())
+                ->fillForm([...$salesRepresentativeUpdateData->toArray(), 'password' => 'password'])
                 ->call('save')
                 ->assertHasNoFormErrors()
                 ->assertNotified();

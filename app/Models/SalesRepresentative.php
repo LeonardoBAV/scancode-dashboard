@@ -6,14 +6,15 @@ namespace App\Models;
 
 use Database\Factories\SalesRepresentativeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class SalesRepresentative extends Model
+class SalesRepresentative extends Authenticatable
 {
     /** @use HasFactory<SalesRepresentativeFactory> */
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $fillable = [
         'distributor_id',
@@ -23,10 +24,23 @@ class SalesRepresentative extends Model
         'password',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+    /**
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 
     /**
      * @return BelongsTo<Distributor, $this>

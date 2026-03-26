@@ -70,7 +70,7 @@ describe('SalesRepresentative Create', function (): void {
             $data = $salesRepresentative->withoutRelations()->toArray();
 
             livewire(CreateSalesRepresentative::class)
-                ->fillForm($data)
+                ->fillForm([...$data, 'password' => 'password'])
                 ->call('create')
                 ->assertHasNoFormErrors()
                 ->assertNotified()

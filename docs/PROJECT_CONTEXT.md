@@ -58,9 +58,21 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 
 ---
 
+## API
+
+- **Authentication:** Laravel Sanctum token-based auth for `SalesRepresentative` (login via CPF + password).
+- **Routes:** `routes/api.php`, versioned under `/api/v1/`.
+- **Controller:** `App\Http\Controllers\Api\V1\AuthController` — `POST /api/v1/auth/login` issues a 7-day Bearer token.
+- **Protected routes** use `auth:sanctum` middleware.
+- `SalesRepresentative` extends `Authenticatable` and uses `HasApiTokens`.
+- `sales_representatives.cpf` has a **global unique** constraint (in addition to the composite `[distributor_id, cpf]`).
+
+---
+
 ## Tests
 
 - **Pest** feature tests under `tests/Feature/Filament/Dashboard/...` for resources and pages.
+- **API tests:** `tests/Feature/Api/V1/` for API endpoints.
 - **Datasets:** `tests/Datasets/*` for shared examples.
 - Run via Sail: `vendor/bin/sail artisan test --compact` (narrow with path or `--filter`).
 
@@ -75,5 +87,6 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-24 | Initial `PROJECT_CONTEXT.md`: Distributor tenancy, dashboard resources, scoped tables. |
 | 2026-03-24 | Tenant profile page `EditDistributorProfile` + `DistributorPolicy::update`. |
 | 2026-03-24 | `RegisterDistributor::canView`: hide tenant registration menu/URL when user already has `distributor_id`. |
+| 2026-03-25 | API layer: Sanctum installed, `SalesRepresentative` auth endpoint (`POST /api/v1/auth/login`), 7-day tokens, global unique CPF. |
 
 *(Append new rows when behavior or architecture shifts.)*

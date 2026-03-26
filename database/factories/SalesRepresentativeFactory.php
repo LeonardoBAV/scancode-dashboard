@@ -25,7 +25,7 @@ class SalesRepresentativeFactory extends Factory
             'cpf' => fake()->numerify('###########'),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => bcrypt('password'),
+            'password' => 'password',
         ];
     }
 }
