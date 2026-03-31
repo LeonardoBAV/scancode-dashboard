@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Client;
+use App\Models\Event;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
@@ -25,14 +26,17 @@ dataset('order_make_five', [
 dataset('order_validations', [
     'required' => [
         fn () => Order::factory()->make([
+            'distributor_id' => null,
             'client_id' => null,
             'sales_representative_id' => null,
             'payment_method_id' => null,
+            'event_id' => null,
         ]),
         'errors' => [
             'client_id' => 'required',
             'sales_representative_id' => 'required',
             'payment_method_id' => 'required',
+            'event_id' => 'required',
         ],
     ],
 ]);
@@ -71,6 +75,7 @@ dataset('order_updated', [
         'distributor_id' => $order->distributor_id,
         'status' => $order->status,
         'notes' => "{$order->notes} test",
+        'event_id' => Event::factory()->for($order->distributor),
         'client_id' => Client::factory()->for($order->distributor),
         'sales_representative_id' => SalesRepresentative::factory()->for($order->distributor),
         'payment_method_id' => PaymentMethod::factory()->for($order->distributor),

@@ -95,12 +95,33 @@ return [
             'name' => 'Nome',
         ],
     ],
+    'event' => [
+        'navigation_label' => 'Eventos',
+        'plural_model_label' => 'Eventos',
+        'model_label' => 'Evento',
+        'table' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+        ],
+        'infolist' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+        ],
+        'form' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+        ],
+    ],
     'order' => [
         'navigation_label' => 'Pedidos',
         'plural_model_label' => 'Pedidos',
         'model_label' => 'Pedido',
         'table' => [
             'status' => 'Status',
+            'event' => 'Evento',
             'client' => 'Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
@@ -108,6 +129,7 @@ return [
         ],
         'infolist' => [
             'status' => 'Status',
+            'event' => 'Evento',
             'client' => 'Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
@@ -115,6 +137,7 @@ return [
         ],
         'form' => [
             'status' => 'Status',
+            'event' => 'Evento',
             'client' => 'Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',

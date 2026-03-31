@@ -72,6 +72,14 @@ class Distributor extends Model implements HasName
     }
 
     /**
+     * @return HasMany<Event, $this>
+     */
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    /**
      * @return HasMany<Order, $this>
      */
     public function orders(): HasMany

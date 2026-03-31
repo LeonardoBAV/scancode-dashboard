@@ -31,7 +31,7 @@ Laravel + Filament dashboard for **distributors** to manage **catalog, clients, 
 
 These tables include **`distributor_id`** (FK to `distributors`, `restrictOnDelete`), scoped per tenant:
 
-- `product_categories`, `products`, `clients`, `payment_methods`, `sales_representatives`, `orders`, `order_items`
+- `product_categories`, `products`, `clients`, `payment_methods`, `sales_representatives`, `events`, `orders`, `order_items`
 
 **Uniqueness** is **per distributor** where it matters (e.g. `product_categories`: `[distributor_id, name]`; `products`: SKU/barcode per distributor; `clients`: `cpf_cnpj` per distributor; etc.). See migration `2026_03_22_220054_add_distributor_tenancy_to_application_tables.php`.
 
@@ -40,7 +40,7 @@ These tables include **`distributor_id`** (FK to `distributors`, `restrictOnDele
 ## Domain outline
 
 - **ProductCategory** → **Product** (catalog).
-- **Client**, **PaymentMethod**, **SalesRepresentative** — referenced by **Order**.
+- **Client**, **PaymentMethod**, **SalesRepresentative**, **Event** — referenced by **Order** (each order belongs to one event).
 - **Order** — `OrderStatusEnum`, observed by `App\Observers\OrderObserver`.
 - **OrderItem** — observed by `App\Observers\OrderItemObserver`.
 
@@ -51,7 +51,7 @@ Use Eloquent relationships on models under `app/Models/` as the authoritative gr
 ## Filament (dashboard)
 
 - **Provider:** `App\Providers\Filament\DashboardPanelProvider`.
-- **Resources (discovered):** `app/Filament/Dashboard/Resources/` — Clients, PaymentMethods, SalesRepresentatives, Products, Orders, OrderItems (each with pages/schemas as per Filament v5 layout).
+- **Resources (discovered):** `app/Filament/Dashboard/Resources/` — Clients, PaymentMethods, SalesRepresentatives, Products, Events, Orders, OrderItems (each with pages/schemas as per Filament v5 layout).
 - **Tenancy pages:** `RegisterDistributor`, `EditDistributorProfile` under `app/Filament/Dashboard/Pages/Tenancy/`.
 
 Forms and tables should respect tenant scoping (see existing resources and `filament-tenancy` skill).
@@ -88,5 +88,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-24 | Tenant profile page `EditDistributorProfile` + `DistributorPolicy::update`. |
 | 2026-03-24 | `RegisterDistributor::canView`: hide tenant registration menu/URL when user already has `distributor_id`. |
 | 2026-03-25 | API layer: Sanctum installed, `SalesRepresentative` auth endpoint (`POST /api/v1/auth/login`), 7-day tokens, global unique CPF. |
+| 2026-03-29 | `events` table + `Event` model; `orders.event_id` FK; Filament Events resource; Order form/table/infolist include event. |
+| 2026-03-29 | `PaymentMethodSeeder` seeds methods per `Distributor`; `OrderSeeder` aligns reps/payment/event/products by `distributor_id`, creates items while pending then transitions status. |
 
 *(Append new rows when behavior or architecture shifts.)*

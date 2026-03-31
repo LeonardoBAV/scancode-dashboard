@@ -27,7 +27,7 @@ class OrderResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {

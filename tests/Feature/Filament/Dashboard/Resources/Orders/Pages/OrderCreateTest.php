@@ -27,6 +27,7 @@ describe('Order Create', function (): void {
         it('has all fields', function (): void {
 
             $this->livewireTenant(CreateOrder::class)
+                ->assertFormFieldExists('event_id')
                 ->assertFormFieldExists('client_id')
                 ->assertFormFieldExists('sales_representative_id')
                 ->assertFormFieldExists('payment_method_id')

@@ -15,6 +15,7 @@ class OrderInfolist
         return $schema
             ->components([
                 self::statusEntry(),
+                self::eventEntry(),
                 self::clientEntry(),
                 self::salesRepresentativeEntry(),
                 self::paymentMethodEntry(),
@@ -31,6 +32,12 @@ class OrderInfolist
             ->state(fn (Order $record): string => $record->status->label())
             ->badge()
             ->color(fn (Order $record): string => $record->status->color());
+    }
+
+    protected static function eventEntry(): TextEntry
+    {
+        return TextEntry::make('event.name')
+            ->label(__('resources.order.infolist.event'));
     }
 
     protected static function clientEntry(): TextEntry

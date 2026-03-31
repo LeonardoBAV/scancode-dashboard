@@ -1,0 +1,81 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Dashboard\Resources\Events\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class EventsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                self::nameColumn(),
+                self::startColumn(),
+                self::endColumn(),
+                self::createdAtColumn(),
+                self::updatedAtColumn(),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                ViewAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    protected static function nameColumn(): TextColumn
+    {
+        return TextColumn::make('name')
+            ->label(__('resources.event.table.name'))
+            ->searchable()
+            ->sortable();
+    }
+
+    protected static function startColumn(): TextColumn
+    {
+        return TextColumn::make('start')
+            ->label(__('resources.event.table.start'))
+            ->date('d/m/Y')
+            ->sortable();
+    }
+
+    protected static function endColumn(): TextColumn
+    {
+        return TextColumn::make('end')
+            ->label(__('resources.event.table.end'))
+            ->date('d/m/Y')
+            ->sortable();
+    }
+
+    protected static function createdAtColumn(): TextColumn
+    {
+        return TextColumn::make('created_at')
+            ->translateLabel()
+            ->dateTime('d/m/Y H:i:s')
+            ->timezone('America/Sao_Paulo')
+            ->sortable()
+            ->toggleable(isToggledHiddenByDefault: true);
+    }
+
+    protected static function updatedAtColumn(): TextColumn
+    {
+        return TextColumn::make('updated_at')
+            ->translateLabel()
+            ->dateTime('d/m/Y H:i:s')
+            ->timezone('America/Sao_Paulo')
+            ->sortable()
+            ->toggleable(isToggledHiddenByDefault: true);
+    }
+}

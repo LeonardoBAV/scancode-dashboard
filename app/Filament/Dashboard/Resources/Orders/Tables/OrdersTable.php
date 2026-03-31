@@ -19,6 +19,7 @@ class OrdersTable
         return $table
             ->columns([
                 self::statusColumn(),
+                self::eventColumn(),
                 self::clientColumn(),
                 self::salesRepresentativeColumn(),
                 self::paymentMethodColumn(),
@@ -48,6 +49,13 @@ class OrdersTable
             ->color(fn (Order $record): string => $record->status->color())
             ->searchable()
             ->sortable();
+    }
+
+    protected static function eventColumn(): TextColumn
+    {
+        return TextColumn::make('event.name')
+            ->label(__('resources.order.table.event'))
+            ->searchable();
     }
 
     protected static function clientColumn(): TextColumn

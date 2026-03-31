@@ -22,6 +22,7 @@ class Order extends Model
 
     protected $fillable = [
         'distributor_id',
+        'event_id',
         'notes',
         'client_id',
         'sales_representative_id',
@@ -40,6 +41,14 @@ class Order extends Model
     public function distributor(): BelongsTo
     {
         return $this->belongsTo(Distributor::class);
+    }
+
+    /**
+     * @return BelongsTo<Event, $this>
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
     }
 
     /**

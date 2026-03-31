@@ -14,11 +14,22 @@ class OrderForm
     {
         return $schema
             ->components([
+                self::eventInput(),
                 self::clientInput(),
                 self::salesRepresentativeInput(),
                 self::paymentMethodInput(),
                 self::notesInput(),
             ]);
+    }
+
+    protected static function eventInput(): Select
+    {
+        return Select::make('event_id')
+            ->label(__('resources.order.form.event'))
+            ->relationship('event', 'name')
+            ->searchable()
+            ->preload()
+            ->required();
     }
 
     protected static function clientInput(): Select
