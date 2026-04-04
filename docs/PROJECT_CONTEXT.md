@@ -66,6 +66,12 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - **Protected routes** use `auth:sanctum` middleware.
 - `SalesRepresentative` extends `Authenticatable` and uses `HasApiTokens`.
 - `sales_representatives.cpf` has a **global unique** constraint (in addition to the composite `[distributor_id, cpf]`).
+- **Events listing:** `GET /api/v1/events` — returns events scoped to the authenticated `SalesRepresentative`'s `distributor_id`.
+  - Controller: `App\Http\Controllers\Api\V1\EventController@index`.
+  - Request validation: `App\Http\Requests\Api\V1\ListEventsRequest` — supports `filter[name|start_from|start_to|end_from|end_to]`, `fields` (CSV), `order` (column:asc|desc), `size` (null = no pagination).
+  - Resource: `App\Http\Resources\Api\V1\EventResource`.
+  - Model method: `Event::listFor($seller, $filters, $fields, $order, $size)` centralizes query logic.
+  - Global scope: `App\Models\Scopes\VisibleToAuthenticatedSalesRepresentativeScope` — conditionally filters by `distributor_id` only when auth user is `SalesRepresentative` (no impact on Filament/CLI).
 
 ---
 
@@ -90,5 +96,6 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-25 | API layer: Sanctum installed, `SalesRepresentative` auth endpoint (`POST /api/v1/auth/login`), 7-day tokens, global unique CPF. |
 | 2026-03-29 | `events` table + `Event` model; `orders.event_id` FK; Filament Events resource; Order form/table/infolist include event. |
 | 2026-03-29 | `PaymentMethodSeeder` seeds methods per `Distributor`; `OrderSeeder` aligns reps/payment/event/products by `distributor_id`, creates items while pending then transitions status. |
+| 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `VisibleToAuthenticatedSalesRepresentativeScope`. |
 
 *(Append new rows when behavior or architecture shifts.)*

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\SalesRepresentative;
 
+use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
 describe('POST /api/v1/auth/login', function (): void {
@@ -99,7 +100,7 @@ describe('POST /api/v1/auth/login', function (): void {
 
         $token = $loginResponse->json('token');
 
-        $this->getJson(route('api.v1.user'), [
+        getJson(route('api.v1.events.index'), [
             'Authorization' => "Bearer {$token}",
         ])->assertSuccessful();
     });
