@@ -73,6 +73,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
   - Model method: `Event::listBy(...)` centralizes query logic.
   - Global scope: `App\Models\Scopes\FilterDistributorByAuthSalesRepresentativeScope` — filters by `distributor_id` when the authenticated user is a `SalesRepresentative` (API token via Sanctum guard / request user; no-op for Filament `User`, CLI, and jobs).
 - **Clients listing:** `GET /api/v1/clients` — same layering as events: `ClientController@index`, `ListClientsRequest` (`filter[corporate_name|fantasy_name|email|cpf_cnpj]`, `fields`, `order`, `size`), `ClientResource`, `Client::listBy(...)`, same global scope as `Event`.
+- **Products listing:** `GET /api/v1/products` — `ProductController@index`, `ListProductsRequest` (`filter[...]`, `fields`, `relations` array of `distributor|productCategory|orderItems`, `order` default `name:asc`, `size`), `ProductResource`, `Product::listBy(..., relations: [...])`, same global scope.
 
 ---
 
@@ -99,5 +100,6 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-29 | `PaymentMethodSeeder` seeds methods per `Distributor`; `OrderSeeder` aligns reps/payment/event/products by `distributor_id`, creates items while pending then transitions status. |
 | 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `FilterDistributorByAuthSalesRepresentativeScope`. |
 | 2026-04-04 | API `GET /api/v1/clients`: list clients for authenticated seller (same pattern as events). Scope resolves Sanctum / `request()->user()` so Bearer tokens apply `distributor_id` filtering. |
+| 2026-04-05 | API `GET /api/v1/products`: list products for authenticated seller (same pattern as events/clients). |
 
 *(Append new rows when behavior or architecture shifts.)*
