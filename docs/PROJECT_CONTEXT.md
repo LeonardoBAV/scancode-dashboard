@@ -70,8 +70,9 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
   - Controller: `App\Http\Controllers\Api\V1\EventController@index`.
   - Request validation: `App\Http\Requests\Api\V1\ListEventsRequest` — supports `filter[name|start_from|start_to|end_from|end_to]`, `fields` (CSV), `order` (column:asc|desc), `size` (null = no pagination).
   - Resource: `App\Http\Resources\Api\V1\EventResource`.
-  - Model method: `Event::listFor($seller, $filters, $fields, $order, $size)` centralizes query logic.
-  - Global scope: `App\Models\Scopes\VisibleToAuthenticatedSalesRepresentativeScope` — conditionally filters by `distributor_id` only when auth user is `SalesRepresentative` (no impact on Filament/CLI).
+  - Model method: `Event::listBy(...)` centralizes query logic.
+  - Global scope: `App\Models\Scopes\FilterDistributorByAuthSalesRepresentativeScope` — filters by `distributor_id` when the authenticated user is a `SalesRepresentative` (API token via Sanctum guard / request user; no-op for Filament `User`, CLI, and jobs).
+- **Clients listing:** `GET /api/v1/clients` — same layering as events: `ClientController@index`, `ListClientsRequest` (`filter[corporate_name|fantasy_name|email|cpf_cnpj]`, `fields`, `order`, `size`), `ClientResource`, `Client::listBy(...)`, same global scope as `Event`.
 
 ---
 
@@ -96,6 +97,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-25 | API layer: Sanctum installed, `SalesRepresentative` auth endpoint (`POST /api/v1/auth/login`), 7-day tokens, global unique CPF. |
 | 2026-03-29 | `events` table + `Event` model; `orders.event_id` FK; Filament Events resource; Order form/table/infolist include event. |
 | 2026-03-29 | `PaymentMethodSeeder` seeds methods per `Distributor`; `OrderSeeder` aligns reps/payment/event/products by `distributor_id`, creates items while pending then transitions status. |
-| 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `VisibleToAuthenticatedSalesRepresentativeScope`. |
+| 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `FilterDistributorByAuthSalesRepresentativeScope`. |
+| 2026-04-04 | API `GET /api/v1/clients`: list clients for authenticated seller (same pattern as events). Scope resolves Sanctum / `request()->user()` so Bearer tokens apply `distributor_id` filtering. |
 
 *(Append new rows when behavior or architecture shifts.)*
