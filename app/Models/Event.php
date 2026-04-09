@@ -45,16 +45,24 @@ class Event extends Model
     /**
      * @param  array<string, mixed>  $filters
      * @param  list<string>  $fields
+     * @param  list<string>  $relations
      * @param  string  $order  "column:asc|desc"
      * @return Collection<int, Event>|LengthAwarePaginator
      */
     public static function listBy(
         array $filters = [],
         array $fields = [],
+        array $relations = [],
         string $order = 'start:asc',
         ?int $size = null,
     ): Collection|LengthAwarePaginator {
         $allowedColumns = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+
+        $allowedRelations = [
+            'distributor',
+            'orders',
+            'orders.orderItems',
+        ];
 
         $query = static::query();
 
@@ -92,6 +100,12 @@ class Event extends Model
 
         [$column, $direction] = QueryHelper::parseOrder($order, $allowedColumns, 'start');
         $query->orderBy($column, $direction);
+
+        $eagerRelations = array_values(array_intersect($relations, $allowedRelations));
+
+        if ($eagerRelations !== []) {
+            $query->with($eagerRelations);
+        }
 
         return $size === null
             ? $query->get()

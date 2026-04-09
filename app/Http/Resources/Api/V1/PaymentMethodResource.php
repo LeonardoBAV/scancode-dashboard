@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EventResource extends JsonResource
+class PaymentMethodResource extends JsonResource
 {
     /**
      * @return array<string, mixed>
@@ -19,14 +19,6 @@ class EventResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->when(array_key_exists('name', $attributes), $this->name),
-            'start' => $this->when(
-                array_key_exists('start', $attributes),
-                fn () => $this->start?->format('Y-m-d'),
-            ),
-            'end' => $this->when(
-                array_key_exists('end', $attributes),
-                fn () => $this->end?->format('Y-m-d'),
-            ),
             'created_at' => $this->when(
                 array_key_exists('created_at', $attributes),
                 fn () => $this->created_at?->toIso8601String(),
@@ -45,7 +37,6 @@ class EventResource extends JsonResource
                     'id' => $order->id,
                     'status' => $order->status->value,
                     'client_id' => $order->client_id,
-                    'payment_method_id' => $order->payment_method_id,
                     'created_at' => $order->created_at?->toIso8601String(),
                 ])
                 ->values()

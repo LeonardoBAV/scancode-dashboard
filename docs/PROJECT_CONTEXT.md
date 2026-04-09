@@ -68,12 +68,13 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - `sales_representatives.cpf` has a **global unique** constraint (in addition to the composite `[distributor_id, cpf]`).
 - **Events listing:** `GET /api/v1/events` — returns events scoped to the authenticated `SalesRepresentative`'s `distributor_id`.
   - Controller: `App\Http\Controllers\Api\V1\EventController@index`.
-  - Request validation: `App\Http\Requests\Api\V1\ListEventsRequest` — supports `filter[name|start_from|start_to|end_from|end_to]`, `fields` (CSV), `order` (column:asc|desc), `size` (null = no pagination).
+  - Request validation: `App\Http\Requests\Api\V1\ListEventsRequest` — supports `filter[name|start_from|start_to|end_from|end_to]`, `fields` (CSV), `relations` array (`distributor|orders`), `order` (column:asc|desc), `size` (null = no pagination).
   - Resource: `App\Http\Resources\Api\V1\EventResource`.
   - Model method: `Event::listBy(...)` centralizes query logic.
   - Global scope: `App\Models\Scopes\FilterDistributorByAuthSalesRepresentativeScope` — filters by `distributor_id` when the authenticated user is a `SalesRepresentative` (API token via Sanctum guard / request user; no-op for Filament `User`, CLI, and jobs).
 - **Clients listing:** `GET /api/v1/clients` — same layering as events: `ClientController@index`, `ListClientsRequest` (`filter[corporate_name|fantasy_name|email|cpf_cnpj]`, `fields`, `order`, `size`), `ClientResource`, `Client::listBy(...)`, same global scope as `Event`.
 - **Products listing:** `GET /api/v1/products` — `ProductController@index`, `ListProductsRequest` (`filter[...]`, `fields`, `relations` array of `distributor|productCategory|orderItems`, `order` default `name:asc`, `size`), `ProductResource`, `Product::listBy(..., relations: [...])`, same global scope.
+- **Payment methods listing:** `GET /api/v1/payment-methods` — `PaymentMethodController@index`, `ListPaymentMethodsRequest` (`filter[name]`, `fields`, `relations` array of `distributor|orders`, `order` default `name:asc`, `size`), `PaymentMethodResource`, `PaymentMethod::listBy(...)`, same global scope.
 
 ---
 
@@ -101,5 +102,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 | 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `FilterDistributorByAuthSalesRepresentativeScope`. |
 | 2026-04-04 | API `GET /api/v1/clients`: list clients for authenticated seller (same pattern as events). Scope resolves Sanctum / `request()->user()` so Bearer tokens apply `distributor_id` filtering. |
 | 2026-04-05 | API `GET /api/v1/products`: list products for authenticated seller (same pattern as events/clients). |
+| 2026-04-05 | API `GET /api/v1/payment-methods`: list payment methods for authenticated seller (`PaymentMethod::listBy`, optional `relations`). |
+| 2026-04-05 | API `GET /api/v1/events`: optional `relations` array (`distributor`, `orders`) + `Event::allowedListByRelations()`. |
 
 *(Append new rows when behavior or architecture shifts.)*

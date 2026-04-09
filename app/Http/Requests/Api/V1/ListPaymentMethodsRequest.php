@@ -7,17 +7,25 @@ namespace App\Http\Requests\Api\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ListEventsRequest extends FormRequest
+class ListPaymentMethodsRequest extends FormRequest
 {
-    private const array ORDERABLE_COLUMNS = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+    private const array ORDERABLE_COLUMNS = [
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
+    ];
 
-    private const array SELECTABLE_FIELDS = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+    private const array SELECTABLE_FIELDS = [
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
+    ];
 
     private const array ALLOWED_RELATIONS = [
         'distributor',
         'orders',
-        'orders.orderItems',
-
     ];
 
     public function authorize(): bool
@@ -33,10 +41,6 @@ class ListEventsRequest extends FormRequest
         return [
             'filter' => ['sometimes', 'array'],
             'filter.name' => ['sometimes', 'string', 'max:255'],
-            'filter.start_from' => ['sometimes', 'date'],
-            'filter.start_to' => ['sometimes', 'date'],
-            'filter.end_from' => ['sometimes', 'date'],
-            'filter.end_to' => ['sometimes', 'date'],
             'fields' => ['sometimes', 'string'],
             'relations' => ['sometimes', 'array'],
             'relations.*' => ['string', Rule::in(self::ALLOWED_RELATIONS)],
@@ -93,18 +97,18 @@ class ListEventsRequest extends FormRequest
 
     public function order(): string
     {
-        $raw = $this->input('order', 'start:asc');
+        $raw = $this->input('order', 'name:asc');
 
         if (! is_string($raw) || $raw === '') {
-            return 'start:asc';
+            return 'name:asc';
         }
 
         $parts = explode(':', $raw, 2);
-        $column = $parts[0] ?? 'start';
+        $column = $parts[0] ?? 'name';
         $direction = strtolower($parts[1] ?? 'asc');
 
         if (! in_array($column, self::ORDERABLE_COLUMNS, true)) {
-            return 'start:asc';
+            return 'name:asc';
         }
 
         if (! in_array($direction, ['asc', 'desc'], true)) {

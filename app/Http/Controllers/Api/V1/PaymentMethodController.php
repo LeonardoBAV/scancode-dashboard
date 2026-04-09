@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\ListEventsRequest;
-use App\Http\Resources\Api\V1\EventResource;
-use App\Models\Event;
+use App\Http\Requests\Api\V1\ListPaymentMethodsRequest;
+use App\Http\Resources\Api\V1\PaymentMethodResource;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class EventController extends Controller
+class PaymentMethodController extends Controller
 {
-    public function index(ListEventsRequest $request): AnonymousResourceCollection
+    public function index(ListPaymentMethodsRequest $request): AnonymousResourceCollection
     {
-        $result = Event::listBy(
+        $result = PaymentMethod::listBy(
             filters: $request->filters(),
             fields: $request->fields(),
             relations: $request->relations(),
@@ -22,6 +22,6 @@ class EventController extends Controller
             size: $request->size(),
         );
 
-        return EventResource::collection($result);
+        return PaymentMethodResource::collection($result);
     }
 }
