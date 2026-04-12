@@ -14,8 +14,14 @@ Route::prefix('v1')->group(function (): void {
 
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('clients', [ClientController::class, 'index'])->name('api.v1.clients.index');
+        Route::patch('clients/{client}', [ClientController::class, 'update'])->can('update', 'client')->name('api.v1.clients.update');
+
         Route::get('events', [EventController::class, 'index'])->name('api.v1.events.index');
+
         Route::get('payment-methods', [PaymentMethodController::class, 'index'])->name('api.v1.payment-methods.index');
+        Route::patch('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->can('update', 'paymentMethod')->name('api.v1.payment-methods.update');
+
         Route::get('products', [ProductController::class, 'index'])->name('api.v1.products.index');
+        Route::patch('products/{product}', [ProductController::class, 'update'])->can('update', 'product')->name('api.v1.products.update');
     });
 });
