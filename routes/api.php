@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\PaymentMethodController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Models\Client;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -21,6 +22,7 @@ Route::prefix('v1')->group(function (): void {
         Route::get('events', [EventController::class, 'index'])->name('api.v1.events.index');
 
         Route::get('payment-methods', [PaymentMethodController::class, 'index'])->name('api.v1.payment-methods.index');
+        Route::post('payment-methods', [PaymentMethodController::class, 'store'])->can('create', PaymentMethod::class)->name('api.v1.payment-methods.store');
         Route::patch('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->can('update', 'paymentMethod')->name('api.v1.payment-methods.update');
 
         Route::get('products', [ProductController::class, 'index'])->name('api.v1.products.index');

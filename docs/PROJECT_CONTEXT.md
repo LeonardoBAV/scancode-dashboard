@@ -76,6 +76,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - **Clients create:** `POST /api/v1/clients` — `ClientController@store`, `StoreClientRequest` (validates body + merges `distributor_id` from authenticated `SalesRepresentative`), `Client::create`, response `ClientResource` with HTTP 201.
 - **Products listing:** `GET /api/v1/products` — `ProductController@index`, `ListProductsRequest` (`filter[...]`, `fields`, `relations` array of `distributor|productCategory|orderItems`, `order` default `name:asc`, `size`), `ProductResource`, `Product::listBy(..., relations: [...])`, same global scope.
 - **Payment methods listing:** `GET /api/v1/payment-methods` — `PaymentMethodController@index`, `ListPaymentMethodsRequest` (`filter[name]`, `fields`, `relations` array of `distributor|orders`, `order` default `name:asc`, `size`), `PaymentMethodResource`, `PaymentMethod::listBy(...)`, same global scope.
+- **Payment methods create:** `POST /api/v1/payment-methods` — `PaymentMethodController@store`, `StorePaymentMethodRequest` (validates `name` + merges `distributor_id` from authenticated `SalesRepresentative`), `PaymentMethod::create`, response `PaymentMethodResource` with HTTP 201. `PaymentMethodPolicy::create` requires `SalesRepresentative` with `distributor_id` (API Sanctum seller).
 
 ---
 
@@ -94,6 +95,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 
 | Date | Note |
 |------|------|
+| 2026-04-12 | API `POST /api/v1/payment-methods`: create payment method, `StorePaymentMethodRequest` merges `distributor_id` (Sanctum `SalesRepresentative`), `PaymentMethodPolicy::create`. |
 | 2026-04-12 | API `POST /api/v1/clients`: create client (Sanctum sales rep), `StoreClientRequest` merges `distributor_id`, `ClientPolicy::create`. |
 | 2026-03-24 | Initial `PROJECT_CONTEXT.md`: Distributor tenancy, dashboard resources, scoped tables. |
 | 2026-03-24 | Tenant profile page `EditDistributorProfile` + `DistributorPolicy::update`. |
