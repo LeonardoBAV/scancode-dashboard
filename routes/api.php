@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\PaymentMethodController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Models\Client;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -14,6 +15,7 @@ Route::prefix('v1')->group(function (): void {
 
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('clients', [ClientController::class, 'index'])->name('api.v1.clients.index');
+        Route::post('clients', [ClientController::class, 'store'])->can('create', Client::class)->name('api.v1.clients.store');
         Route::patch('clients/{client}', [ClientController::class, 'update'])->can('update', 'client')->name('api.v1.clients.update');
 
         Route::get('events', [EventController::class, 'index'])->name('api.v1.events.index');
