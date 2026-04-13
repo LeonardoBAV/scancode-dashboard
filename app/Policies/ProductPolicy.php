@@ -6,11 +6,16 @@ namespace App\Policies;
 
 use App\Models\Product;
 use App\Models\SalesRepresentative;
+use App\Models\User;
 
 class ProductPolicy
 {
-    public function update(SalesRepresentative $salesRepresentative, Product $product): bool
+    public function update(User|SalesRepresentative $auth, Product $product): bool
     {
-        return $salesRepresentative->distributor_id === $product->distributor_id;
+        if (! $auth instanceof SalesRepresentative) {
+            return true;
+        }
+
+        return $auth->distributor_id === $product->distributor_id;
     }
 }

@@ -6,11 +6,16 @@ namespace App\Policies;
 
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
+use App\Models\User;
 
 class PaymentMethodPolicy
 {
-    public function update(SalesRepresentative $salesRepresentative, PaymentMethod $paymentMethod): bool
+    public function update(User|SalesRepresentative $auth, PaymentMethod $paymentMethod): bool
     {
-        return $salesRepresentative->distributor_id === $paymentMethod->distributor_id;
+        if (! $auth instanceof SalesRepresentative) {
+            return true;
+        }
+
+        return $auth->distributor_id === $paymentMethod->distributor_id;
     }
 }
