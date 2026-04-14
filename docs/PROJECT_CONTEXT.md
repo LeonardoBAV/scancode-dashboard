@@ -75,6 +75,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - **Clients listing:** `GET /api/v1/clients` — same layering as events: `ClientController@index`, `ListClientsRequest` (`filter[corporate_name|fantasy_name|email|cpf_cnpj]`, `fields`, `order`, `size`), `ClientResource`, `Client::listBy(...)`, same global scope as `Event`.
 - **Clients create:** `POST /api/v1/clients` — `ClientController@store`, `StoreClientRequest` (validates body + merges `distributor_id` from authenticated `SalesRepresentative`), `Client::create`, response `ClientResource` with HTTP 201.
 - **Products listing:** `GET /api/v1/products` — `ProductController@index`, `ListProductsRequest` (`filter[...]`, `fields`, `relations` array of `distributor|productCategory|orderItems`, `order` default `name:asc`, `size`), `ProductResource`, `Product::listBy(..., relations: [...])`, same global scope.
+- **Products create:** `POST /api/v1/products` — `ProductController@store`, `StoreProductRequest` (validates `sku`, optional `barcode`, `name`, `price`, optional `product_category_id` scoped to distributor + merges `distributor_id` from authenticated `SalesRepresentative`), `Product::create`, response `ProductResource` with HTTP 201. `ProductPolicy::create` requires `SalesRepresentative` with `distributor_id`.
 - **Payment methods listing:** `GET /api/v1/payment-methods` — `PaymentMethodController@index`, `ListPaymentMethodsRequest` (`filter[name]`, `fields`, `relations` array of `distributor|orders`, `order` default `name:asc`, `size`), `PaymentMethodResource`, `PaymentMethod::listBy(...)`, same global scope.
 - **Payment methods create:** `POST /api/v1/payment-methods` — `PaymentMethodController@store`, `StorePaymentMethodRequest` (validates `name` + merges `distributor_id` from authenticated `SalesRepresentative`), `PaymentMethod::create`, response `PaymentMethodResource` with HTTP 201. `PaymentMethodPolicy::create` requires `SalesRepresentative` with `distributor_id` (API Sanctum seller).
 
@@ -95,6 +96,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 
 | Date | Note |
 |------|------|
+| 2026-04-12 | API `POST /api/v1/products`: create product, `StoreProductRequest` merges `distributor_id`, `ProductPolicy::create`. |
 | 2026-04-12 | API `POST /api/v1/payment-methods`: create payment method, `StorePaymentMethodRequest` merges `distributor_id` (Sanctum `SalesRepresentative`), `PaymentMethodPolicy::create`. |
 | 2026-04-12 | API `POST /api/v1/clients`: create client (Sanctum sales rep), `StoreClientRequest` merges `distributor_id`, `ClientPolicy::create`. |
 | 2026-03-24 | Initial `PROJECT_CONTEXT.md`: Distributor tenancy, dashboard resources, scoped tables. |

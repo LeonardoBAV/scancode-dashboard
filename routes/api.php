@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\PaymentMethodController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Models\Client;
 use App\Models\PaymentMethod;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -26,6 +27,7 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->can('update', 'paymentMethod')->name('api.v1.payment-methods.update');
 
         Route::get('products', [ProductController::class, 'index'])->name('api.v1.products.index');
+        Route::post('products', [ProductController::class, 'store'])->can('create', Product::class)->name('api.v1.products.store');
         Route::patch('products/{product}', [ProductController::class, 'update'])->can('update', 'product')->name('api.v1.products.update');
     });
 });
