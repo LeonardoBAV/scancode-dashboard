@@ -39,10 +39,7 @@ class ProductResource extends JsonResource
                 'name' => $this->distributor->name,
                 'slug' => $this->distributor->slug,
             ]),
-            'product_category' => $this->whenLoaded('productCategory', fn (): array => [
-                'id' => $this->productCategory->id,
-                'name' => $this->productCategory->name,
-            ]),
+            'product_category' => $this->whenLoaded('productCategory', fn (): ProductCategoryResource => ProductCategoryResource::make($this->productCategory)),
             'order_items' => $this->whenLoaded('orderItems', fn (): array => $this->orderItems
                 ->map(fn ($item): array => [
                     'id' => $item->id,

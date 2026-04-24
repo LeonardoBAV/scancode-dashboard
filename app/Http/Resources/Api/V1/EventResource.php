@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Api\V1;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EventResource extends JsonResource
@@ -40,16 +41,10 @@ class EventResource extends JsonResource
                 'name' => $this->distributor->name,
                 'slug' => $this->distributor->slug,
             ]),
-            'orders' => $this->whenLoaded('orders', fn (): array => $this->orders
-                ->map(fn ($order): array => [
-                    'id' => $order->id,
-                    'status' => $order->status->value,
-                    'client_id' => $order->client_id,
-                    'payment_method_id' => $order->payment_method_id,
-                    'created_at' => $order->created_at?->toIso8601String(),
-                ])
-                ->values()
-                ->all()),
+            'orders' => $this->whenLoaded(
+                'orders',
+                fn (): AnonymousResourceCollection => OrderResource::collection($this->orders),
+            ),
         ];
     }
 }
