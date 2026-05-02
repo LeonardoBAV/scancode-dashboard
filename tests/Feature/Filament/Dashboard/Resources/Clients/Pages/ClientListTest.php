@@ -13,7 +13,18 @@ use function Pest\Livewire\livewire;
 describe('Client List', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->count(5)->for(Auth::user()->distributor)->create();
+        $distributor = Auth::user()->distributor;
+
+        Client::factory()->count(4)->for($distributor)->create();
+
+        Client::factory()->for($distributor)->create([
+            'fantasy_name' => fake()->companySuffix().' '.fake()->word(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
+            'carrier' => fake()->company(),
+            'buyer_name' => fake()->name(),
+            'buyer_contact' => fake()->phoneNumber(),
+        ]);
     });
 
     it('can load the page', function (): void {

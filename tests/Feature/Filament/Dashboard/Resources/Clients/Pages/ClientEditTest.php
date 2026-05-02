@@ -9,19 +9,23 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Illuminate\Support\Arr;
 
+use Illuminate\Support\Facades\Auth;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Livewire\livewire;
 
 describe('Client Edit', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->for($this->distributor)->create();
+        $distributor = Auth::user()->distributor;
+
+        Client::factory()->for($distributor)->create();
     });
 
     it('can load the page', function (): void {
 
         $client = Client::firstOrFail();
 
-        $this->livewireTenant(EditClient::class, ['record' => $client->getRouteKey()])
+        livewire(EditClient::class, ['record' => $client->getRouteKey()])
             ->assertOk();
 
     });
@@ -30,7 +34,7 @@ describe('Client Edit', function (): void {
 
         $client = Client::firstOrFail();
 
-        $this->livewireTenant(EditClient::class, ['record' => $client->getRouteKey()])
+        livewire(EditClient::class, ['record' => $client->getRouteKey()])
             ->assertSchemaExists('form')
             ->assertSchemaStateSet(Arr::except($client->toArray(), ['distributor_id']));
 
@@ -45,7 +49,7 @@ describe('Client Edit', function (): void {
             $client = Client::firstOrFail();
             $clientUpdated = $fnClientUpdated($client);
 
-            $this->livewireTenant(EditClient::class, ['record' => $client->getRouteKey()])
+            livewire(EditClient::class, ['record' => $client->getRouteKey()])
                 ->fillForm($clientUpdated->toArray())
                 ->call('save')
                 ->assertNotified()
@@ -53,7 +57,7 @@ describe('Client Edit', function (): void {
 
             assertDatabaseHas(Client::class, [
                 ...Arr::except($clientUpdated->toArray(), ['distributor_id', 'id']),
-                'distributor_id' => $this->distributor->id,
+                'distributor_id' => Auth::user()->distributor_id,
             ]);
 
         })->with('client_updated');
@@ -61,7 +65,7 @@ describe('Client Edit', function (): void {
         it('can delete a client', function (): void {
             $client = Client::firstOrFail();
 
-            $this->livewireTenant(EditClient::class, ['record' => $client->getRouteKey()])
+            livewire(EditClient::class, ['record' => $client->getRouteKey()])
                 ->callAction(DeleteAction::class)
                 ->assertNotified()
                 ->assertRedirect(ClientResource::getUrl('index'));
@@ -78,7 +82,7 @@ describe('Client Edit', function (): void {
             $client = Client::factory()->create(['cpf_cnpj' => '11111111111']);
             $clientUpdateData = Client::factory()->make(['cpf_cnpj' => '11111111111']);
 
-            $this->livewireTenant(EditClient::class, ['record' => $client->getRouteKey()])
+            livewire(EditClient::class, ['record' => $client->getRouteKey()])
                 ->fillForm($clientUpdateData->toArray())
                 ->call('save')
                 ->assertHasNoFormErrors()
