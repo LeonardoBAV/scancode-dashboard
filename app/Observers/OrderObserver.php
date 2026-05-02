@@ -8,6 +8,12 @@ use App\Models\Order;
 
 class OrderObserver
 {
+    public function creating(Order $order): void
+    {
+        $order->buyer_name = $order->client?->buyer_name;
+        $order->buyer_phone = $order->client?->buyer_contact;
+    }
+
     public function updating(Order $order): void
     {
         $order->ensureCanBeUpdated();

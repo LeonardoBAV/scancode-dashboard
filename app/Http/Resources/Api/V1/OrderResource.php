@@ -26,6 +26,8 @@ class OrderResource extends JsonResource
                 fn (): string => $this->status->value,
             ),
             'notes' => $this->when(array_key_exists('notes', $attributes), $this->notes),
+            'buyer_name' => $this->when(array_key_exists('buyer_name', $attributes), $this->buyer_name),
+            'buyer_phone' => $this->when(array_key_exists('buyer_phone', $attributes), $this->buyer_phone),
             'client_id' => $this->when(array_key_exists('client_id', $attributes), $this->client_id),
             'sales_representative_id' => $this->when(array_key_exists('sales_representative_id', $attributes), $this->sales_representative_id),
             'payment_method_id' => $this->when(array_key_exists('payment_method_id', $attributes), $this->payment_method_id),

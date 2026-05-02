@@ -6,6 +6,7 @@ namespace App\Filament\Dashboard\Resources\Orders\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class OrderForm
@@ -19,6 +20,8 @@ class OrderForm
                 self::salesRepresentativeInput(),
                 self::paymentMethodInput(),
                 self::notesInput(),
+                self::buyerNameInput(),
+                self::buyerPhoneInput(),
             ]);
     }
 
@@ -69,5 +72,20 @@ class OrderForm
             ->label(__('resources.order.form.notes'))
             ->columnSpanFull()
             ->rows(4);
+    }
+
+    protected static function buyerNameInput(): TextInput
+    {
+        return TextInput::make('buyer_name')
+            ->label(__('resources.order.form.buyer_name'))
+            ->visibleOn('edit');
+    }
+
+    protected static function buyerPhoneInput(): TextInput
+    {
+        return TextInput::make('buyer_phone')
+            ->label(__('resources.order.form.buyer_phone'))
+            ->tel()
+            ->visibleOn('edit');
     }
 }

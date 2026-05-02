@@ -149,6 +149,8 @@ return [
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
             'notes' => 'Observações',
+            'buyer_name' => 'Nome do Comprador',
+            'buyer_phone' => 'Telefone do Comprador',
         ],
         'actions' => [
             'cancel' => 'Cancelar',

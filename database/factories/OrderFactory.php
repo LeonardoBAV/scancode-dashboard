@@ -51,6 +51,9 @@ class OrderFactory extends Factory
         return [
             'status' => OrderStatusEnum::PENDING,
             'notes' => fake()->optional()->sentence(),
+            'buyer_name' => fake()->optional()->name(),
+            // Must match Filament `TextInput::make('buyer_phone')->tel()` validation format.
+            'buyer_phone' => fake()->optional()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
             'distributor_id' => $distributor,
             'event_id' => Event::factory()->for($distributor),
             'client_id' => Client::factory()->for($distributor),

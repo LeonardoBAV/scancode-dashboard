@@ -24,6 +24,8 @@ class Order extends Model
         'distributor_id',
         'event_id',
         'notes',
+        'buyer_name',
+        'buyer_phone',
         'client_id',
         'sales_representative_id',
         'payment_method_id',
