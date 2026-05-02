@@ -27,6 +27,8 @@ return [
             'email' => 'Email',
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
         ],
         'form' => [
             'cpf_cnpj' => 'CPF/CNPJ',
@@ -35,6 +37,8 @@ return [
             'email' => 'Email',
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
         ],
     ],
     'sales_representative' => [
