@@ -30,6 +30,8 @@ class ClientFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
             'carrier' => fake()->optional()->company(),
+            'buyer_name' => fake()->optional()->name(),
+            'buyer_contact' => fake()->optional()->phoneNumber(),
         ];
     }
 

@@ -24,6 +24,8 @@ class ClientResource extends JsonResource
             'email' => $this->when(array_key_exists('email', $attributes), $this->email),
             'phone' => $this->when(array_key_exists('phone', $attributes), $this->phone),
             'carrier' => $this->when(array_key_exists('carrier', $attributes), $this->carrier),
+            'buyer_name' => $this->when(array_key_exists('buyer_name', $attributes), $this->buyer_name),
+            'buyer_contact' => $this->when(array_key_exists('buyer_contact', $attributes), $this->buyer_contact),
             'created_at' => $this->when(
                 array_key_exists('created_at', $attributes),
                 fn () => $this->created_at?->toIso8601String(),

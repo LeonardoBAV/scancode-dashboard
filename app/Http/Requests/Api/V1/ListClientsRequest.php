@@ -16,6 +16,8 @@ class ListClientsRequest extends FormRequest
         'email',
         'phone',
         'carrier',
+        'buyer_name',
+        'buyer_contact',
         'created_at',
         'updated_at',
     ];
@@ -28,6 +30,8 @@ class ListClientsRequest extends FormRequest
         'email',
         'phone',
         'carrier',
+        'buyer_name',
+        'buyer_contact',
         'created_at',
         'updated_at',
     ];

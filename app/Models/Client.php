@@ -27,6 +27,8 @@ class Client extends Model
         'email',
         'phone',
         'carrier',
+        'buyer_name',
+        'buyer_contact',
     ];
 
     protected $casts = [
@@ -59,6 +61,8 @@ class Client extends Model
             'email',
             'phone',
             'carrier',
+            'buyer_name',
+            'buyer_contact',
             'created_at',
             'updated_at',
         ];
@@ -92,6 +96,8 @@ class Client extends Model
                 'email',
                 'phone',
                 'carrier',
+                'buyer_name',
+                'buyer_contact',
                 'created_at',
                 'updated_at',
             ];

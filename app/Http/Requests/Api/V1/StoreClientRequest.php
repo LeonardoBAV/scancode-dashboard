@@ -53,6 +53,8 @@ class StoreClientRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:255'],
             'carrier' => ['nullable', 'string', 'max:255'],
+            'buyer_name' => ['nullable', 'string', 'max:255'],
+            'buyer_contact' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

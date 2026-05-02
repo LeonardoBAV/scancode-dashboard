@@ -16,6 +16,9 @@ return [
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
             'carrier_placeholder' => 'Nenhuma transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
+            'buyer_placeholder' => '—',
         ],
         'infolist' => [
             'cpf_cnpj' => 'CPF/CNPJ',

@@ -35,6 +35,8 @@ class UpdateClientRequest extends FormRequest
             'email' => ['sometimes', 'nullable', 'email', 'max:255'],
             'phone' => ['sometimes', 'nullable', 'string', 'max:255'],
             'carrier' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'buyer_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'buyer_contact' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 }
