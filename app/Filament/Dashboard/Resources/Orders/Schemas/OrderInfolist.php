@@ -19,6 +19,8 @@ class OrderInfolist
                 self::clientEntry(),
                 self::salesRepresentativeEntry(),
                 self::paymentMethodEntry(),
+                self::buyerNameEntry(),
+                self::buyerPhoneEntry(),
                 self::notesEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
@@ -59,12 +61,25 @@ class OrderInfolist
             ->placeholder('-');
     }
 
+    protected static function buyerNameEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_name')
+            ->label(__('resources.order.infolist.buyer_name'))
+            ->placeholder('-');
+    }
+
+    protected static function buyerPhoneEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_phone')
+            ->label(__('resources.order.infolist.buyer_phone'))
+            ->placeholder('-');
+    }
+
     protected static function notesEntry(): TextEntry
     {
         return TextEntry::make('notes')
             ->label(__('resources.order.infolist.notes'))
-            ->placeholder('-')
-            ->columnSpanFull();
+            ->placeholder('-');
     }
 
     protected static function createdAtEntry(): TextEntry
