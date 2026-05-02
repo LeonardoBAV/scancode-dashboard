@@ -12,12 +12,12 @@ use function Pest\Livewire\livewire;
 describe('Client Create', function (): void {
 
     it('can load the page', function (): void {
-        $this->livewireTenant(CreateClient::class)
+        livewire(CreateClient::class)
             ->assertOk();
     });
 
     it('has a form', function (): void {
-        $this->livewireTenant(CreateClient::class)
+        livewire(CreateClient::class)
             ->assertSchemaExists('form');
     });
 
@@ -25,13 +25,15 @@ describe('Client Create', function (): void {
 
         it('has all fields', function (): void {
 
-            $this->livewireTenant(CreateClient::class)
+            livewire(CreateClient::class)
                 ->assertFormFieldExists('cpf_cnpj')
                 ->assertFormFieldExists('corporate_name')
                 ->assertFormFieldExists('fantasy_name')
                 ->assertFormFieldExists('email')
                 ->assertFormFieldExists('phone')
-                ->assertFormFieldExists('carrier');
+                ->assertFormFieldExists('carrier')
+                ->assertFormFieldExists('buyer_name')
+                ->assertFormFieldExists('buyer_contact');
 
         });
 
@@ -39,7 +41,7 @@ describe('Client Create', function (): void {
 
             it('basic validations are working', function (Client $client, array $errors): void {
 
-                $this->livewireTenant(CreateClient::class)
+                livewire(CreateClient::class)
                     ->fillForm($client->toArray())
                     ->call('create')
                     ->assertHasFormErrors($errors)
@@ -50,10 +52,10 @@ describe('Client Create', function (): void {
 
             it('cpf cnpj unique validation is working', function (): void {
 
-                $clientOne = Client::factory()->for($this->distributor)->create(['cpf_cnpj' => '12345678901']);
+                $clientOne = Client::factory()->for(Auth::user()->distributor)->create(['cpf_cnpj' => '12345678901']);
                 $clientTwo = Client::factory()->make(['cpf_cnpj' => $clientOne->cpf_cnpj]);
 
-                $this->livewireTenant(CreateClient::class)
+                livewire(CreateClient::class)
                     ->fillForm($clientTwo->toArray())
                     ->call('create')
                     ->assertHasFormErrors(['cpf_cnpj'])

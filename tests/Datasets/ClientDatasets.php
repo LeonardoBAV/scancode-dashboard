@@ -35,34 +35,44 @@ dataset('client_validations', [
 
 dataset('client_searchable_columns', [
     'by cpf_cnpj' => [
-        fn (): Client => Client::whereNotNull('cpf_cnpj')->firstOrFail(),
+        fn (): Client => Client::firstOrFail(),
         fn (string $searchValue): Client => Client::where('cpf_cnpj', '!=', $searchValue)->firstOrFail(),
         fn (Client $client): string => $client->cpf_cnpj ?? throw new UnexpectedValueException('CPF/CNPJ not found'),
     ],
     'by corporate_name' => [
-        fn (): Client => Client::whereNotNull('corporate_name')->firstOrFail(),
+        fn (): Client => Client::firstOrFail(),
         fn (string $searchValue): Client => Client::where('corporate_name', '!=', $searchValue)->firstOrFail(),
         fn (Client $client): string => $client->corporate_name ?? throw new UnexpectedValueException('Corporate name not found'),
     ],
     'by fantasy_name' => [
         fn (): Client => Client::whereNotNull('fantasy_name')->firstOrFail(),
-        fn (string $searchValue): Client => Client::where('fantasy_name', '!=', $searchValue)->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('fantasy_name', '!=', $searchValue)->orWhereNull('fantasy_name')->firstOrFail(),
         fn (Client $client): string => $client->fantasy_name ?? throw new UnexpectedValueException('Fantasy name not found'),
     ],
     'by email' => [
         fn (): Client => Client::whereNotNull('email')->firstOrFail(),
-        fn (string $searchValue): Client => Client::where('email', '!=', $searchValue)->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('email', '!=', $searchValue)->orWhereNull('email')->firstOrFail(),
         fn (Client $client): string => $client->email ?? throw new UnexpectedValueException('Email not found'),
     ],
     'by phone' => [
         fn (): Client => Client::whereNotNull('phone')->firstOrFail(),
-        fn (string $searchValue): Client => Client::where('phone', '!=', $searchValue)->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('phone', '!=', $searchValue)->orWhereNull('phone')->firstOrFail(),
         fn (Client $client): string => $client->phone ?? throw new UnexpectedValueException('Phone not found'),
     ],
     'by carrier' => [
         fn (): Client => Client::whereNotNull('carrier')->firstOrFail(),
-        fn (string $searchValue): Client => Client::where('carrier', '!=', $searchValue)->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('carrier', '!=', $searchValue)->orWhereNull('carrier')->firstOrFail(),
         fn (Client $client): string => $client->carrier ?? throw new UnexpectedValueException('Carrier not found'),
+    ],
+    'by buyer_name' => [
+        fn (): Client => Client::whereNotNull('buyer_name')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('buyer_name', '!=', $searchValue)->orWhereNull('buyer_name')->firstOrFail(),
+        fn (Client $client): string => $client->buyer_name ?? throw new UnexpectedValueException('Buyer name not found'),
+    ],
+    'by buyer_contact' => [
+        fn (): Client => Client::whereNotNull('buyer_contact')->firstOrFail(),
+        fn (string $searchValue): Client => Client::where('buyer_contact', '!=', $searchValue)->orWhereNull('buyer_contact')->firstOrFail(),
+        fn (Client $client): string => $client->buyer_contact ?? throw new UnexpectedValueException('Buyer contact not found'),
     ],
 ]);
 
@@ -74,5 +84,7 @@ dataset('client_updated', [
         'email' => "{$client->email}test",
         'phone' => "{$client->phone}1",
         'carrier' => "{$client->carrier} test",
+        'buyer_name' => "{$client->buyer_name} test",
+        'buyer_contact' => "{$client->buyer_contact}1",
     ]),
 ]);

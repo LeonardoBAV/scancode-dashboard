@@ -18,7 +18,7 @@ describe('Client List', function (): void {
 
     it('can load the page', function (): void {
 
-        $this->livewireTenant(ListClients::class)
+        livewire(ListClients::class)
             ->assertSuccessful();
     });
 
@@ -31,13 +31,15 @@ describe('Client List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            $this->livewireTenant(ListClients::class)
+            livewire(ListClients::class)
                 ->assertCanRenderTableColumn('cpf_cnpj')
                 ->assertCanRenderTableColumn('corporate_name')
                 ->assertCanRenderTableColumn('fantasy_name')
                 ->assertCanRenderTableColumn('email')
                 ->assertCanRenderTableColumn('phone')
                 ->assertCanRenderTableColumn('carrier')
+                ->assertCanRenderTableColumn('buyer_name')
+                ->assertCanRenderTableColumn('buyer_contact')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 
@@ -58,7 +60,7 @@ describe('Client List', function (): void {
                 $searchValue = $fnValue($client);
                 $clientNotFound = $fnClientNotFound($searchValue);
 
-                $this->livewireTenant(ListClients::class)
+                livewire(ListClients::class)
                     ->assertCanSeeTableRecords(Client::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$client])
@@ -71,7 +73,7 @@ describe('Client List', function (): void {
 
             it('can bulk delete clients', function (): void {
 
-                $this->livewireTenant(ListClients::class)
+                livewire(ListClients::class)
                     ->assertCanSeeTableRecords(Client::all())
                     ->selectTableRecords(Client::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())
