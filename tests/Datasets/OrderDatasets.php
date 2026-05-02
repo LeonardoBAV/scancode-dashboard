@@ -44,7 +44,7 @@ dataset('order_validations', [
 dataset('order_searchable_columns', [
     'by client fantasy name' => [
         fn (): Order => Order::whereHas('client', fn (Builder $q) => $q->whereNotNull('fantasy_name'))->firstOrFail(),
-        fn (string $searchValue): Order => Order::whereHas('client', fn (Builder $q) => $q->where('fantasy_name', '!=', $searchValue))->firstOrFail(),
+        fn (string $searchValue): Order => Order::whereHas('client', fn (Builder $q) => $q->where('fantasy_name', '!=', $searchValue))->orWhereNull('fantasy_name')->firstOrFail(),
         fn (Order $order): string => $order->client->fantasy_name ?? throw new UnexpectedValueException('Client not found'),
     ],
     'by sales representative name' => [

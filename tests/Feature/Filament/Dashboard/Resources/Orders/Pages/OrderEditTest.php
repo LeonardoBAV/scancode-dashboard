@@ -8,18 +8,19 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
 use Illuminate\Support\Arr;
-
 use function Pest\Laravel\assertDatabaseHas;
+use Illuminate\Support\Facades\Auth;
+use function Pest\Livewire\livewire;
 
 describe('Order Edit', function (): void {
 
     beforeEach(function (): void {
-        $client = Client::factory()->for($this->distributor)->create();
+        $client = Client::factory()->for(Auth::user()->distributor)->create();
 
         Order::factory()->create([
             'client_id' => $client->id,
-            'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
-            'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
         ]);
     });
 
@@ -27,7 +28,7 @@ describe('Order Edit', function (): void {
 
         $order = Order::firstOrFail();
 
-        $this->livewireTenant(EditOrder::class, ['record' => $order->getRouteKey()])
+        livewire(EditOrder::class, ['record' => $order->getRouteKey()])
             ->assertOk();
 
     });
@@ -36,13 +37,15 @@ describe('Order Edit', function (): void {
 
         $order = Order::firstOrFail();
 
-        $this->livewireTenant(EditOrder::class, ['record' => $order->getRouteKey()])
+        livewire(EditOrder::class, ['record' => $order->getRouteKey()])
             ->assertSchemaExists('form')
             ->assertSchemaStateSet([
                 'client_id' => $order->client_id,
                 'sales_representative_id' => $order->sales_representative_id,
                 'payment_method_id' => $order->payment_method_id,
                 'notes' => $order->notes,
+                'buyer_name' => $order->buyer_name,
+                'buyer_phone' => $order->buyer_phone,
             ]);
 
     });
@@ -56,7 +59,7 @@ describe('Order Edit', function (): void {
             $order = Order::firstOrFail();
             $orderUpdated = $fnOrderUpdated($order);
 
-            $this->livewireTenant(EditOrder::class, ['record' => $order->getRouteKey()])
+            livewire(EditOrder::class, ['record' => $order->getRouteKey()])
                 ->fillForm($orderUpdated->toArray())
                 ->call('save')
                 ->assertNotified()
@@ -64,7 +67,7 @@ describe('Order Edit', function (): void {
 
             assertDatabaseHas(Order::class, [
                 ...Arr::except($orderUpdated->toArray(), ['distributor_id', 'id']),
-                'distributor_id' => $this->distributor->id,
+                'distributor_id' => Auth::user()->distributor_id,
             ]);
 
         })->with('order_updated');

@@ -9,16 +9,16 @@ use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
-
+use Illuminate\Support\Facades\Auth;
 use function Pest\Livewire\livewire;
 
 describe('Order List', function (): void {
 
     beforeEach(function (): void {
         $tenantOrderAttributes = [
-            'client_id' => Client::factory()->for($this->distributor),
-            'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
-            'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            'client_id' => Client::factory()->for(Auth::user()->distributor),
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
         ];
 
         Order::factory()->count(4)->create($tenantOrderAttributes);
@@ -28,7 +28,7 @@ describe('Order List', function (): void {
 
     it('can load the page', function (): void {
 
-        $this->livewireTenant(ListOrders::class)
+        livewire(ListOrders::class)
             ->assertSuccessful();
     });
 
@@ -42,7 +42,7 @@ describe('Order List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            $this->livewireTenant(ListOrders::class)
+            livewire(ListOrders::class)
                 ->assertCanRenderTableColumn('status')
                 ->assertCanRenderTableColumn('client.fantasy_name')
                 ->assertCanRenderTableColumn('salesRepresentative.name')
@@ -67,7 +67,7 @@ describe('Order List', function (): void {
                 $searchValue = $fnValue($order);
                 $orderNotFound = $fnOrderNotFound($searchValue);
 
-                $this->livewireTenant(ListOrders::class)
+                livewire(ListOrders::class)
                     ->assertCanSeeTableRecords(Order::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$order])
@@ -81,7 +81,7 @@ describe('Order List', function (): void {
                 $ordersAsc = Order::query()->orderBy($column, 'asc')->orderBy('id', 'asc')->get();
                 $ordersDesc = Order::query()->orderBy($column, 'desc')->orderBy('id', 'desc')->get();
 
-                $this->livewireTenant(ListOrders::class)
+                livewire(ListOrders::class)
                     ->sortTable($column, 'asc')
                     ->assertCanSeeTableRecords($ordersAsc, inOrder: true)
                     ->sortTable($column, 'desc')

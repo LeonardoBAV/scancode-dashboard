@@ -9,16 +9,17 @@ use App\Models\Client;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
+use Illuminate\Support\Facades\Auth;
 
 describe('Resource - Order:', function (): void {
 
     beforeEach(function (): void {
-        $client = Client::factory()->for($this->distributor)->create();
+        $client = Client::factory()->for(Auth::user()->distributor)->create();
 
         Order::factory()->create([
             'client_id' => $client->id,
-            'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
-            'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
         ]);
     });
 
@@ -42,7 +43,7 @@ describe('Resource - Order:', function (): void {
     });
 
     test('index page loads correctly', function (): void {
-        $url = OrderResource::getUrl('index', tenant: $this->distributor);
+        $url = OrderResource::getUrl('index', tenant: Auth::user()->distributor);
 
         $this->get($url)
             ->assertStatus(200)
