@@ -23,6 +23,7 @@ class Order extends Model
     protected $fillable = [
         'distributor_id',
         'event_id',
+        'status',
         'notes',
         'buyer_name',
         'buyer_phone',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\SalesRepresentative;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -65,19 +66,20 @@ class StoreOrderRequest extends FormRequest
                 Rule::exists('payment_methods', 'id')
                     ->where('distributor_id', $seller->distributor_id),
             ],
+            'status' => ['sometimes', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['nullable', 'string', 'max:65535'],
             'buyer_name' => ['nullable', 'string', 'max:255'],
             'buyer_phone' => ['nullable', 'string', 'max:255'],
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => [
+            'order_items' => ['nullable', 'array'],
+            'order_items.*.product_id' => [
                 'required',
                 'integer',
                 Rule::exists('products', 'id')
                     ->where('distributor_id', $seller->distributor_id),
             ],
-            'items.*.price' => ['required', 'numeric', 'min:0'],
-            'items.*.qty' => ['required', 'integer', 'min:1'],
-            'items.*.notes' => ['nullable', 'string', 'max:65535'],
+            'order_items.*.price' => ['required', 'numeric', 'min:0'],
+            'order_items.*.qty' => ['required', 'integer', 'min:1'],
+            'order_items.*.notes' => ['nullable', 'string', 'max:65535'],
         ];
     }
 
@@ -86,7 +88,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function orderData(): array
     {
-        return $this->safe()->except('items');
+        return $this->safe()->except('order_items');
     }
 
     /**
@@ -94,9 +96,8 @@ class StoreOrderRequest extends FormRequest
      */
     public function orderItems(): array
     {
-        /** @var array<int, array<string, mixed>> $items */
-        $items = $this->validated('items');
+        $orderItems = $this->validated()['order_items'] ?? null;
 
-        return $items;
+        return is_array($orderItems) ? $orderItems : [];
     }
 }

@@ -19,16 +19,20 @@ class OrderController extends Controller
         $order = DB::transaction(function () use ($request): Order {
             $order = Order::create($request->orderData());
 
-            $distributor_id = $order->distributor_id;
+            $items = $request->orderItems();
 
-            $order->orderItems()->createMany(
-                array_map(
-                    fn (array $item): array => array_merge($item, [
-                        'distributor_id' => $distributor_id,
-                    ]),
-                    $request->orderItems(),
-                ),
-            );
+            if ($items !== []) {
+                $distributor_id = $order->distributor_id;
+
+                $order->orderItems()->createMany(
+                    array_map(
+                        fn (array $item): array => array_merge($item, [
+                            'distributor_id' => $distributor_id,
+                        ]),
+                        $items,
+                    ),
+                );
+            }
 
             return $order->refresh()->load('orderItems');
         });
