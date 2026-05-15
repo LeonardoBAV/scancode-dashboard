@@ -61,7 +61,7 @@ class StoreOrderRequest extends FormRequest
                     ->where('distributor_id', $seller->distributor_id),
             ],
             'payment_method_id' => [
-                'required',
+                'nullable',
                 'integer',
                 Rule::exists('payment_methods', 'id')
                     ->where('distributor_id', $seller->distributor_id),

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 dataset('order_protected_columns', [
     'protected_columns' => [
-        ['id', 'status', 'created_at', 'updated_at'],
+        ['id', 'created_at', 'updated_at'],
     ],
 ]);
 
