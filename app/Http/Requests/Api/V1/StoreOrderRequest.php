@@ -66,7 +66,13 @@ class StoreOrderRequest extends FormRequest
                 Rule::exists('payment_methods', 'id')
                     ->where('distributor_id', $seller->distributor_id),
             ],
-            'status' => ['sometimes', Rule::enum(OrderStatusEnum::class)],
+            'status' => [
+                'required',
+                Rule::enum(OrderStatusEnum::class)->only([
+                    OrderStatusEnum::COMPLETED,
+                    OrderStatusEnum::CANCELLED,
+                ]),
+            ],
             'notes' => ['nullable', 'string', 'max:65535'],
             'buyer_name' => ['nullable', 'string', 'max:255'],
             'buyer_phone' => ['nullable', 'string', 'max:255'],
