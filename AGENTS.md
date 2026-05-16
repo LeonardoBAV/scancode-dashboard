@@ -168,6 +168,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 # Test Enforcement
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
+- **Exception — API implementation:** When adding or changing API endpoints (`routes/api.php`, `App\Http\Controllers\Api\V1/*`, `App\Http\Requests\Api\V1/*`, `App\Http\Resources\Api\V1/*`), do **not** add or update automated tests unless the user explicitly asks. See `docs/PROJECT_CONTEXT.md` (sections API and Tests).
 - Run the minimum number of tests needed to ensure code quality and speed. Use `vendor/bin/sail artisan test --compact` with a specific filename or filter.
 
 === laravel/core rules ===
@@ -193,6 +194,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ### APIs & Eloquent Resources
 
 - For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
+- Do not add or update Pest tests for API work unless the user explicitly requests API tests (`docs/PROJECT_CONTEXT.md`).
 
 ## Controllers & Validation
 

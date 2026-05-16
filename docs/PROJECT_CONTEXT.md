@@ -60,6 +60,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 
 ## API
 
+- **Automated tests:** While implementing or changing API endpoints (controllers, Form Requests, resources, routes under `/api/v1/`), **do not** add or update Pest/feature tests unless the user explicitly asks. Manual or external verification is expected for API work. This does not apply to Filament, models used only by the dashboard, or non-API code touched in the same task.
 - **Authentication:** Laravel Sanctum token-based auth for `SalesRepresentative` (login via CPF + password).
 - **Routes:** `routes/api.php`, versioned under `/api/v1/`.
 - **Controller:** `App\Http\Controllers\Api\V1\AuthController` — `POST /api/v1/auth/login` issues a 7-day Bearer token.
@@ -84,11 +85,11 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 ## Tests
 
 - **Pest** feature tests under `tests/Feature/Filament/Dashboard/...` for resources and pages.
-- **API tests:** `tests/Feature/Api/V1/` for API endpoints.
+- **API:** Do **not** create or extend automated tests under `tests/Feature/Api/V1/` when implementing API features (see [API](#api)). Existing API tests may remain; only change them if the user requests it or a non-API change breaks them.
 - **Datasets:** `tests/Datasets/*` for shared examples.
 - Run via Sail: `vendor/bin/sail artisan test --compact` (narrow with path or `--filter`).
 
-Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
+Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (except for API implementation work, unless the user asks for API tests).
 
 ---
 
@@ -96,6 +97,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests.
 
 | Date | Note |
 |------|------|
+| 2026-05-16 | Documented policy: no automated tests when implementing API endpoints unless explicitly requested. |
 | 2026-04-12 | API `POST /api/v1/products`: create product, `StoreProductRequest` merges `distributor_id`, `ProductPolicy::create`. |
 | 2026-04-12 | API `POST /api/v1/payment-methods`: create payment method, `StorePaymentMethodRequest` merges `distributor_id` (Sanctum `SalesRepresentative`), `PaymentMethodPolicy::create`. |
 | 2026-04-12 | API `POST /api/v1/clients`: create client (Sanctum sales rep), `StoreClientRequest` merges `distributor_id`, `ClientPolicy::create`. |

@@ -63,6 +63,10 @@ Ao escrever testes Pest para o painel **dashboard** (multi-tenant `Distributor`)
    Auth::user()->distributor_id;
    ```
 
+### ScanCode — API (sem testes automatizados por padrão)
+
+Ao **implementar ou alterar** endpoints da API (`/api/v1/*`, `App\Http\Controllers\Api\V1/*`, `App\Http\Requests\Api\V1/*`, `App\Http\Resources\Api\V1/*`), **não** crie nem atualize testes em `tests/Feature/Api/V1/` a menos que o utilizador peça explicitamente. Ver `docs/PROJECT_CONTEXT.md` (secções API e Tests) e `AGENTS.md` (Test Enforcement).
+
 ## Assertions
 
 Use specific assertions (`assertSuccessful()`, `assertNotFound()`) instead of `assertStatus()`:
