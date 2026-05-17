@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->can('update', 'paymentMethod')->name('api.v1.payment-methods.update');
 
         Route::post('orders', [OrderController::class, 'store'])->can('create', Order::class)->name('api.v1.orders.store');
+        Route::patch('orders/{order}', [OrderController::class, 'update'])->can('update', 'order')->name('api.v1.orders.update');
 
         Route::get('product-categories', [ProductCategoryController::class, 'index'])->name('api.v1.product-categories.index');
 
