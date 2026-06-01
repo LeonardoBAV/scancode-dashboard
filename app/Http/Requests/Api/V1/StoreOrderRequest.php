@@ -80,6 +80,7 @@ class StoreOrderRequest extends FormRequest
             'order_items.*.product_id' => [
                 'required',
                 'integer',
+                'distinct',
                 Rule::exists('products', 'id')
                     ->where('distributor_id', $seller->distributor_id),
             ],
@@ -87,23 +88,5 @@ class StoreOrderRequest extends FormRequest
             'order_items.*.qty' => ['required', 'integer', 'min:1'],
             'order_items.*.notes' => ['nullable', 'string', 'max:65535'],
         ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function orderData(): array
-    {
-        return $this->safe()->except('order_items');
-    }
-
-    /**
-     * @return array<int, array<string, mixed>>
-     */
-    public function orderItems(): array
-    {
-        $orderItems = $this->validated()['order_items'] ?? null;
-
-        return is_array($orderItems) ? $orderItems : [];
     }
 }

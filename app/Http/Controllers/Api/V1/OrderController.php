@@ -11,7 +11,6 @@ use App\Http\Resources\Api\V1\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -22,26 +21,7 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $order = DB::transaction(function () use ($request): Order {
-            $order = Order::create($request->orderData());
-
-            $items = $request->orderItems();
-
-            if ($items !== []) {
-                $distributor_id = $order->distributor_id;
-
-                $order->orderItems()->createMany(
-                    array_map(
-                        fn (array $item): array => array_merge($item, [
-                            'distributor_id' => $distributor_id,
-                        ]),
-                        $items,
-                    ),
-                );
-            }
-
-            return $order->refresh()->load('orderItems');
-        });
+        $order = $this->orderService->create($request->validated());
 
         return (new OrderResource($order))
             ->response()
