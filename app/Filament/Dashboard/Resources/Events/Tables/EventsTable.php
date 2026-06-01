@@ -7,6 +7,7 @@ namespace App\Filament\Dashboard\Resources\Events\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -19,6 +20,7 @@ class EventsTable
                 self::nameColumn(),
                 self::startColumn(),
                 self::endColumn(),
+                self::hasStockLimitColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -56,6 +58,14 @@ class EventsTable
         return TextColumn::make('end')
             ->label(__('resources.event.table.end'))
             ->date('d/m/Y')
+            ->sortable();
+    }
+
+    protected static function hasStockLimitColumn(): IconColumn
+    {
+        return IconColumn::make('has_stock_limit')
+            ->label(__('resources.event.table.has_stock_limit'))
+            ->boolean()
             ->sortable();
     }
 

@@ -9,9 +9,9 @@ use Illuminate\Validation\Rule;
 
 class ListEventsRequest extends FormRequest
 {
-    private const array ORDERABLE_COLUMNS = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+    private const array ORDERABLE_COLUMNS = ['id', 'name', 'start', 'end', 'has_stock_limit', 'created_at', 'updated_at'];
 
-    private const array SELECTABLE_FIELDS = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+    private const array SELECTABLE_FIELDS = ['id', 'name', 'start', 'end', 'has_stock_limit', 'created_at', 'updated_at'];
 
     private const array ALLOWED_RELATIONS = [
         'distributor',

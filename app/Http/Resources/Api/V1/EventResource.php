@@ -28,6 +28,10 @@ class EventResource extends JsonResource
                 array_key_exists('end', $attributes),
                 fn () => $this->end?->format('Y-m-d'),
             ),
+            'has_stock_limit' => $this->when(
+                array_key_exists('has_stock_limit', $attributes),
+                $this->has_stock_limit,
+            ),
             'created_at' => $this->when(
                 array_key_exists('created_at', $attributes),
                 fn () => $this->created_at?->toIso8601String(),

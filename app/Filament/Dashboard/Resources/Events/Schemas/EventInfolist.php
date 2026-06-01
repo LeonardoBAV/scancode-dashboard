@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Resources\Events\Schemas;
 
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -16,6 +17,7 @@ class EventInfolist
                 self::nameEntry(),
                 self::startEntry(),
                 self::endEntry(),
+                self::hasStockLimitEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
             ]);
@@ -40,6 +42,13 @@ class EventInfolist
         return TextEntry::make('end')
             ->label(__('resources.event.infolist.end'))
             ->date('d/m/Y');
+    }
+
+    protected static function hasStockLimitEntry(): IconEntry
+    {
+        return IconEntry::make('has_stock_limit')
+            ->label(__('resources.event.infolist.has_stock_limit'))
+            ->boolean();
     }
 
     protected static function createdAtEntry(): TextEntry

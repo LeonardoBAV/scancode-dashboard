@@ -7,6 +7,7 @@ namespace App\Filament\Dashboard\Resources\Events\Schemas;
 use App\Models\Event;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
@@ -19,6 +20,7 @@ class EventForm
                 self::nameInput(),
                 self::startInput(),
                 self::endInput(),
+                self::hasStockLimitInput(),
             ]);
     }
 
@@ -49,5 +51,12 @@ class EventForm
             ->native(false)
             ->displayFormat('d/m/Y')
             ->afterOrEqual(fn (Get $get): ?string => $get('start'));
+    }
+
+    protected static function hasStockLimitInput(): Toggle
+    {
+        return Toggle::make('has_stock_limit')
+            ->label(__('resources.event.form.has_stock_limit'))
+            ->default(false);
     }
 }

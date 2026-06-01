@@ -24,6 +24,7 @@ class Event extends Model
         'name',
         'start',
         'end',
+        'has_stock_limit',
     ];
 
     /**
@@ -34,6 +35,7 @@ class Event extends Model
         return [
             'start' => 'date',
             'end' => 'date',
+            'has_stock_limit' => 'boolean',
         ];
     }
 
@@ -56,7 +58,7 @@ class Event extends Model
         string $order = 'start:asc',
         ?int $size = null,
     ): Collection|LengthAwarePaginator {
-        $allowedColumns = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+        $allowedColumns = ['id', 'name', 'start', 'end', 'has_stock_limit', 'created_at', 'updated_at'];
 
         $allowedRelations = [
             'distributor',
@@ -89,7 +91,7 @@ class Event extends Model
         $selectColumns = array_values(array_intersect($fields, $allowedColumns));
 
         if ($selectColumns === []) {
-            $selectColumns = ['id', 'name', 'start', 'end', 'created_at', 'updated_at'];
+            $selectColumns = ['id', 'name', 'start', 'end', 'has_stock_limit', 'created_at', 'updated_at'];
         }
 
         if (! in_array('id', $selectColumns, true)) {

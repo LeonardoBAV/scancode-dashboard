@@ -110,16 +110,19 @@ return [
             'name' => 'Nome',
             'start' => 'Início',
             'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
         ],
         'infolist' => [
             'name' => 'Nome',
             'start' => 'Início',
             'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
         ],
         'form' => [
             'name' => 'Nome',
             'start' => 'Início',
             'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
         ],
     ],
     'order' => [

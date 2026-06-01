@@ -28,6 +28,7 @@ class EventFactory extends Factory
             'name' => fake()->sentence(3),
             'start' => $start->format('Y-m-d'),
             'end' => $end->format('Y-m-d'),
+            'has_stock_limit' => false,
         ];
     }
 }
