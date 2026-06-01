@@ -60,6 +60,7 @@ class UpdateOrderRequest extends FormRequest
                 Rule::exists('products', 'id')
                     ->where('distributor_id', $distributorId),
             ],
+            'order_items.*.movement' => ['nullable', 'uuid'],
             'order_items.*.price' => ['required', 'numeric', 'min:0'],
             'order_items.*.qty' => ['required', 'integer', 'min:1'],
             'order_items.*.notes' => ['nullable', 'string', 'max:65535'],

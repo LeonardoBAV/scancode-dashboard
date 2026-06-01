@@ -18,6 +18,7 @@ class OrderItemResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'movement' => $this->when(array_key_exists('movement', $attributes), $this->movement),
             'distributor_id' => $this->when(array_key_exists('distributor_id', $attributes), $this->distributor_id),
             'order_id' => $this->when(array_key_exists('order_id', $attributes), $this->order_id),
             'product_id' => $this->when(array_key_exists('product_id', $attributes), $this->product_id),

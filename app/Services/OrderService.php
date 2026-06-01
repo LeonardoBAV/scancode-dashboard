@@ -79,6 +79,7 @@ class OrderService
                 ],
                 [
                     'distributor_id' => $distributorId,
+                    'movement' => $item['movement'] ?? null,
                     'price' => $item['price'],
                     'qty' => $item['qty'],
                     'notes' => $item['notes'] ?? null,
