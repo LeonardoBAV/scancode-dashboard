@@ -13,7 +13,7 @@ class PaymentMethodPolicy
     public function create(User|SalesRepresentative $auth): bool
     {
         if (! $auth instanceof SalesRepresentative) {
-            return false;
+            return true;
         }
 
         return $auth->distributor_id !== null;
