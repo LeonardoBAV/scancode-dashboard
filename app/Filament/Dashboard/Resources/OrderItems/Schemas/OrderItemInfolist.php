@@ -14,6 +14,7 @@ class OrderItemInfolist
         return $schema
             ->components([
                 self::productNameEntry(),
+                self::movementEntry(),
                 self::priceEntry(),
                 self::qtyEntry(),
                 self::totalEntry(),
@@ -27,6 +28,13 @@ class OrderItemInfolist
     {
         return TextEntry::make('product.name')
             ->label(__('resources.order_item.infolist.product_name'));
+    }
+
+    protected static function movementEntry(): TextEntry
+    {
+        return TextEntry::make('movement')
+            ->label(__('resources.order_item.infolist.movement'))
+            ->placeholder('N/A');
     }
 
     protected static function priceEntry(): TextEntry

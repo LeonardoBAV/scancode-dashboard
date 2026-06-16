@@ -189,6 +189,7 @@ return [
         'infolist' => [
             'order_id' => 'Pedido',
             'product_name' => 'Produto',
+            'movement' => 'Movimento',
             'price' => 'Preço',
             'qty' => 'Quantidade',
             'notes' => 'Observações',
