@@ -21,14 +21,16 @@ class ListPaymentMethods extends ListRecords
     {
         return [
             CreateAction::make(),
-            Action::make('downloadImportExample')
-                ->label('Baixar exemplo')
-                ->action(fn (): BinaryFileResponse => response()->download(
-                    storage_path('imports/metodos-de-pagamento.csv'),
-                    'metodos-de-pagamento.csv',
-                )),
             ImportAction::make()
                 ->importer(PaymentMethodImporter::class)
+                ->extraModalFooterActions([
+                    Action::make('downloadImportExample')
+                        ->label('Baixar exemplo')
+                        ->action(fn (): BinaryFileResponse => response()->download(
+                            storage_path('imports/metodos-de-pagamento.csv'),
+                            'metodos-de-pagamento.csv',
+                        )),
+                ])
                 ->options(fn (): array => [
                     'distributor_id' => Filament::getTenant()->getKey(),
                 ]),

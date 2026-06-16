@@ -21,14 +21,16 @@ class ListSalesRepresentatives extends ListRecords
     {
         return [
             CreateAction::make(),
-            Action::make('downloadImportExample')
-                ->label('Baixar exemplo')
-                ->action(fn (): BinaryFileResponse => response()->download(
-                    storage_path('imports/representantes.csv'),
-                    'representantes.csv',
-                )),
             ImportAction::make()
                 ->importer(SalesRepresentativeImporter::class)
+                ->extraModalFooterActions([
+                    Action::make('downloadImportExample')
+                        ->label('Baixar exemplo')
+                        ->action(fn (): BinaryFileResponse => response()->download(
+                            storage_path('imports/representantes.csv'),
+                            'representantes.csv',
+                        )),
+                ])
                 ->options(fn (): array => [
                     'distributor_id' => Filament::getTenant()->getKey(),
                 ]),

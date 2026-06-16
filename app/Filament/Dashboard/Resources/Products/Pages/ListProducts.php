@@ -21,14 +21,16 @@ class ListProducts extends ListRecords
     {
         return [
             CreateAction::make(),
-            Action::make('downloadImportExample')
-                ->label('Baixar exemplo')
-                ->action(fn (): BinaryFileResponse => response()->download(
-                    storage_path('imports/produtos.csv'),
-                    'produtos.csv',
-                )),
             ImportAction::make()
                 ->importer(ProductImporter::class)
+                ->extraModalFooterActions([
+                    Action::make('downloadImportExample')
+                        ->label('Baixar exemplo')
+                        ->action(fn (): BinaryFileResponse => response()->download(
+                            storage_path('imports/produtos.csv'),
+                            'produtos.csv',
+                        )),
+                ])
                 ->options(fn (): array => [
                     'distributor_id' => Filament::getTenant()->getKey(),
                 ]),

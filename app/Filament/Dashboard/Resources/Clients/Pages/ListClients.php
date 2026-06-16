@@ -21,14 +21,16 @@ class ListClients extends ListRecords
     {
         return [
             CreateAction::make(),
-            Action::make('downloadImportExample')
-                ->label('Baixar exemplo')
-                ->action(fn (): BinaryFileResponse => response()->download(
-                    storage_path('imports/clientes.csv'),
-                    'clientes.csv',
-                )),
             ImportAction::make()
                 ->importer(ClientImporter::class)
+                ->extraModalFooterActions([
+                    Action::make('downloadImportExample')
+                        ->label('Baixar exemplo')
+                        ->action(fn (): BinaryFileResponse => response()->download(
+                            storage_path('imports/clientes.csv'),
+                            'clientes.csv',
+                        )),
+                ])
                 ->options(fn (): array => [
                     'distributor_id' => Filament::getTenant()->getKey(),
                 ]),
