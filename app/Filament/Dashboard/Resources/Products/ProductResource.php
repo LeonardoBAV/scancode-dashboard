@@ -17,6 +17,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ProductResource extends Resource
 {
@@ -27,6 +28,8 @@ class ProductResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = 'phosphor-package';
 
     protected static ?string $recordTitleAttribute = 'sku';
+
+    protected static UnitEnum|string|null $navigationGroup = 'Cadastros';
 
     protected static ?int $navigationSort = 2;
 
