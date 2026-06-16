@@ -1,0 +1,11 @@
+cpf_cnpj,corporate_name,fantasy_name,email,phone,carrier,buyer_name,buyer_contact
+12000111000101,Mercado Aurora Ltda,Mercado Aurora,compras@aurora.example.com,11940000001,Transportadora Norte,Ana Souza,11950000001
+12000111000102,Padaria Primavera Ltda,Padaria Primavera,compras@primavera.example.com,11940000002,Log Express,Bruno Lima,11950000002
+12000111000103,Restaurante Central Ltda,Restaurante Central,compras@central.example.com,11940000003,Rapido Sul,Carla Martins,11950000003
+12000111000104,Emporio Vila Nova Ltda,Emporio Vila Nova,compras@vilanova.example.com,11940000004,Transportadora Norte,Daniel Costa,11950000004
+12000111000105,Lanchonete Estacao Ltda,Lanchonete Estacao,compras@estacao.example.com,11940000005,Log Express,Elisa Rocha,11950000005
+12000111000106,Supermercado Horizonte Ltda,Super Horizonte,compras@horizonte.example.com,11940000006,Rapido Sul,Fernando Alves,11950000006
+12000111000107,Mercearia Sao Bento Ltda,Mercearia Sao Bento,compras@saobento.example.com,11940000007,Transportadora Norte,Gabriela Nunes,11950000007
+12000111000108,Atacadao Rio Claro Ltda,Atacadao Rio Claro,compras@rioclaro.example.com,11940000008,Log Express,Henrique Dias,11950000008
+12000111000109,Quitanda Boa Vista Ltda,Quitanda Boa Vista,compras@boavista.example.com,11940000009,Rapido Sul,Isabela Melo,11950000009
+12000111000110,Loja Santa Luzia Ltda,Santa Luzia,compras@santaluzia.example.com,11940000010,Transportadora Norte,Joao Pereira,11950000010
