@@ -22,6 +22,7 @@ class OrderItemResource extends JsonResource
             'distributor_id' => $this->when(array_key_exists('distributor_id', $attributes), $this->distributor_id),
             'order_id' => $this->when(array_key_exists('order_id', $attributes), $this->order_id),
             'product_id' => $this->when(array_key_exists('product_id', $attributes), $this->product_id),
+            'product_name' => $this->when(array_key_exists('product_name', $attributes), $this->product_name),
             'price' => $this->when(
                 array_key_exists('price', $attributes),
                 fn (): ?string => $this->price !== null ? (string) $this->price : null,

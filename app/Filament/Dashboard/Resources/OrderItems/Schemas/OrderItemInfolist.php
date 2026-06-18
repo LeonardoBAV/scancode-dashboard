@@ -26,7 +26,7 @@ class OrderItemInfolist
 
     protected static function productNameEntry(): TextEntry
     {
-        return TextEntry::make('product.name')
+        return TextEntry::make('product_name')
             ->label(__('resources.order_item.infolist.product_name'));
     }
 

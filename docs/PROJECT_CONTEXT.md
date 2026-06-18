@@ -97,6 +97,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
+| 2026-06-18 | `order_items`: denormalized snapshot field `product_name` populated by `OrderItemObserver` on create/update; exposed read-only in `OrderItemResource`; Filament order item table/infolist use snapshot column. |
 | 2026-06-18 | `orders`: denormalized snapshot fields `client_cpf_cnpj`, `client_corporate_name`, `client_fantasy_name`, `payment_method_name` populated by `OrderObserver` on create/update; exposed read-only in `OrderResource`; Filament order table/infolist use snapshot columns. |
 | 2026-05-16 | Documented policy: no automated tests when implementing API endpoints unless explicitly requested. |
 | 2026-04-12 | API `POST /api/v1/products`: create product, `StoreProductRequest` merges `distributor_id`, `ProductPolicy::create`. |

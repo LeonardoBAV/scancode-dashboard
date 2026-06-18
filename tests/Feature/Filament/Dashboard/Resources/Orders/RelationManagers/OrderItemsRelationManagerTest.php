@@ -19,6 +19,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\Testing\TestAction;
 use Filament\Actions\ViewAction;
 use Illuminate\Support\Facades\Auth;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
@@ -74,7 +75,7 @@ describe('OrderItem', function () {
             $order = Order::query()->firstOrFail();
 
             livewire(OrderItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class])
-                ->assertCanRenderTableColumn('product.name')
+                ->assertCanRenderTableColumn('product_name')
                 ->assertCanRenderTableColumn('price')
                 ->assertCanRenderTableColumn('qty')
                 ->assertCanRenderTableColumn('total')
@@ -232,6 +233,7 @@ describe('OrderItem', function () {
 
             it('can create an order item', function (OrderItem $orderItem): void {
                 $data = $orderItem->withoutRelations()->toArray();
+                $product = Product::query()->findOrFail($orderItem->product_id);
 
                 livewire(OrderItemsRelationManager::class, ['ownerRecord' => $orderItem->order, 'pageClass' => ViewOrder::class])
                     ->callAction(
@@ -241,7 +243,11 @@ describe('OrderItem', function () {
                     ->assertHasNoFormErrors()
                     ->assertNotified();
 
-                assertDatabaseHas(OrderItem::class, [...$data, 'distributor_id' => Auth::user()->distributor_id]);
+                assertDatabaseHas(OrderItem::class, [
+                    ...$data,
+                    'distributor_id' => Auth::user()->distributor_id,
+                    'product_name' => $product->name,
+                ]);
 
             })->with('order_item_make_five_order_items');
 

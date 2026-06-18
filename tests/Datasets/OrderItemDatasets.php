@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Database\Eloquent\Builder;
 
 dataset('order_item_protected_columns', [
     'protected_columns' => [
-        ['id', 'created_at', 'updated_at'],
+        ['id', 'created_at', 'updated_at', 'product_name'],
     ],
 ]);
 
 dataset('order_item_searchable_columns', [
     'by product name' => [
-        fn (): OrderItem => OrderItem::whereHas('product', fn (Builder $q) => $q->whereNotNull('name'))->firstOrFail(),
-        fn (string $searchValue): OrderItem => OrderItem::whereHas('product', fn (Builder $q) => $q->where('name', '!=', $searchValue))->firstOrFail(),
-        fn (OrderItem $orderItem): string => $orderItem->product->name ?? throw new UnexpectedValueException('Product not found'),
+        fn (): OrderItem => OrderItem::whereNotNull('product_name')->firstOrFail(),
+        fn (string $searchValue): OrderItem => OrderItem::where('product_name', '!=', $searchValue)->orWhereNull('product_name')->firstOrFail(),
+        fn (OrderItem $orderItem): string => $orderItem->product_name ?? throw new UnexpectedValueException('Product name not found'),
     ],
 ]);
 
