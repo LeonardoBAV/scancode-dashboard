@@ -10,6 +10,7 @@ use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Support\Facades\Auth;
+
 use function Pest\Livewire\livewire;
 
 describe('Order List', function (): void {
@@ -44,9 +45,9 @@ describe('Order List', function (): void {
         it('can render columns', function (): void {
             livewire(ListOrders::class)
                 ->assertCanRenderTableColumn('status')
-                ->assertCanRenderTableColumn('client.fantasy_name')
+                ->assertCanRenderTableColumn('client_fantasy_name')
                 ->assertCanRenderTableColumn('salesRepresentative.name')
-                ->assertCanRenderTableColumn('paymentMethod.name')
+                ->assertCanRenderTableColumn('payment_method_name')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 

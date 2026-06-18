@@ -140,7 +140,9 @@ return [
         'infolist' => [
             'status' => 'Status',
             'event' => 'Evento',
-            'client' => 'Cliente',
+            'client_cpf_cnpj' => 'CPF/CNPJ do Cliente',
+            'client_corporate_name' => 'Razão Social do Cliente',
+            'client' => 'Nome Fantasia do Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
             'notes' => 'Observações',

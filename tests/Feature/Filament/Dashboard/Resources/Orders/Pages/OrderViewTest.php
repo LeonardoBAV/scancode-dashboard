@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
 use Illuminate\Support\Facades\Auth;
+
 use function Pest\Livewire\livewire;
 
 describe('Order View', function (): void {
@@ -31,9 +32,11 @@ describe('Order View', function (): void {
             ->assertSchemaStateSet([
                 'status' => $order->status->label(), // obs: remover label e testar
                 'notes' => $order->notes,
-                'client.fantasy_name' => $order->client?->fantasy_name,
+                'client_cpf_cnpj' => $order->client_cpf_cnpj,
+                'client_corporate_name' => $order->client_corporate_name,
+                'client_fantasy_name' => $order->client_fantasy_name,
                 'salesRepresentative.name' => $order->salesRepresentative?->name,
-                'paymentMethod.name' => $order->paymentMethod?->name,
+                'payment_method_name' => $order->payment_method_name,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
             ]);

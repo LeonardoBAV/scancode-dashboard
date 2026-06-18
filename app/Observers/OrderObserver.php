@@ -10,6 +10,8 @@ class OrderObserver
 {
     public function creating(Order $order): void
     {
+        $this->syncClientAndPaymentSnapshots($order);
+
         $order->buyer_name = $order->client?->buyer_name;
         $order->buyer_phone = $order->client?->buyer_contact;
     }
@@ -17,10 +19,24 @@ class OrderObserver
     public function updating(Order $order): void
     {
         $order->ensureCanBeUpdated();
+
+        $this->syncClientAndPaymentSnapshots($order);
     }
 
     public function deleting(Order $order): void
     {
         $order->ensureCanBeDeleted();
+    }
+
+    private function syncClientAndPaymentSnapshots(Order $order): void
+    {
+        $client = $order->client()->first();
+
+        $order->client_cpf_cnpj = $client?->cpf_cnpj;
+        $order->client_corporate_name = $client?->corporate_name;
+        $order->client_fantasy_name = $client?->fantasy_name;
+
+        $paymentMethod = $order->paymentMethod()->first();
+        $order->payment_method_name = $paymentMethod?->name;
     }
 }

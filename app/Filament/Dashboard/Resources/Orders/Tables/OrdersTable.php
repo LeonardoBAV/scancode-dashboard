@@ -60,7 +60,7 @@ class OrdersTable
 
     protected static function clientColumn(): TextColumn
     {
-        return TextColumn::make('client.fantasy_name')
+        return TextColumn::make('client_fantasy_name')
             ->label(__('resources.order.table.client'))
             ->searchable();
     }
@@ -74,7 +74,7 @@ class OrdersTable
 
     protected static function paymentMethodColumn(): TextColumn
     {
-        return TextColumn::make('paymentMethod.name')
+        return TextColumn::make('payment_method_name')
             ->label(__('resources.order.table.payment_method'))
             ->placeholder(__('resources.order.table.payment_method_placeholder'))
             ->searchable();

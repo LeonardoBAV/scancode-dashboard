@@ -11,6 +11,7 @@ use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
@@ -64,6 +65,13 @@ describe('Order Create', function (): void {
             $client = Client::factory()->for($tenant)->create([
                 'buyer_name' => 'Comprador Teste',
                 'buyer_contact' => '(11) 91234-5678',
+                'cpf_cnpj' => '98.765.432/0001-10',
+                'corporate_name' => 'Cliente Filament LTDA',
+                'fantasy_name' => 'Cliente Filament',
+            ]);
+
+            $paymentMethod = PaymentMethod::factory()->for($tenant)->create([
+                'name' => 'Dinheiro',
             ]);
 
             $data = [
@@ -71,7 +79,7 @@ describe('Order Create', function (): void {
                 'event_id' => Event::factory()->for($tenant)->create()->id,
                 'client_id' => $client->id,
                 'sales_representative_id' => SalesRepresentative::factory()->for($tenant)->create()->id,
-                'payment_method_id' => PaymentMethod::factory()->for($tenant)->create()->id,
+                'payment_method_id' => $paymentMethod->id,
                 'notes' => fake()->sentence(),
             ];
 
@@ -87,6 +95,10 @@ describe('Order Create', function (): void {
                 'client_id' => $client->id,
                 'buyer_name' => $client->buyer_name,
                 'buyer_phone' => $client->buyer_contact,
+                'client_cpf_cnpj' => $client->cpf_cnpj,
+                'client_corporate_name' => $client->corporate_name,
+                'client_fantasy_name' => $client->fantasy_name,
+                'payment_method_name' => $paymentMethod->name,
                 'distributor_id' => Auth::user()->distributor_id,
             ]);
 
