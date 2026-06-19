@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Distributor;
 use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
 
@@ -22,8 +23,13 @@ class PaymentMethodSeeder extends Seeder
             ['name' => 'Bank Transfer'],
         ];
 
-        foreach ($paymentMethods as $method) {
-            PaymentMethod::create($method);
+        foreach (Distributor::query()->cursor() as $distributor) {
+            foreach ($paymentMethods as $method) {
+                PaymentMethod::create([
+                    ...$method,
+                    'distributor_id' => $distributor->id,
+                ]);
+            }
         }
     }
 }

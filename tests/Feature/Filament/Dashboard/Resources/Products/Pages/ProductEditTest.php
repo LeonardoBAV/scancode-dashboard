@@ -8,21 +8,24 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Arr;
 
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Livewire\livewire;
 
 describe('Product Edit', function (): void {
 
     beforeEach(function (): void {
-        Product::factory()->create();
+        Product::factory()->create([
+            'distributor_id' => $this->distributor->id,
+            'product_category_id' => ProductCategory::factory()->for($this->distributor),
+        ]);
     });
 
     it('can load the page', function (): void {
 
         $product = Product::firstOrFail();
 
-        livewire(EditProduct::class, ['record' => $product->getRouteKey()])
+        $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
             ->assertOk();
 
     });
@@ -31,9 +34,9 @@ describe('Product Edit', function (): void {
 
         $product = Product::firstOrFail();
 
-        livewire(EditProduct::class, ['record' => $product->getRouteKey()])
+        $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
             ->assertSchemaExists('form')
-            ->assertSchemaStateSet($product->toArray());
+            ->assertSchemaStateSet(Arr::except($product->toArray(), ['distributor_id']));
 
     });
 
@@ -46,23 +49,26 @@ describe('Product Edit', function (): void {
             $product = Product::firstOrFail();
             $productUpdated = $fnProductUpdated($product);
 
-            livewire(EditProduct::class, ['record' => $product->getRouteKey()])
+            $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
                 ->fillForm($productUpdated->toArray())
                 ->call('save')
                 ->assertNotified()
                 ->assertHasNoFormErrors();
 
-            assertDatabaseHas(Product::class, $productUpdated->toArray());
+            assertDatabaseHas(Product::class, [
+                ...$productUpdated->getAttributes(),
+                'distributor_id' => $this->distributor->id,
+            ]);
 
         })->with('product_updated');
 
         it('can delete a product', function (): void {
             $product = Product::firstOrFail();
 
-            livewire(EditProduct::class, ['record' => $product->getRouteKey()])
+            $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
                 ->callAction(DeleteAction::class)
                 ->assertNotified()
-                ->assertRedirect(ProductResource::getUrl('index'));
+                ->assertRedirect(ProductResource::getUrl('index', tenant: $this->distributor));
 
             expect(Product::find($product->id))->toBeNull();
         });
@@ -73,10 +79,13 @@ describe('Product Edit', function (): void {
 
         it('barcode unique validation ignores the current product', function (): void {
 
-            $product = Product::factory()->create(['barcode' => '1111111111111']);
+            $product = Product::factory()->create([
+                'barcode' => '1111111111111',
+                'product_category_id' => ProductCategory::factory()->for($this->distributor),
+            ]);
             $productUpdateData = Product::factory()->make(['barcode' => '1111111111111']);
 
-            livewire(EditProduct::class, ['record' => $product->getRouteKey()])
+            $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
                 ->fillForm($productUpdateData->toArray())
                 ->call('save')
                 ->assertHasNoFormErrors()
@@ -88,18 +97,15 @@ describe('Product Edit', function (): void {
 
     describe('Product Category', function (): void {
 
-        beforeEach(function (): void {
-            ProductCategory::factory()->create();
-        });
-
         it('can update a product category', function (callable $fnProductCategoryUpdated): void {
             /**
              * @var callable(ProductCategory):ProductCategory $fnProductCategoryUpdated
              */
-            $productCategory = ProductCategory::firstOrFail();
+            $product = Product::firstOrFail();
+            $productCategory = $product->productCategory;
             $productCategoryUpdated = $fnProductCategoryUpdated($productCategory);
 
-            livewire(EditProduct::class, ['record' => $productCategory->getRouteKey()])
+            $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
                 ->callAction(
                     TestAction::make('editOption')
                         ->schemaComponent('product_category_id'),
@@ -107,15 +113,18 @@ describe('Product Edit', function (): void {
                 ->assertHasNoFormErrors()
                 ->assertNotified();
 
-            assertDatabaseHas(ProductCategory::class, $productCategoryUpdated->toArray());
+            assertDatabaseHas(ProductCategory::class, [
+                ...$productCategoryUpdated->getAttributes(),
+                'distributor_id' => $this->distributor->id,
+            ]);
 
         })->with('product_category_updated');
 
         it('validation is working', function (): void {
 
-            $productCategory = ProductCategory::firstOrFail();
+            $product = Product::firstOrFail();
 
-            livewire(EditProduct::class, ['record' => $productCategory->getRouteKey()])
+            $this->livewireTenant(EditProduct::class, ['record' => $product->getRouteKey()])
                 ->callAction(
                     TestAction::make('createOption')
                         ->schemaComponent('product_category_id'),

@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use App\Models\Staff;
+use App\Models\User;
 
 return [
 
@@ -42,6 +44,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'staff',
+        ],
     ],
 
     /*
@@ -64,7 +71,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'staff' => [
+            'driver' => 'eloquent',
+            'model' => Staff::class,
         ],
 
         // 'users' => [

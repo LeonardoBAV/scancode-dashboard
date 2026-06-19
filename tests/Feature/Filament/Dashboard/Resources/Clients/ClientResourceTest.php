@@ -8,14 +8,11 @@ use App\Filament\Dashboard\Resources\Clients\Pages\EditClient;
 use App\Filament\Dashboard\Resources\Clients\Pages\ListClients;
 use App\Filament\Dashboard\Resources\Clients\Pages\ViewClient;
 use App\Models\Client;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
 
 describe('Resource - Client:', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->create();
+        Client::factory()->for($this->distributor)->create();
     });
 
     test('resource has correct model', function (): void {
@@ -42,19 +39,17 @@ describe('Resource - Client:', function (): void {
     });
 
     test('index page loads correctly', function (): void {
-        $url = ClientResource::getUrl('index');
+        $url = ClientResource::getUrl('index', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ListClients::class);
     });
 
     test('create page loads correctly', function (): void {
-        $url = ClientResource::getUrl('create');
+        $url = ClientResource::getUrl('create', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(CreateClient::class);
     });
@@ -62,10 +57,9 @@ describe('Resource - Client:', function (): void {
     test('view page loads correctly', function (): void {
         $client = Client::firstOrFail();
 
-        $url = ClientResource::getUrl('view', ['record' => $client]);
+        $url = ClientResource::getUrl('view', ['record' => $client], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ViewClient::class);
     });
@@ -73,10 +67,9 @@ describe('Resource - Client:', function (): void {
     test('edit page loads correctly', function (): void {
         $client = Client::firstOrFail();
 
-        $url = ClientResource::getUrl('edit', ['record' => $client]);
+        $url = ClientResource::getUrl('edit', ['record' => $client], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(EditClient::class);
     });

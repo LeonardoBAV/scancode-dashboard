@@ -19,6 +19,8 @@ class ClientInfolist
                 self::emailEntry(),
                 self::phoneEntry(),
                 self::carrierEntry(),
+                self::buyerNameEntry(),
+                self::buyerContactEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
             ]);
@@ -62,6 +64,20 @@ class ClientInfolist
     {
         return TextEntry::make('carrier')
             ->label(__('resources.client.infolist.carrier'))
+            ->placeholder('-');
+    }
+
+    protected static function buyerNameEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_name')
+            ->label(__('resources.client.infolist.buyer_name'))
+            ->placeholder('-');
+    }
+
+    protected static function buyerContactEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_contact')
+            ->label(__('resources.client.infolist.buyer_contact'))
             ->placeholder('-');
     }
 

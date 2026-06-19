@@ -5,14 +5,20 @@ declare(strict_types=1);
 use App\Enums\OrderStatusEnum;
 use App\Filament\Dashboard\Resources\Orders\Pages\ViewOrder;
 use App\Filament\Dashboard\Resources\Orders\RelationManagers\OrderItemsRelationManager;
+use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PaymentMethod;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\SalesRepresentative;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\Testing\TestAction;
 use Filament\Actions\ViewAction;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -20,10 +26,22 @@ use function Pest\Livewire\livewire;
 describe('OrderItem', function () {
 
     beforeEach(function () {
-        Order::factory(['status' => OrderStatusEnum::PENDING])
-            ->has(OrderItem::factory()->count(10))
-            ->create();
+        $client = Client::factory()->for(Auth::user()->distributor)->create();
 
+        $order = Order::factory()->create([
+            'status' => OrderStatusEnum::PENDING,
+            'client_id' => $client->id,
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+        ]);
+
+        OrderItem::factory()->count(10)->create([
+            'order_id' => $order->id,
+            'distributor_id' => $order->distributor_id,
+            'product_id' => Product::factory()->state([
+                'product_category_id' => ProductCategory::factory()->for(Auth::user()->distributor),
+            ]),
+        ]);
     });
 
     it('can load the relation manager', function () {
@@ -57,7 +75,7 @@ describe('OrderItem', function () {
             $order = Order::query()->firstOrFail();
 
             livewire(OrderItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class])
-                ->assertCanRenderTableColumn('product.name')
+                ->assertCanRenderTableColumn('product_name')
                 ->assertCanRenderTableColumn('price')
                 ->assertCanRenderTableColumn('qty')
                 ->assertCanRenderTableColumn('total')
@@ -121,16 +139,82 @@ describe('OrderItem', function () {
 
         });
 
-        it('check the visibility of record actions by order status', function (Order $order, array $expected): void {
+        it('check the visibility of record actions when order is pending', function (): void {
+            $client = Client::factory()->for(Auth::user()->distributor)->create();
+            $order = Order::factory()->create([
+                'status' => OrderStatusEnum::PENDING,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+                'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+            ]);
+            OrderItem::factory()->create([
+                'order_id' => $order->id,
+                'distributor_id' => $order->distributor_id,
+                'product_id' => Product::factory()->state([
+                    'product_category_id' => ProductCategory::factory()->for(Auth::user()->distributor),
+                ]),
+            ]);
+            $order->refresh();
 
             $livewire = livewire(OrderItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class])
                 ->assertCanSeeTableRecords($order->orderItems);
 
-            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), ViewAction::class, $expected['view']);
-            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), EditAction::class, $expected['edit']);
-            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), DeleteAction::class, $expected['delete']);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), ViewAction::class, true);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), EditAction::class, true);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), DeleteAction::class, true);
+        });
 
-        })->with('visibility_of_record_actions_by_order_status');
+        it('check the visibility of record actions when order is completed', function (): void {
+            $client = Client::factory()->for(Auth::user()->distributor)->create();
+            $order = Order::factory()->create([
+                'status' => OrderStatusEnum::PENDING,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+                'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+            ]);
+            OrderItem::factory()->create([
+                'order_id' => $order->id,
+                'distributor_id' => $order->distributor_id,
+                'product_id' => Product::factory()->state([
+                    'product_category_id' => ProductCategory::factory()->for(Auth::user()->distributor),
+                ]),
+            ]);
+            $order->refresh();
+            $order->toComplete();
+
+            $livewire = livewire(OrderItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class])
+                ->assertCanSeeTableRecords($order->orderItems);
+
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), ViewAction::class, true);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), EditAction::class, false);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), DeleteAction::class, false);
+        });
+
+        it('check the visibility of record actions when order is cancelled', function (): void {
+            $client = Client::factory()->for(Auth::user()->distributor)->create();
+            $order = Order::factory()->create([
+                'status' => OrderStatusEnum::PENDING,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+                'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+            ]);
+            OrderItem::factory()->create([
+                'order_id' => $order->id,
+                'distributor_id' => $order->distributor_id,
+                'product_id' => Product::factory()->state([
+                    'product_category_id' => ProductCategory::factory()->for(Auth::user()->distributor),
+                ]),
+            ]);
+            $order->refresh();
+            $order->toCancel();
+
+            $livewire = livewire(OrderItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class])
+                ->assertCanSeeTableRecords($order->orderItems);
+
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), ViewAction::class, true);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), EditAction::class, false);
+            assertTableRecordActionVisibility($livewire, $order->orderItems->first(), DeleteAction::class, false);
+        });
 
     });
 
@@ -148,8 +232,9 @@ describe('OrderItem', function () {
             });
 
             it('can create an order item', function (OrderItem $orderItem): void {
+                $data = $orderItem->withoutRelations()->toArray();
+                $product = Product::query()->findOrFail($orderItem->product_id);
 
-                $data = $orderItem->toArray();
                 livewire(OrderItemsRelationManager::class, ['ownerRecord' => $orderItem->order, 'pageClass' => ViewOrder::class])
                     ->callAction(
                         TestAction::make(CreateAction::class)->table(),
@@ -158,7 +243,12 @@ describe('OrderItem', function () {
                     ->assertHasNoFormErrors()
                     ->assertNotified();
 
-                assertDatabaseHas(OrderItem::class, $data);
+                assertDatabaseHas(OrderItem::class, [
+                    ...$data,
+                    'distributor_id' => Auth::user()->distributor_id,
+                    'product_name' => $product->name,
+                ]);
+
             })->with('order_item_make_five_order_items');
 
         });

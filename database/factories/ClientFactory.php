@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Client;
+use App\Models\Distributor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,12 +23,16 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
+            'distributor_id' => Distributor::factory(),
             'cpf_cnpj' => fake()->numerify('###########'),
             'corporate_name' => fake()->company(),
             'fantasy_name' => fake()->companySuffix().' '.fake()->word(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
             'carrier' => fake()->optional()->company(),
+            'buyer_name' => fake()->optional()->name(),
+            // Must match Filament `TextInput::make('buyer_contact')->tel()` validation format.
+            'buyer_contact' => fake()->optional()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
         ];
     }
 

@@ -19,6 +19,7 @@ class OrdersTable
         return $table
             ->columns([
                 self::statusColumn(),
+                self::eventColumn(),
                 self::clientColumn(),
                 self::salesRepresentativeColumn(),
                 self::paymentMethodColumn(),
@@ -50,9 +51,16 @@ class OrdersTable
             ->sortable();
     }
 
+    protected static function eventColumn(): TextColumn
+    {
+        return TextColumn::make('event.name')
+            ->label(__('resources.order.table.event'))
+            ->searchable();
+    }
+
     protected static function clientColumn(): TextColumn
     {
-        return TextColumn::make('client.fantasy_name')
+        return TextColumn::make('client_fantasy_name')
             ->label(__('resources.order.table.client'))
             ->searchable();
     }
@@ -66,7 +74,7 @@ class OrdersTable
 
     protected static function paymentMethodColumn(): TextColumn
     {
-        return TextColumn::make('paymentMethod.name')
+        return TextColumn::make('payment_method_name')
             ->label(__('resources.order.table.payment_method'))
             ->placeholder(__('resources.order.table.payment_method_placeholder'))
             ->searchable();

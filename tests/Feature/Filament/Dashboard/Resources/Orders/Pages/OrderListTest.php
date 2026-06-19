@@ -3,19 +3,28 @@
 declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Orders\Pages\ListOrders;
+use App\Models\Client;
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use App\Models\SalesRepresentative;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Livewire\livewire;
 
 describe('Order List', function (): void {
 
     beforeEach(function (): void {
-        // Order::factory()->count(10)->create();
-        Order::factory()->count(4)->create(); // PENDING
-        Order::factory()->count(3)->completed()->create();
-        Order::factory()->count(3)->cancelled()->create();
+        $tenantOrderAttributes = [
+            'client_id' => Client::factory()->for(Auth::user()->distributor),
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+        ];
+
+        Order::factory()->count(4)->create($tenantOrderAttributes);
+        Order::factory()->count(3)->completed()->create($tenantOrderAttributes);
+        Order::factory()->count(3)->cancelled()->create($tenantOrderAttributes);
     });
 
     it('can load the page', function (): void {
@@ -36,9 +45,9 @@ describe('Order List', function (): void {
         it('can render columns', function (): void {
             livewire(ListOrders::class)
                 ->assertCanRenderTableColumn('status')
-                ->assertCanRenderTableColumn('client.fantasy_name')
+                ->assertCanRenderTableColumn('client_fantasy_name')
                 ->assertCanRenderTableColumn('salesRepresentative.name')
-                ->assertCanRenderTableColumn('paymentMethod.name')
+                ->assertCanRenderTableColumn('payment_method_name')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 
@@ -86,7 +95,7 @@ describe('Order List', function (): void {
 
             /*it('can bulk delete orders', function (): void {
 
-                livewire(ListOrders::class)
+                $this->livewireTenant(ListOrders::class)
                     ->assertCanSeeTableRecords(Order::all())
                     ->selectTableRecords(Order::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())

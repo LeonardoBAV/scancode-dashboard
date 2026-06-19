@@ -15,9 +15,14 @@ class OrderInfolist
         return $schema
             ->components([
                 self::statusEntry(),
+                self::eventEntry(),
+                self::clientCpfCnpjEntry(),
+                self::clientCorporateNameEntry(),
                 self::clientEntry(),
                 self::salesRepresentativeEntry(),
                 self::paymentMethodEntry(),
+                self::buyerNameEntry(),
+                self::buyerPhoneEntry(),
                 self::notesEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
@@ -33,10 +38,29 @@ class OrderInfolist
             ->color(fn (Order $record): string => $record->status->color());
     }
 
+    protected static function eventEntry(): TextEntry
+    {
+        return TextEntry::make('event.name')
+            ->label(__('resources.order.infolist.event'));
+    }
+
+    protected static function clientCpfCnpjEntry(): TextEntry
+    {
+        return TextEntry::make('client_cpf_cnpj')
+            ->label(__('resources.order.infolist.client_cpf_cnpj'));
+    }
+
+    protected static function clientCorporateNameEntry(): TextEntry
+    {
+        return TextEntry::make('client_corporate_name')
+            ->label(__('resources.order.infolist.client_corporate_name'));
+    }
+
     protected static function clientEntry(): TextEntry
     {
-        return TextEntry::make('client.fantasy_name')
-            ->label(__('resources.order.infolist.client'));
+        return TextEntry::make('client_fantasy_name')
+            ->label(__('resources.order.infolist.client'))
+            ->placeholder('-');
     }
 
     protected static function salesRepresentativeEntry(): TextEntry
@@ -47,8 +71,22 @@ class OrderInfolist
 
     protected static function paymentMethodEntry(): TextEntry
     {
-        return TextEntry::make('paymentMethod.name')
+        return TextEntry::make('payment_method_name')
             ->label(__('resources.order.infolist.payment_method'))
+            ->placeholder('-');
+    }
+
+    protected static function buyerNameEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_name')
+            ->label(__('resources.order.infolist.buyer_name'))
+            ->placeholder('-');
+    }
+
+    protected static function buyerPhoneEntry(): TextEntry
+    {
+        return TextEntry::make('buyer_phone')
+            ->label(__('resources.order.infolist.buyer_phone'))
             ->placeholder('-');
     }
 
@@ -56,8 +94,7 @@ class OrderInfolist
     {
         return TextEntry::make('notes')
             ->label(__('resources.order.infolist.notes'))
-            ->placeholder('-')
-            ->columnSpanFull();
+            ->placeholder('-');
     }
 
     protected static function createdAtEntry(): TextEntry

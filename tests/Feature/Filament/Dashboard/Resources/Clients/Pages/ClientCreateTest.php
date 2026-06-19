@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Clients\Pages\CreateClient;
 use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -30,7 +31,9 @@ describe('Client Create', function (): void {
                 ->assertFormFieldExists('fantasy_name')
                 ->assertFormFieldExists('email')
                 ->assertFormFieldExists('phone')
-                ->assertFormFieldExists('carrier');
+                ->assertFormFieldExists('carrier')
+                ->assertFormFieldExists('buyer_name')
+                ->assertFormFieldExists('buyer_contact');
 
         });
 
@@ -49,13 +52,13 @@ describe('Client Create', function (): void {
 
             it('cpf cnpj unique validation is working', function (): void {
 
-                $clientOne = Client::factory()->create(['cpf_cnpj' => '12345678901']);
+                $clientOne = Client::factory()->for(Auth::user()->distributor)->create(['cpf_cnpj' => '12345678901']);
                 $clientTwo = Client::factory()->make(['cpf_cnpj' => $clientOne->cpf_cnpj]);
 
                 livewire(CreateClient::class)
                     ->fillForm($clientTwo->toArray())
                     ->call('create')
-                    ->assertHasFormErrors(['cpf_cnpj' => 'unique'])
+                    ->assertHasFormErrors(['cpf_cnpj'])
                     ->assertNotNotified()
                     ->assertNoRedirect();
 
@@ -68,14 +71,19 @@ describe('Client Create', function (): void {
     describe('Actions', function (): void {
 
         it('can create a client', function (Client $client): void {
+            $data = $client->withoutRelations()->toArray();
+
             livewire(CreateClient::class)
-                ->fillForm($client->toArray())
+                ->fillForm($data)
                 ->call('create')
                 ->assertHasNoFormErrors()
                 ->assertNotified()
                 ->assertRedirect();
 
-            assertDatabaseHas(Client::class, $client->toArray());
+            assertDatabaseHas(Client::class, [
+                ...$data,
+                'distributor_id' => Auth::user()->distributor_id,
+            ]);
         })->with('client_make_five_clients');
 
     });

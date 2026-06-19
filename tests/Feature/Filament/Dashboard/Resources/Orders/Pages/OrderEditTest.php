@@ -3,15 +3,25 @@
 declare(strict_types=1);
 
 use App\Filament\Dashboard\Resources\Orders\Pages\EditOrder;
+use App\Models\Client;
 use App\Models\Order;
-
+use App\Models\PaymentMethod;
+use App\Models\SalesRepresentative;
+use Illuminate\Support\Arr;
 use function Pest\Laravel\assertDatabaseHas;
+use Illuminate\Support\Facades\Auth;
 use function Pest\Livewire\livewire;
 
 describe('Order Edit', function (): void {
 
     beforeEach(function (): void {
-        Order::factory()->create();
+        $client = Client::factory()->for(Auth::user()->distributor)->create();
+
+        Order::factory()->create([
+            'client_id' => $client->id,
+            'sales_representative_id' => SalesRepresentative::factory()->for(Auth::user()->distributor),
+            'payment_method_id' => PaymentMethod::factory()->for(Auth::user()->distributor),
+        ]);
     });
 
     it('can load the page', function (): void {
@@ -34,6 +44,8 @@ describe('Order Edit', function (): void {
                 'sales_representative_id' => $order->sales_representative_id,
                 'payment_method_id' => $order->payment_method_id,
                 'notes' => $order->notes,
+                'buyer_name' => $order->buyer_name,
+                'buyer_phone' => $order->buyer_phone,
             ]);
 
     });
@@ -53,7 +65,10 @@ describe('Order Edit', function (): void {
                 ->assertNotified()
                 ->assertHasNoFormErrors();
 
-            assertDatabaseHas(Order::class, $orderUpdated->toArray());
+            assertDatabaseHas(Order::class, [
+                ...Arr::except($orderUpdated->toArray(), ['distributor_id', 'id']),
+                'distributor_id' => Auth::user()->distributor_id,
+            ]);
 
         })->with('order_updated');
 

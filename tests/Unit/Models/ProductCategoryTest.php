@@ -26,7 +26,7 @@ describe('ProductCategory model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            $productCategory = ProductCategory::factory()->create();
+            $productCategory = ProductCategory::factory()->for($this->distributor)->create();
             Product::factory()->count(3)->create(['product_category_id' => $productCategory->id]);
         });
 

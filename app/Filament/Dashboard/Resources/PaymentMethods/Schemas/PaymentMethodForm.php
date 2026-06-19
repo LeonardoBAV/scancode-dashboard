@@ -23,6 +23,6 @@ class PaymentMethodForm
         return TextInput::make('name')
             ->label(__('resources.payment_method.form.name'))
             ->required()
-            ->unique(PaymentMethod::class, 'name', ignoreRecord: true);
+            ->scopedUnique(PaymentMethod::class, 'name', ignoreRecord: true);
     }
 }

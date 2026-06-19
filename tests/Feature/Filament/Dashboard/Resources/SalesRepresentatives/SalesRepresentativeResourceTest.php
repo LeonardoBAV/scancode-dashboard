@@ -8,14 +8,11 @@ use App\Filament\Dashboard\Resources\SalesRepresentatives\Pages\ListSalesReprese
 use App\Filament\Dashboard\Resources\SalesRepresentatives\Pages\ViewSalesRepresentative;
 use App\Filament\Dashboard\Resources\SalesRepresentatives\SalesRepresentativeResource;
 use App\Models\SalesRepresentative;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
 
 describe('Resource - SalesRepresentative:', function (): void {
 
     beforeEach(function (): void {
-        SalesRepresentative::factory()->create();
+        SalesRepresentative::factory()->for($this->distributor)->create();
     });
 
     test('resource has correct model', function (): void {
@@ -42,19 +39,17 @@ describe('Resource - SalesRepresentative:', function (): void {
     });
 
     test('index page loads correctly', function (): void {
-        $url = SalesRepresentativeResource::getUrl('index');
+        $url = SalesRepresentativeResource::getUrl('index', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ListSalesRepresentatives::class);
     });
 
     test('create page loads correctly', function (): void {
-        $url = SalesRepresentativeResource::getUrl('create');
+        $url = SalesRepresentativeResource::getUrl('create', tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(CreateSalesRepresentative::class);
     });
@@ -62,10 +57,9 @@ describe('Resource - SalesRepresentative:', function (): void {
     test('view page loads correctly', function (): void {
         $salesRepresentative = SalesRepresentative::firstOrFail();
 
-        $url = SalesRepresentativeResource::getUrl('view', ['record' => $salesRepresentative]);
+        $url = SalesRepresentativeResource::getUrl('view', ['record' => $salesRepresentative], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(ViewSalesRepresentative::class);
     });
@@ -73,10 +67,9 @@ describe('Resource - SalesRepresentative:', function (): void {
     test('edit page loads correctly', function (): void {
         $salesRepresentative = SalesRepresentative::firstOrFail();
 
-        $url = SalesRepresentativeResource::getUrl('edit', ['record' => $salesRepresentative]);
+        $url = SalesRepresentativeResource::getUrl('edit', ['record' => $salesRepresentative], tenant: $this->distributor);
 
-        actingAs(User::factory()->create())
-            ->get($url)
+        $this->get($url)
             ->assertStatus(200)
             ->assertSeeLivewire(EditSalesRepresentative::class);
     });

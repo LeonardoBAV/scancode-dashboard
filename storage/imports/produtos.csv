@@ -1,0 +1,11 @@
+sku,barcode,name,price,productCategory
+PROD-001,7890000000011,Arroz Tipo 1 5kg,24.90,Alimentos
+PROD-002,7890000000012,Feijao Carioca 1kg,8.50,Alimentos
+PROD-003,7890000000013,Acucar Cristal 5kg,19.90,Alimentos
+PROD-004,7890000000014,Cafe Tradicional 500g,16.90,Bebidas
+PROD-005,7890000000015,Leite Integral 1L,5.20,Bebidas
+PROD-006,7890000000016,Detergente Neutro 500ml,2.80,Limpeza
+PROD-007,7890000000017,Sabao em Po 1kg,12.90,Limpeza
+PROD-008,7890000000018,Papel Toalha 2 Rolos,7.90,Higiene
+PROD-009,7890000000019,Shampoo Neutro 350ml,14.50,Higiene
+PROD-010,7890000000020,Biscoito Cream Cracker 400g,6.30,Alimentos

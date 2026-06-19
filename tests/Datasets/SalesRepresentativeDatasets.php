@@ -11,11 +11,11 @@ dataset('sales_representative_protected_columns', [
 ]);
 
 dataset('sales_representative_make_five_sales_representatives', [
-    fn () => SalesRepresentative::factory()->make(),
-    fn () => SalesRepresentative::factory()->make(),
-    fn () => SalesRepresentative::factory()->make(),
-    fn () => SalesRepresentative::factory()->make(),
-    fn () => SalesRepresentative::factory()->make(),
+    fn () => SalesRepresentative::factory()->make(['distributor_id' => null]),
+    fn () => SalesRepresentative::factory()->make(['distributor_id' => null]),
+    fn () => SalesRepresentative::factory()->make(['distributor_id' => null]),
+    fn () => SalesRepresentative::factory()->make(['distributor_id' => null]),
+    fn () => SalesRepresentative::factory()->make(['distributor_id' => null]),
 ]);
 
 dataset('sales_representative_validations', [
@@ -60,7 +60,7 @@ dataset('sales_representative_searchable_columns', [// OBS: COLOCAR OS TIPOS DE 
 ]);
 
 dataset('sales_representative_updated', [
-    fn (SalesRepresentative $salesRepresentative): SalesRepresentative => SalesRepresentative::factory()->make([
+    fn (SalesRepresentative $salesRepresentative): SalesRepresentative => SalesRepresentative::factory()->for($salesRepresentative->distributor)->make([
         'cpf' => "{$salesRepresentative->cpf}1",
         'name' => "{$salesRepresentative->name}test",
         'email' => "{$salesRepresentative->email}test",

@@ -1,0 +1,133 @@
+# ScanCode — project context
+
+**Purpose:** Single source of narrative truth for humans and AI agents about domain, tenancy, and where code lives. **If this file disagrees with the code, the code wins** — then update this document in the same change when possible.
+
+**Maintenance:** When you change tenancy, new tenant-scoped models, Filament resources, or major business flows, update the relevant sections below. Prefer small, dated notes in [Recent changes](#recent-changes).
+
+---
+
+## Product intent
+
+Laravel + Filament dashboard for **distributors** to manage **catalog, clients, payment methods, sales representatives, and orders** (including line items). Access is **multi-tenant**: each distributor’s data is isolated by `distributor_id`.
+
+---
+
+## Tenancy model
+
+| Concept | Implementation |
+|--------|------------------|
+| **Tenant** | `App\Models\Distributor` (`distributors`: `name`, `slug`, `is_active` default `false`). Route key for URLs: **`slug`**. |
+| **Panel** | Filament **dashboard** panel: id `dashboard`, path `/dashboard`, **default** panel. Tenant = **`Distributor`**. |
+| **Admin panel** | Filament **admin** panel: id `admin`, path `/admin`. Auth guard **`staff`**. No tenancy. Login entity: **`Staff`** (`staff` table). |
+| **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). Shown in routing/onboarding only while `users.distributor_id` is null; menu item and `/new` page are hidden once the user has a distributor (one distributor per user). |
+| **Tenant profile** | `App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile` — edit tenant `name` (slug unchanged). Registered via `tenantProfile()` on the dashboard panel. Authorization: `App\Policies\DistributorPolicy::update` + `User::canAccessTenant`. |
+| **Tenant switcher** | Disabled (`tenantSwitcher(false)`): user is bound to one distributor. |
+| **User ↔ tenant** | `users.distributor_id` (nullable). `User` implements `HasTenants`, `HasDefaultTenant`, `canAccessTenant`: user may only access their own distributor. Users with `distributor_id` null get an empty tenant list. |
+
+**Skill / docs for tenancy work:** `.cursor/skills/filament-tenancy/SKILL.md` and Filament 5 multi-tenancy documentation.
+
+---
+
+## Data scoped by distributor
+
+These tables include **`distributor_id`** (FK to `distributors`, `restrictOnDelete`), scoped per tenant:
+
+- `product_categories`, `products`, `clients`, `payment_methods`, `sales_representatives`, `events`, `orders`, `order_items`
+
+**Uniqueness** is **per distributor** where it matters (e.g. `product_categories`: `[distributor_id, name]`; `products`: SKU/barcode per distributor; `clients`: `cpf_cnpj` per distributor; etc.). See migration `2026_03_22_220054_add_distributor_tenancy_to_application_tables.php`.
+
+---
+
+## Domain outline
+
+- **ProductCategory** → **Product** (catalog).
+- **Client**, **PaymentMethod**, **SalesRepresentative**, **Event** — referenced by **Order** (each order belongs to one event).
+- **Order** — `OrderStatusEnum`, observed by `App\Observers\OrderObserver`.
+- **OrderItem** — observed by `App\Observers\OrderItemObserver`.
+
+Use Eloquent relationships on models under `app/Models/` as the authoritative graph.
+
+---
+
+## Filament (dashboard)
+
+- **Provider:** `App\Providers\Filament\DashboardPanelProvider`.
+- **Auth:** guard `web`, model `User`.
+- **Resources (discovered):** `app/Filament/Dashboard/Resources/` — Clients, PaymentMethods, SalesRepresentatives, Products, Events, Orders, OrderItems (each with pages/schemas as per Filament v5 layout).
+- **Tenancy pages:** `RegisterDistributor`, `EditDistributorProfile` under `app/Filament/Dashboard/Pages/Tenancy/`.
+
+Forms and tables should respect tenant scoping (see existing resources and `filament-tenancy` skill).
+
+## Filament (admin)
+
+- **Provider:** `App\Providers\Filament\AdminPanelProvider`.
+- **Auth:** guard `staff`, model `Staff` (`App\Models\Staff`). No self-registration; accounts seeded or created manually.
+- **Scope:** platform-level administration (no tenant). Resources/widgets discovered under `app/Filament/Admin/` when added.
+- **Files:** `File` (`files`: `path`, `description`, `type` as `FileTypeEnum`: `app`, `desktop`). Upload on disk `public`. Managed via `FileResource`.
+- **Distributors:** `DistributorResource` in admin (`/admin/distributors`) — list + view; `is_active` toggle on table.
+
+---
+
+## API
+
+- **Automated tests:** While implementing or changing API endpoints (controllers, Form Requests, resources, routes under `/api/v1/`), **do not** add or update Pest/feature tests unless the user explicitly asks. Manual or external verification is expected for API work. This does not apply to Filament, models used only by the dashboard, or non-API code touched in the same task.
+- **Authentication:** Laravel Sanctum token-based auth for `SalesRepresentative` (login via CPF + password).
+- **Routes:** `routes/api.php`, versioned under `/api/v1/`.
+- **Controller:** `App\Http\Controllers\Api\V1\AuthController` — `POST /api/v1/auth/login` issues a 7-day Bearer token.
+- **Protected routes** use `auth:sanctum` middleware.
+- `SalesRepresentative` extends `Authenticatable` and uses `HasApiTokens`.
+- `sales_representatives.cpf` has a **global unique** constraint (in addition to the composite `[distributor_id, cpf]`).
+- **Events listing:** `GET /api/v1/events` — returns events scoped to the authenticated `SalesRepresentative`'s `distributor_id`.
+  - Controller: `App\Http\Controllers\Api\V1\EventController@index`.
+  - Request validation: `App\Http\Requests\Api\V1\ListEventsRequest` — supports `filter[name|start_from|start_to|end_from|end_to]`, `fields` (CSV), `relations` array (`distributor|orders`), `order` (column:asc|desc), `size` (null = no pagination).
+  - Resource: `App\Http\Resources\Api\V1\EventResource`.
+  - Model method: `Event::listBy(...)` centralizes query logic.
+  - Global scope: `App\Models\Scopes\FilterDistributorByAuthSalesRepresentativeScope` — filters by `distributor_id` when the authenticated user is a `SalesRepresentative` (API token via Sanctum guard / request user; no-op for Filament `User`, CLI, and jobs).
+- **Clients listing:** `GET /api/v1/clients` — same layering as events: `ClientController@index`, `ListClientsRequest` (`filter[corporate_name|fantasy_name|email|cpf_cnpj]`, `fields`, `order`, `size`), `ClientResource`, `Client::listBy(...)`, same global scope as `Event`.
+- **Clients create:** `POST /api/v1/clients` — `ClientController@store`, `StoreClientRequest` (validates body + merges `distributor_id` from authenticated `SalesRepresentative`), `Client::create`, response `ClientResource` with HTTP 201.
+- **Products listing:** `GET /api/v1/products` — `ProductController@index`, `ListProductsRequest` (`filter[...]`, `fields`, `relations` array of `distributor|productCategory|orderItems`, `order` default `name:asc`, `size`), `ProductResource`, `Product::listBy(..., relations: [...])`, same global scope.
+- **Products create:** `POST /api/v1/products` — `ProductController@store`, `StoreProductRequest` (validates `sku`, optional `barcode`, `name`, `price`, optional `product_category_id` scoped to distributor + merges `distributor_id` from authenticated `SalesRepresentative`), `Product::create`, response `ProductResource` with HTTP 201. `ProductPolicy::create` requires `SalesRepresentative` with `distributor_id`.
+- **Payment methods listing:** `GET /api/v1/payment-methods` — `PaymentMethodController@index`, `ListPaymentMethodsRequest` (`filter[name]`, `fields`, `relations` array of `distributor|orders`, `order` default `name:asc`, `size`), `PaymentMethodResource`, `PaymentMethod::listBy(...)`, same global scope.
+- **Payment methods create:** `POST /api/v1/payment-methods` — `PaymentMethodController@store`, `StorePaymentMethodRequest` (validates `name` + merges `distributor_id` from authenticated `SalesRepresentative`), `PaymentMethod::create`, response `PaymentMethodResource` with HTTP 201. `PaymentMethodPolicy::create` requires `SalesRepresentative` with `distributor_id` (API Sanctum seller).
+
+---
+
+## Tests
+
+- **Pest** feature tests under `tests/Feature/Filament/Dashboard/...` for resources and pages.
+- **API:** Do **not** create or extend automated tests under `tests/Feature/Api/V1/` when implementing API features (see [API](#api)). Existing API tests may remain; only change them if the user requests it or a non-API change breaks them.
+- **Datasets:** `tests/Datasets/*` for shared examples.
+- Run via Sail: `vendor/bin/sail artisan test --compact` (narrow with path or `--filter`).
+
+Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (except for API implementation work, unless the user asks for API tests).
+
+---
+
+## Recent changes
+
+| Date | Note |
+|------|------|
+| 2026-06-19 | Admin: `DistributorResource` (list/view, `is_active` toggle on table). |
+| 2026-06-19 | `distributors.is_active` boolean (default `false`). |
+| 2026-06-19 | `File.type`: replaced `FileType` model/table with `FileTypeEnum` (`app`, `desktop`). |
+| 2026-06-19 | Admin panel: `File` upload via Filament `FileUpload` on `path` (disk `public`); `FileResource` in `app/Filament/Admin/Resources/Files/`. |
+| 2026-06-19 | Filament **admin** panel (`/admin`, guard `staff`) + `Staff` model/table for platform administration; `User::canAccessPanel` limited to `dashboard`. |
+| 2026-06-18 | `order_items`: denormalized snapshot field `product_name` populated by `OrderItemObserver` on create/update; exposed read-only in `OrderItemResource`; Filament order item table/infolist use snapshot column. |
+| 2026-06-18 | `orders`: denormalized snapshot fields `client_cpf_cnpj`, `client_corporate_name`, `client_fantasy_name`, `payment_method_name` populated by `OrderObserver` on create/update; exposed read-only in `OrderResource`; Filament order table/infolist use snapshot columns. |
+| 2026-05-16 | Documented policy: no automated tests when implementing API endpoints unless explicitly requested. |
+| 2026-04-12 | API `POST /api/v1/products`: create product, `StoreProductRequest` merges `distributor_id`, `ProductPolicy::create`. |
+| 2026-04-12 | API `POST /api/v1/payment-methods`: create payment method, `StorePaymentMethodRequest` merges `distributor_id` (Sanctum `SalesRepresentative`), `PaymentMethodPolicy::create`. |
+| 2026-04-12 | API `POST /api/v1/clients`: create client (Sanctum sales rep), `StoreClientRequest` merges `distributor_id`, `ClientPolicy::create`. |
+| 2026-03-24 | Initial `PROJECT_CONTEXT.md`: Distributor tenancy, dashboard resources, scoped tables. |
+| 2026-03-24 | Tenant profile page `EditDistributorProfile` + `DistributorPolicy::update`. |
+| 2026-03-24 | `RegisterDistributor::canView`: hide tenant registration menu/URL when user already has `distributor_id`. |
+| 2026-03-25 | API layer: Sanctum installed, `SalesRepresentative` auth endpoint (`POST /api/v1/auth/login`), 7-day tokens, global unique CPF. |
+| 2026-03-29 | `events` table + `Event` model; `orders.event_id` FK; Filament Events resource; Order form/table/infolist include event. |
+| 2026-03-29 | `PaymentMethodSeeder` seeds methods per `Distributor`; `OrderSeeder` aligns reps/payment/event/products by `distributor_id`, creates items while pending then transitions status. |
+| 2026-03-30 | API `GET /api/v1/events`: list events for authenticated seller, scoped by `distributor_id`, with filters/fields/order/pagination. Global scope `FilterDistributorByAuthSalesRepresentativeScope`. |
+| 2026-04-04 | API `GET /api/v1/clients`: list clients for authenticated seller (same pattern as events). Scope resolves Sanctum / `request()->user()` so Bearer tokens apply `distributor_id` filtering. |
+| 2026-04-05 | API `GET /api/v1/products`: list products for authenticated seller (same pattern as events/clients). |
+| 2026-04-05 | API `GET /api/v1/payment-methods`: list payment methods for authenticated seller (`PaymentMethod::listBy`, optional `relations`). |
+| 2026-04-05 | API `GET /api/v1/events`: optional `relations` array (`distributor`, `orders`) + `Event::allowedListByRelations()`. |
+
+*(Append new rows when behavior or architecture shifts.)*

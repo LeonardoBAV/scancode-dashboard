@@ -20,6 +20,8 @@ class ClientForm
                 self::emailInput(),
                 self::phoneInput(),
                 self::carrierInput(),
+                self::buyerNameInput(),
+                self::buyerContactInput(),
             ]);
     }
 
@@ -28,7 +30,7 @@ class ClientForm
         return TextInput::make('cpf_cnpj')
             ->label(__('resources.client.form.cpf_cnpj'))
             ->required()
-            ->unique(Client::class, 'cpf_cnpj');
+            ->scopedUnique(Client::class, 'cpf_cnpj', ignoreRecord: true);
     }
 
     protected static function corporateNameInput(): TextInput
@@ -62,5 +64,18 @@ class ClientForm
     {
         return TextInput::make('carrier')
             ->label(__('resources.client.form.carrier'));
+    }
+
+    protected static function buyerNameInput(): TextInput
+    {
+        return TextInput::make('buyer_name')
+            ->label(__('resources.client.form.buyer_name'));
+    }
+
+    protected static function buyerContactInput(): TextInput
+    {
+        return TextInput::make('buyer_contact')
+            ->label(__('resources.client.form.buyer_contact'))
+            ->tel();
     }
 }

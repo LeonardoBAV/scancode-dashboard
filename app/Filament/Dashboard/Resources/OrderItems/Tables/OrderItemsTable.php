@@ -40,7 +40,7 @@ class OrderItemsTable
 
     protected static function productNameColumn(): TextColumn
     {
-        return TextColumn::make('product.name')
+        return TextColumn::make('product_name')
             ->label(__('resources.order_item.table.product_name'))
             ->searchable();
     }

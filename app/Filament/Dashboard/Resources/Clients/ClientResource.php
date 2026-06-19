@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ClientResource extends Resource
 {
@@ -28,6 +29,8 @@ class ClientResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = 'phosphor-users'; // Lucide::User; // Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'corporate_name';
+
+    protected static UnitEnum|string|null $navigationGroup = 'Cadastros';
 
     // sort novigation position
     protected static ?int $navigationSort = 1;

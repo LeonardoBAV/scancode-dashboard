@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 use App\Enums\OrderStatusEnum;
 use App\Filament\Dashboard\Resources\Orders\Pages\CreateOrder;
+use App\Models\Client;
+use App\Models\Event;
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use App\Models\SalesRepresentative;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
@@ -26,6 +32,7 @@ describe('Order Create', function (): void {
         it('has all fields', function (): void {
 
             livewire(CreateOrder::class)
+                ->assertFormFieldExists('event_id')
                 ->assertFormFieldExists('client_id')
                 ->assertFormFieldExists('sales_representative_id')
                 ->assertFormFieldExists('payment_method_id')
@@ -38,7 +45,7 @@ describe('Order Create', function (): void {
             it('basic validations are working', function (Order $order, array $errors): void {
 
                 livewire(CreateOrder::class)
-                    ->fillForm($order->toArray())
+                    ->fillForm(Arr::except($order->toArray(), ['buyer_name', 'buyer_phone']))
                     ->call('create')
                     ->assertHasFormErrors($errors)
                     ->assertNotNotified()
@@ -53,16 +60,48 @@ describe('Order Create', function (): void {
     describe('Actions', function (): void {
 
         it('can create an order', function (): void {
-            $order = Order::factory()->make(['status' => OrderStatusEnum::PENDING]);
+            $tenant = Auth::user()->distributor;
+
+            $client = Client::factory()->for($tenant)->create([
+                'buyer_name' => 'Comprador Teste',
+                'buyer_contact' => '(11) 91234-5678',
+                'cpf_cnpj' => '98.765.432/0001-10',
+                'corporate_name' => 'Cliente Filament LTDA',
+                'fantasy_name' => 'Cliente Filament',
+            ]);
+
+            $paymentMethod = PaymentMethod::factory()->for($tenant)->create([
+                'name' => 'Dinheiro',
+            ]);
+
+            $data = [
+                'status' => OrderStatusEnum::PENDING,
+                'event_id' => Event::factory()->for($tenant)->create()->id,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for($tenant)->create()->id,
+                'payment_method_id' => $paymentMethod->id,
+                'notes' => fake()->sentence(),
+            ];
 
             livewire(CreateOrder::class)
-                ->fillForm($order->toArray())
+                ->fillForm($data)
                 ->call('create')
                 ->assertHasNoFormErrors()
                 ->assertNotified()
                 ->assertRedirect();
 
-            assertDatabaseHas(Order::class, $order->toArray());
+            assertDatabaseHas(Order::class, [...$data, 'distributor_id' => Auth::user()->distributor_id]);
+            assertDatabaseHas(Order::class, [
+                'client_id' => $client->id,
+                'buyer_name' => $client->buyer_name,
+                'buyer_phone' => $client->buyer_contact,
+                'client_cpf_cnpj' => $client->cpf_cnpj,
+                'client_corporate_name' => $client->corporate_name,
+                'client_fantasy_name' => $client->fantasy_name,
+                'payment_method_name' => $paymentMethod->name,
+                'distributor_id' => Auth::user()->distributor_id,
+            ]);
+
         });
 
     });

@@ -7,6 +7,8 @@ use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PaymentMethod;
+use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\SalesRepresentative;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -30,8 +32,22 @@ describe('Order model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            $order = Order::factory()->create(['status' => OrderStatusEnum::PENDING]);
-            OrderItem::factory()->count(3)->create(['order_id' => $order->id]);
+            $client = Client::factory()->for($this->distributor)->create();
+
+            $order = Order::factory()->create([
+                'status' => OrderStatusEnum::PENDING,
+                'client_id' => $client->id,
+                'sales_representative_id' => SalesRepresentative::factory()->for($this->distributor),
+                'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            ]);
+
+            OrderItem::factory()->count(3)->create([
+                'order_id' => $order->id,
+                'distributor_id' => $order->distributor_id,
+                'product_id' => Product::factory()->state([
+                    'product_category_id' => ProductCategory::factory()->for($this->distributor),
+                ]),
+            ]);
         });
 
         test('order belongs to a client', function (): void {

@@ -21,7 +21,12 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
+        'distributor_id',
+        'event_id',
+        'status',
         'notes',
+        'buyer_name',
+        'buyer_phone',
         'client_id',
         'sales_representative_id',
         'payment_method_id',
@@ -32,6 +37,22 @@ class Order extends Model
         'updated_at' => 'datetime',
         'status' => OrderStatusEnum::class,
     ];
+
+    /**
+     * @return BelongsTo<Distributor, $this>
+     */
+    public function distributor(): BelongsTo
+    {
+        return $this->belongsTo(Distributor::class);
+    }
+
+    /**
+     * @return BelongsTo<Event, $this>
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
 
     /**
      * @return BelongsTo<Client, $this>

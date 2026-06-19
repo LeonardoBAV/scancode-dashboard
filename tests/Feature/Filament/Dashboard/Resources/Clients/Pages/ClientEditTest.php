@@ -7,14 +7,18 @@ use App\Filament\Dashboard\Resources\Clients\Pages\EditClient;
 use App\Models\Client;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
+use Illuminate\Support\Arr;
 
+use Illuminate\Support\Facades\Auth;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Livewire\livewire;
 
 describe('Client Edit', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->create();
+        $distributor = Auth::user()->distributor;
+
+        Client::factory()->for($distributor)->create();
     });
 
     it('can load the page', function (): void {
@@ -32,7 +36,7 @@ describe('Client Edit', function (): void {
 
         livewire(EditClient::class, ['record' => $client->getRouteKey()])
             ->assertSchemaExists('form')
-            ->assertSchemaStateSet($client->toArray());
+            ->assertSchemaStateSet(Arr::except($client->toArray(), ['distributor_id']));
 
     });
 
@@ -51,7 +55,10 @@ describe('Client Edit', function (): void {
                 ->assertNotified()
                 ->assertHasNoFormErrors();
 
-            assertDatabaseHas(Client::class, $clientUpdated->toArray());
+            assertDatabaseHas(Client::class, [
+                ...Arr::except($clientUpdated->toArray(), ['distributor_id', 'id']),
+                'distributor_id' => Auth::user()->distributor_id,
+            ]);
 
         })->with('client_updated');
 
@@ -91,21 +98,21 @@ describe('Client Edit', function (): void {
 
 
 test('has view action in header', function () {
-    livewire(EditClient::class, [
+    $this->livewireTenant(EditClient::class, [
         'record' => $this->client->getRouteKey(),
     ])
         ->assertActionExists(ViewAction::class);
 });
 
 test('has delete action in header', function () {
-    livewire(EditClient::class, [
+    $this->livewireTenant(EditClient::class, [
         'record' => $this->client->getRouteKey(),
     ])
         ->assertActionExists(DeleteAction::class);
 });
 
 test('can delete client from edit page', function () {
-    livewire(EditClient::class, [
+    $this->livewireTenant(EditClient::class, [
         'record' => $this->client->getRouteKey(),
     ])
         ->callAction(DeleteAction::class)

@@ -22,6 +22,8 @@ class ClientsTable
                 self::emailColumn(),
                 self::phoneColumn(),
                 self::carrierColumn(),
+                self::buyerNameColumn(),
+                self::buyerContactColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -78,6 +80,22 @@ class ClientsTable
         return TextColumn::make('carrier')
             ->label(__('resources.client.table.carrier'))
             ->placeholder(__('resources.client.table.carrier_placeholder'))
+            ->searchable();
+    }
+
+    protected static function buyerNameColumn(): TextColumn
+    {
+        return TextColumn::make('buyer_name')
+            ->label(__('resources.client.table.buyer_name'))
+            ->placeholder(__('resources.client.table.buyer_placeholder'))
+            ->searchable();
+    }
+
+    protected static function buyerContactColumn(): TextColumn
+    {
+        return TextColumn::make('buyer_contact')
+            ->label(__('resources.client.table.buyer_contact'))
+            ->placeholder(__('resources.client.table.buyer_placeholder'))
             ->searchable();
     }
 

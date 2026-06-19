@@ -16,6 +16,9 @@ return [
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
             'carrier_placeholder' => 'Nenhuma transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
+            'buyer_placeholder' => '—',
         ],
         'infolist' => [
             'cpf_cnpj' => 'CPF/CNPJ',
@@ -24,6 +27,8 @@ return [
             'email' => 'Email',
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
         ],
         'form' => [
             'cpf_cnpj' => 'CPF/CNPJ',
@@ -32,6 +37,8 @@ return [
             'email' => 'Email',
             'phone' => 'Telefone',
             'carrier' => 'Transportadora',
+            'buyer_name' => 'Nome do comprador',
+            'buyer_contact' => 'Contato do comprador',
         ],
     ],
     'sales_representative' => [
@@ -95,12 +102,36 @@ return [
             'name' => 'Nome',
         ],
     ],
+    'event' => [
+        'navigation_label' => 'Eventos',
+        'plural_model_label' => 'Eventos',
+        'model_label' => 'Evento',
+        'table' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
+        ],
+        'infolist' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
+        ],
+        'form' => [
+            'name' => 'Nome',
+            'start' => 'Início',
+            'end' => 'Fim',
+            'has_stock_limit' => 'Limita estoque',
+        ],
+    ],
     'order' => [
         'navigation_label' => 'Pedidos',
         'plural_model_label' => 'Pedidos',
         'model_label' => 'Pedido',
         'table' => [
             'status' => 'Status',
+            'event' => 'Evento',
             'client' => 'Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
@@ -108,17 +139,25 @@ return [
         ],
         'infolist' => [
             'status' => 'Status',
-            'client' => 'Cliente',
+            'event' => 'Evento',
+            'client_cpf_cnpj' => 'CPF/CNPJ do Cliente',
+            'client_corporate_name' => 'Razão Social do Cliente',
+            'client' => 'Nome Fantasia do Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
             'notes' => 'Observações',
+            'buyer_name' => 'Nome do Comprador',
+            'buyer_phone' => 'Telefone do Comprador',
         ],
         'form' => [
             'status' => 'Status',
+            'event' => 'Evento',
             'client' => 'Cliente',
             'sales_representative' => 'Representante',
             'payment_method' => 'Método de Pagamento',
             'notes' => 'Observações',
+            'buyer_name' => 'Nome do Comprador',
+            'buyer_phone' => 'Telefone do Comprador',
         ],
         'actions' => [
             'cancel' => 'Cancelar',
@@ -152,9 +191,50 @@ return [
         'infolist' => [
             'order_id' => 'Pedido',
             'product_name' => 'Produto',
+            'movement' => 'Movimento',
             'price' => 'Preço',
             'qty' => 'Quantidade',
             'notes' => 'Observações',
+        ],
+    ],
+    'file' => [
+        'navigation_label' => 'Arquivos',
+        'plural_model_label' => 'Arquivos',
+        'model_label' => 'Arquivo',
+        'table' => [
+            'path' => 'Arquivo',
+            'description' => 'Descrição',
+            'type' => 'Tipo',
+            'download' => 'Download',
+            'download_action' => 'Baixar',
+        ],
+        'infolist' => [
+            'path' => 'Arquivo',
+            'description' => 'Descrição',
+            'type' => 'Tipo',
+        ],
+        'form' => [
+            'path' => 'Arquivo',
+            'path_helper' => 'Selecione ou arraste um arquivo. Aguarde o upload terminar antes de salvar.',
+            'path_uploading' => 'Enviando arquivo...',
+            'description' => 'Descrição',
+            'type' => 'Tipo',
+        ],
+    ],
+
+    'distributor' => [
+        'navigation_label' => 'Distribuidores',
+        'plural_model_label' => 'Distribuidores',
+        'model_label' => 'Distribuidor',
+        'table' => [
+            'name' => 'Nome',
+            'slug' => 'Slug',
+            'is_active' => 'Ativo',
+        ],
+        'infolist' => [
+            'name' => 'Nome',
+            'slug' => 'Slug',
+            'is_active' => 'Ativo',
         ],
     ],
 

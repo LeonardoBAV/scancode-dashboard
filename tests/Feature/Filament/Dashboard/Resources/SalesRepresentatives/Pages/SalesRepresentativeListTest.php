@@ -17,7 +17,7 @@ describe('SalesRepresentative List', function (): void {
 
     it('can load the page', function (): void {
 
-        livewire(ListSalesRepresentatives::class)
+        $this->livewireTenant(ListSalesRepresentatives::class)
             ->assertSuccessful();
     });
 
@@ -31,7 +31,7 @@ describe('SalesRepresentative List', function (): void {
     describe('Table:', function (): void {
 
         it('can render columns', function (): void {
-            livewire(ListSalesRepresentatives::class)
+            $this->livewireTenant(ListSalesRepresentatives::class)
                 ->assertCanRenderTableColumn('cpf')
                 ->assertCanRenderTableColumn('name')
                 ->assertCanRenderTableColumn('email')
@@ -55,7 +55,7 @@ describe('SalesRepresentative List', function (): void {
                 $searchValue = $fnValue($salesRepresentative);
                 $salesRepresentativeNotFound = $fnSalesRepresentativeNotFound($searchValue);
 
-                livewire(ListSalesRepresentatives::class)
+                $this->livewireTenant(ListSalesRepresentatives::class)
                     ->assertCanSeeTableRecords(SalesRepresentative::all())
                     ->searchTable($searchValue)
                     ->assertCanSeeTableRecords([$salesRepresentative])
@@ -68,7 +68,7 @@ describe('SalesRepresentative List', function (): void {
 
             it('can bulk delete sales representatives', function (): void {
 
-                livewire(ListSalesRepresentatives::class)
+                $this->livewireTenant(ListSalesRepresentatives::class)
                     ->assertCanSeeTableRecords(SalesRepresentative::all())
                     ->selectTableRecords(SalesRepresentative::all())
                     ->callAction(TestAction::make(DeleteBulkAction::class)->table()->bulk())

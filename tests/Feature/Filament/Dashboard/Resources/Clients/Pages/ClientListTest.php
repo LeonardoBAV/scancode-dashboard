@@ -6,13 +6,25 @@ use App\Filament\Dashboard\Resources\Clients\Pages\ListClients;
 use App\Models\Client;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Livewire\livewire;
 
 describe('Client List', function (): void {
 
     beforeEach(function (): void {
-        Client::factory()->count(10)->create();
+        $distributor = Auth::user()->distributor;
+
+        Client::factory()->count(4)->for($distributor)->create();
+
+        Client::factory()->for($distributor)->create([
+            'fantasy_name' => fake()->companySuffix().' '.fake()->word(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->regexify('\([0-9]{2}\) [0-9]{5}-[0-9]{4}'),
+            'carrier' => fake()->company(),
+            'buyer_name' => fake()->name(),
+            'buyer_contact' => fake()->phoneNumber(),
+        ]);
     });
 
     it('can load the page', function (): void {
@@ -22,7 +34,6 @@ describe('Client List', function (): void {
     });
 
     it('can list clients', function (): void {
-
         livewire(ListClients::class)
             ->assertCanSeeTableRecords(Client::all())
             ->assertCountTableRecords(Client::count());
@@ -38,6 +49,8 @@ describe('Client List', function (): void {
                 ->assertCanRenderTableColumn('email')
                 ->assertCanRenderTableColumn('phone')
                 ->assertCanRenderTableColumn('carrier')
+                ->assertCanRenderTableColumn('buyer_name')
+                ->assertCanRenderTableColumn('buyer_contact')
                 ->assertCanNotRenderTableColumn('created_at')
                 ->assertCanNotRenderTableColumn('updated_at')
 

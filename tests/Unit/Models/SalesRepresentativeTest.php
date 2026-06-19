@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Client;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\SalesRepresentative;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -26,8 +28,14 @@ describe('SalesRepresentative model:', function (): void {
     describe('Relations', function (): void {
 
         beforeEach(function (): void {
-            $salesRepresentative = SalesRepresentative::factory()->create();
-            Order::factory()->count(3)->create(['sales_representative_id' => $salesRepresentative->id]);
+            $salesRepresentative = SalesRepresentative::factory()->for($this->distributor)->create();
+            $client = Client::factory()->for($this->distributor)->create();
+
+            Order::factory()->count(3)->create([
+                'sales_representative_id' => $salesRepresentative->id,
+                'client_id' => $client->id,
+                'payment_method_id' => PaymentMethod::factory()->for($this->distributor),
+            ]);
         });
 
         test('sales representative has many orders', function (): void {

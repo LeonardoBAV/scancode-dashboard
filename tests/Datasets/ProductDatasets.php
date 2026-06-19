@@ -11,11 +11,11 @@ dataset('product_protected_columns', [
 ]);
 
 dataset('product_make_five_products', [
-    fn () => Product::factory()->make(),
-    fn () => Product::factory()->make(),
-    fn () => Product::factory()->make(),
-    fn () => Product::factory()->make(),
-    fn () => Product::factory()->make(),
+    fn () => Product::factory()->make(['distributor_id' => null]),
+    fn () => Product::factory()->make(['distributor_id' => null]),
+    fn () => Product::factory()->make(['distributor_id' => null]),
+    fn () => Product::factory()->make(['distributor_id' => null]),
+    fn () => Product::factory()->make(['distributor_id' => null]),
 ]);
 
 dataset('product_validations', [
