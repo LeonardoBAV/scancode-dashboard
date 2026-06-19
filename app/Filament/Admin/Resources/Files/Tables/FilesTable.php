@@ -21,6 +21,7 @@ class FilesTable
                 self::descriptionColumn(),
                 self::pathColumn(),
                 self::typeColumn(),
+                self::downloadColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -63,6 +64,19 @@ class FilesTable
             ->label(__('resources.file.table.type'))
             ->state(fn (File $record): string => $record->type->label())
             ->sortable();
+    }
+
+    protected static function downloadColumn(): TextColumn
+    {
+        return TextColumn::make('download')
+            ->label(__('resources.file.table.download'))
+            ->state(__('resources.file.table.download_action'))
+            ->url(fn (File $record): ?string => $record->getPublicUrl())
+            ->openUrlInNewTab()
+            ->icon('phosphor-download')
+            ->color('primary')
+            ->alignCenter()
+            ->placeholder('-');
     }
 
     protected static function createdAtColumn(): TextColumn

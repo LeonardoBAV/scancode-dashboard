@@ -205,6 +205,8 @@ return [
             'path' => 'Arquivo',
             'description' => 'Descrição',
             'type' => 'Tipo',
+            'download' => 'Download',
+            'download_action' => 'Baixar',
         ],
         'infolist' => [
             'path' => 'Arquivo',

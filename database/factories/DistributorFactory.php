@@ -25,6 +25,7 @@ class DistributorFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name.'-'.fake()->unique()->numerify('####')),
+            'is_active' => false,
         ];
     }
 }

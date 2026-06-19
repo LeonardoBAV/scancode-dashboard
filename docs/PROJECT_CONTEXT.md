@@ -16,7 +16,7 @@ Laravel + Filament dashboard for **distributors** to manage **catalog, clients, 
 
 | Concept | Implementation |
 |--------|------------------|
-| **Tenant** | `App\Models\Distributor` (`distributors`: `name`, `slug`). Route key for URLs: **`slug`**. |
+| **Tenant** | `App\Models\Distributor` (`distributors`: `name`, `slug`, `is_active` default `false`). Route key for URLs: **`slug`**. |
 | **Panel** | Filament **dashboard** panel: id `dashboard`, path `/dashboard`, **default** panel. Tenant = **`Distributor`**. |
 | **Admin panel** | Filament **admin** panel: id `admin`, path `/admin`. Auth guard **`staff`**. No tenancy. Login entity: **`Staff`** (`staff` table). |
 | **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). Shown in routing/onboarding only while `users.distributor_id` is null; menu item and `/new` page are hidden once the user has a distributor (one distributor per user). |
@@ -106,6 +106,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
+| 2026-06-19 | `distributors.is_active` boolean (default `false`); no Filament UI yet. |
 | 2026-06-19 | `File.type`: replaced `FileType` model/table with `FileTypeEnum` (`app`, `desktop`). |
 | 2026-06-19 | Admin panel: `File` upload via Filament `FileUpload` on `path` (disk `public`); `FileResource` in `app/Filament/Admin/Resources/Files/`. |
 | 2026-06-19 | Filament **admin** panel (`/admin`, guard `staff`) + `Staff` model/table for platform administration; `User::canAccessPanel` limited to `dashboard`. |

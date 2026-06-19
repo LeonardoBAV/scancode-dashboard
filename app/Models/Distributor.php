@@ -21,7 +21,18 @@ class Distributor extends Model implements HasName
     protected $fillable = [
         'name',
         'slug',
+        'is_active',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 
     /**
      * @return HasMany<User, $this>
