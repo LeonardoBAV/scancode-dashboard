@@ -222,4 +222,20 @@ return [
         ],
     ],
 
+    'distributor' => [
+        'navigation_label' => 'Distribuidores',
+        'plural_model_label' => 'Distribuidores',
+        'model_label' => 'Distribuidor',
+        'table' => [
+            'name' => 'Nome',
+            'slug' => 'Slug',
+            'is_active' => 'Ativo',
+        ],
+        'infolist' => [
+            'name' => 'Nome',
+            'slug' => 'Slug',
+            'is_active' => 'Ativo',
+        ],
+    ],
+
 ];

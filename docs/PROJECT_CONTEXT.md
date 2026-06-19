@@ -64,6 +64,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - **Auth:** guard `staff`, model `Staff` (`App\Models\Staff`). No self-registration; accounts seeded or created manually.
 - **Scope:** platform-level administration (no tenant). Resources/widgets discovered under `app/Filament/Admin/` when added.
 - **Files:** `File` (`files`: `path`, `description`, `type` as `FileTypeEnum`: `app`, `desktop`). Upload on disk `public`. Managed via `FileResource`.
+- **Distributors:** `DistributorResource` in admin (`/admin/distributors`) — list + view; `is_active` toggle on table.
 
 ---
 
@@ -106,7 +107,8 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
-| 2026-06-19 | `distributors.is_active` boolean (default `false`); no Filament UI yet. |
+| 2026-06-19 | Admin: `DistributorResource` (list/view, `is_active` toggle on table). |
+| 2026-06-19 | `distributors.is_active` boolean (default `false`). |
 | 2026-06-19 | `File.type`: replaced `FileType` model/table with `FileTypeEnum` (`app`, `desktop`). |
 | 2026-06-19 | Admin panel: `File` upload via Filament `FileUpload` on `path` (disk `public`); `FileResource` in `app/Filament/Admin/Resources/Files/`. |
 | 2026-06-19 | Filament **admin** panel (`/admin`, guard `staff`) + `Staff` model/table for platform administration; `User::canAccessPanel` limited to `dashboard`. |
