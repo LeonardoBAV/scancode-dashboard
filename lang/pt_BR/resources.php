@@ -197,5 +197,27 @@ return [
             'notes' => 'Observações',
         ],
     ],
+    'file' => [
+        'navigation_label' => 'Arquivos',
+        'plural_model_label' => 'Arquivos',
+        'model_label' => 'Arquivo',
+        'table' => [
+            'path' => 'Arquivo',
+            'description' => 'Descrição',
+            'file_type_name' => 'Tipo de Arquivo',
+        ],
+        'infolist' => [
+            'path' => 'Arquivo',
+            'description' => 'Descrição',
+            'file_type_name' => 'Tipo de Arquivo',
+        ],
+        'form' => [
+            'path' => 'Arquivo',
+            'path_helper' => 'Selecione ou arraste um arquivo. Aguarde o upload terminar antes de salvar.',
+            'path_uploading' => 'Enviando arquivo...',
+            'description' => 'Descrição',
+            'file_type_name' => 'Tipo de Arquivo',
+        ],
+    ],
 
 ];

@@ -63,6 +63,7 @@ Forms and tables should respect tenant scoping (see existing resources and `fila
 - **Provider:** `App\Providers\Filament\AdminPanelProvider`.
 - **Auth:** guard `staff`, model `Staff` (`App\Models\Staff`). No self-registration; accounts seeded or created manually.
 - **Scope:** platform-level administration (no tenant). Resources/widgets discovered under `app/Filament/Admin/` when added.
+- **Files:** `File` (`files`: `path`, `description`, `file_type_id`) + `FileType` (`file_types`: `name`). Upload stored on disk `public`, path relative e.g. `files/...`. Managed via `FileResource`; types inline no form (like product categories).
 
 ---
 
@@ -105,6 +106,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
+| 2026-06-19 | Admin panel: `File` / `FileType` models, upload via Filament `FileUpload` on `path` (disk `public`); `FileResource` in `app/Filament/Admin/Resources/Files/`. |
 | 2026-06-19 | Filament **admin** panel (`/admin`, guard `staff`) + `Staff` model/table for platform administration; `User::canAccessPanel` limited to `dashboard`. |
 | 2026-06-18 | `order_items`: denormalized snapshot field `product_name` populated by `OrderItemObserver` on create/update; exposed read-only in `OrderItemResource`; Filament order item table/infolist use snapshot column. |
 | 2026-06-18 | `orders`: denormalized snapshot fields `client_cpf_cnpj`, `client_corporate_name`, `client_fantasy_name`, `payment_method_name` populated by `OrderObserver` on create/update; exposed read-only in `OrderResource`; Filament order table/infolist use snapshot columns. |

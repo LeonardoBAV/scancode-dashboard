@@ -57,7 +57,6 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->defaultAvatarProvider(RgbUiAvatarsProvider::class)
-            ->spa(true)
             ->maxContentWidth(Width::Full);
     }
 }
