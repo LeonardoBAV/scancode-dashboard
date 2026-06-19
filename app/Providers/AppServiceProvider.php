@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Storage::disk('local')->makeDirectory('livewire-tmp');
-        Storage::disk('public')->makeDirectory('files');
+        Storage::disk(File::DISK)->makeDirectory('');
     }
 }

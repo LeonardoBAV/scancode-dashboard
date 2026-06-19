@@ -46,6 +46,7 @@ class DashboardPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
                 'danger' => ColorConstant::MEDIUM_RED,
             ])
+            ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\Filament\Dashboard\Pages')
             ->navigationGroups([

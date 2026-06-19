@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Dashboard\Pages;
 
+use App\Enums\FileTypeEnum;
+use App\Models\File;
 use BackedEnum;
 use Filament\Pages\Page;
+use Illuminate\Support\Collection;
 use UnitEnum;
 
 class Downloads extends Page
@@ -29,5 +32,42 @@ class Downloads extends Page
     public function getTitle(): string
     {
         return __('filament.support.downloads');
+    }
+
+    public function getHeading(): string
+    {
+        return __('filament.support.downloads_page.heading');
+    }
+
+    public function getSubheading(): ?string
+    {
+        return __('filament.support.downloads_page.subheading');
+    }
+
+    /**
+     * @return Collection<int, File>
+     */
+    public function getOtherFiles(): Collection
+    {
+        return File::query()
+            ->whereNotIn('type', [FileTypeEnum::APP, FileTypeEnum::DESKTOP])
+            ->latest('id')
+            ->get();
+    }
+
+    public function getAppFile(): ?File
+    {
+        return File::query()
+            ->where('type', FileTypeEnum::APP)
+            ->latest('id')
+            ->first();
+    }
+
+    public function getDesktopFile(): ?File
+    {
+        return File::query()
+            ->where('type', FileTypeEnum::DESKTOP)
+            ->latest('id')
+            ->first();
     }
 }

@@ -14,7 +14,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    Storage::fake('public');
+    Storage::fake(File::DISK);
 
     $this->staff = Staff::factory()->create();
     actingAs($this->staff, 'staff');
@@ -41,6 +41,6 @@ it('creates a file with upload', function (): void {
 
     expect($file->description)->toBe('Test file')
         ->and($file->type)->toBe(FileTypeEnum::APP)
-        ->and($file->path)->toStartWith('files/')
-        ->and(Storage::disk('public')->exists($file->path))->toBeTrue();
+        ->and($file->path)->toEndWith('.pdf')
+        ->and($file->storage()->exists($file->path))->toBeTrue();
 });

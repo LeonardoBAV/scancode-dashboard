@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources\Files\Schemas;
 
 use App\Enums\FileTypeEnum;
+use App\Models\File;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -29,9 +30,7 @@ class FileForm
             ->helperText(__('resources.file.form.path_helper'))
             ->uploadingMessage(__('resources.file.form.path_uploading'))
             ->required()
-            ->disk('public')
-            ->directory('files')
-            ->visibility('public')
+            ->disk(File::DISK)
             ->maxSize(51_200)
             ->downloadable()
             ->openable()
