@@ -38,6 +38,20 @@ class File extends Model
         });
     }
 
+    public function getDownloadUrl(): ?string
+    {
+        if (! filled($this->path)) {
+            return null;
+        }
+
+        return route('admin.files.download', $this);
+    }
+
+    public function existsOnDisk(): bool
+    {
+        return filled($this->path) && Storage::disk('public')->exists($this->path);
+    }
+
     public function getPublicUrl(): ?string
     {
         if ($this->path === null || $this->path === '') {

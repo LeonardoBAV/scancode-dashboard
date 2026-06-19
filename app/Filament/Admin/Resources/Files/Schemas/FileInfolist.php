@@ -27,8 +27,7 @@ class FileInfolist
         return TextEntry::make('path')
             ->label(__('resources.file.infolist.path'))
             ->formatStateUsing(fn (File $record): string => basename($record->path))
-            ->url(fn (File $record): ?string => $record->getPublicUrl())
-            ->openUrlInNewTab()
+            ->url(fn (File $record): ?string => $record->existsOnDisk() ? $record->getDownloadUrl() : null)
             ->columnSpanFull();
     }
 
