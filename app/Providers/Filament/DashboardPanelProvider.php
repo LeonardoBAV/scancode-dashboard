@@ -48,6 +48,10 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\Filament\Dashboard\Pages')
+            ->navigationGroups([
+                __('filament.cadastros.navigation_group'),
+                __('filament.support.navigation_group'),
+            ])
             ->pages([
                 Dashboard::class,
             ])

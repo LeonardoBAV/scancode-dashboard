@@ -30,10 +30,12 @@ class ClientResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'corporate_name';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Cadastros';
-
-    // sort novigation position
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('filament.cadastros.navigation_group');
+    }
 
     public static function form(Schema $schema): Schema
     {
