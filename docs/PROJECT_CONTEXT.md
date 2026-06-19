@@ -17,7 +17,8 @@ Laravel + Filament dashboard for **distributors** to manage **catalog, clients, 
 | Concept | Implementation |
 |--------|------------------|
 | **Tenant** | `App\Models\Distributor` (`distributors`: `name`, `slug`). Route key for URLs: **`slug`**. |
-| **Panel** | Filament **dashboard** panel: id `dashboard`, path `/dashboard`, **default** panel. |
+| **Panel** | Filament **dashboard** panel: id `dashboard`, path `/dashboard`, **default** panel. Tenant = **`Distributor`**. |
+| **Admin panel** | Filament **admin** panel: id `admin`, path `/admin`. Auth guard **`staff`**. No tenancy. Login entity: **`Staff`** (`staff` table). |
 | **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). Shown in routing/onboarding only while `users.distributor_id` is null; menu item and `/new` page are hidden once the user has a distributor (one distributor per user). |
 | **Tenant profile** | `App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile` — edit tenant `name` (slug unchanged). Registered via `tenantProfile()` on the dashboard panel. Authorization: `App\Policies\DistributorPolicy::update` + `User::canAccessTenant`. |
 | **Tenant switcher** | Disabled (`tenantSwitcher(false)`): user is bound to one distributor. |
@@ -51,10 +52,17 @@ Use Eloquent relationships on models under `app/Models/` as the authoritative gr
 ## Filament (dashboard)
 
 - **Provider:** `App\Providers\Filament\DashboardPanelProvider`.
+- **Auth:** guard `web`, model `User`.
 - **Resources (discovered):** `app/Filament/Dashboard/Resources/` — Clients, PaymentMethods, SalesRepresentatives, Products, Events, Orders, OrderItems (each with pages/schemas as per Filament v5 layout).
 - **Tenancy pages:** `RegisterDistributor`, `EditDistributorProfile` under `app/Filament/Dashboard/Pages/Tenancy/`.
 
 Forms and tables should respect tenant scoping (see existing resources and `filament-tenancy` skill).
+
+## Filament (admin)
+
+- **Provider:** `App\Providers\Filament\AdminPanelProvider`.
+- **Auth:** guard `staff`, model `Staff` (`App\Models\Staff`). No self-registration; accounts seeded or created manually.
+- **Scope:** platform-level administration (no tenant). Resources/widgets discovered under `app/Filament/Admin/` when added.
 
 ---
 
@@ -97,6 +105,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
+| 2026-06-19 | Filament **admin** panel (`/admin`, guard `staff`) + `Staff` model/table for platform administration; `User::canAccessPanel` limited to `dashboard`. |
 | 2026-06-18 | `order_items`: denormalized snapshot field `product_name` populated by `OrderItemObserver` on create/update; exposed read-only in `OrderItemResource`; Filament order item table/infolist use snapshot column. |
 | 2026-06-18 | `orders`: denormalized snapshot fields `client_cpf_cnpj`, `client_corporate_name`, `client_fantasy_name`, `payment_method_name` populated by `OrderObserver` on create/update; exposed read-only in `OrderResource`; Filament order table/infolist use snapshot columns. |
 | 2026-05-16 | Documented policy: no automated tests when implementing API endpoints unless explicitly requested. |
