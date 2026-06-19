@@ -28,4 +28,11 @@ class DistributorFactory extends Factory
             'is_active' => false,
         ];
     }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => true,
+        ]);
+    }
 }

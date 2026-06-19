@@ -7,5 +7,6 @@ return [
         'register_distributor' => 'Registrar distribuidora',
         'edit_distributor_profile' => 'Perfil da distribuidora',
         'distributor_name' => 'Nome da distribuidora',
+        'inactive_distributor' => 'Sua distribuidora está desativada. Entre em contato com o suporte.',
     ],
 ];

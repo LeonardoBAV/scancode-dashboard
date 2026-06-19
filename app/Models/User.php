@@ -78,7 +78,11 @@ class User extends Authenticatable implements FilamentUser, HasDefaultTenant, Ha
 
         $distributor = $this->distributor;
 
-        return $distributor ? collect([$distributor]) : collect();
+        if ($distributor === null || ! $distributor->is_active) {
+            return collect();
+        }
+
+        return collect([$distributor]);
     }
 
     public function getDefaultTenant(Panel $panel): ?Model
@@ -88,6 +92,10 @@ class User extends Authenticatable implements FilamentUser, HasDefaultTenant, Ha
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return (int) $tenant->getKey() === (int) $this->distributor_id;
+        if ((int) $tenant->getKey() !== (int) $this->distributor_id) {
+            return false;
+        }
+
+        return $tenant->is_active;
     }
 }

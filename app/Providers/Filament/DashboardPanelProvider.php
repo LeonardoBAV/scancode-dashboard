@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Constants\ColorConstant;
 use App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile;
 use App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor;
+use App\Http\Middleware\EnsureDistributorIsActive;
 use App\Models\Distributor;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -68,6 +69,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureDistributorIsActive::class,
             ])
             ->defaultAvatarProvider(RgbUiAvatarsProvider::class)
             ->spa(true)
