@@ -19,7 +19,7 @@ class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => 'files/'.fake()->uuid().'.pdf',
+            'path' => fake()->uuid().'.pdf',
             'description' => fake()->optional()->sentence(),
             'type' => fake()->randomElement(FileTypeEnum::cases()),
         ];

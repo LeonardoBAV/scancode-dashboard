@@ -15,10 +15,6 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        Staff::factory()
-            ->count(3)
-            ->create();
-
         Staff::query()->updateOrCreate(
             ['email' => 'admin@admin.com'],
             [

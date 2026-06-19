@@ -40,6 +40,14 @@ return [
             'report' => false,
         ],
 
+        'files' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/files'),
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

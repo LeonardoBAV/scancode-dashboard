@@ -22,7 +22,7 @@ Laravel + Filament dashboard for **distributors** to manage **catalog, clients, 
 | **Registration** | `App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor` — creates distributor + slug (`Str::slug(name) + random suffix`). Shown in routing/onboarding only while `users.distributor_id` is null; menu item and `/new` page are hidden once the user has a distributor (one distributor per user). |
 | **Tenant profile** | `App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile` — edit tenant `name` (slug unchanged). Registered via `tenantProfile()` on the dashboard panel. Authorization: `App\Policies\DistributorPolicy::update` + `User::canAccessTenant`. |
 | **Tenant switcher** | Disabled (`tenantSwitcher(false)`): user is bound to one distributor. |
-| **User ↔ tenant** | `users.distributor_id` (nullable). `User` implements `HasTenants`, `HasDefaultTenant`, `canAccessTenant`: user may only access their own distributor. Users with `distributor_id` null get an empty tenant list. |
+| **User ↔ tenant** | `users.distributor_id` (nullable). `User` implements `HasTenants`, `HasDefaultTenant`, `canAccessTenant`: user may only access their own **active** distributor. Users with `distributor_id` null get an empty tenant list. Inactive distributors: `EnsureDistributorIsActive` middleware logs out and redirects to login. |
 
 **Skill / docs for tenancy work:** `.cursor/skills/filament-tenancy/SKILL.md` and Filament 5 multi-tenancy documentation.
 
@@ -107,6 +107,7 @@ Activate `.cursor/skills/pest-testing/SKILL.md` when writing or fixing tests (ex
 
 | Date | Note |
 |------|------|
+| 2026-06-19 | Dashboard: `EnsureDistributorIsActive` middleware; inactive distributor → logout + login redirect. `canAccessTenant`/`getTenants` require `is_active`. |
 | 2026-06-19 | Admin: `DistributorResource` (list/view, `is_active` toggle on table). |
 | 2026-06-19 | `distributors.is_active` boolean (default `false`). |
 | 2026-06-19 | `File.type`: replaced `FileType` model/table with `FileTypeEnum` (`app`, `desktop`). |

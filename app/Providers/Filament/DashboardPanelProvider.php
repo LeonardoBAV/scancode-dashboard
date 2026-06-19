@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Constants\ColorConstant;
 use App\Filament\Dashboard\Pages\Tenancy\EditDistributorProfile;
 use App\Filament\Dashboard\Pages\Tenancy\RegisterDistributor;
+use App\Http\Middleware\EnsureDistributorIsActive;
 use App\Models\Distributor;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -45,8 +46,13 @@ class DashboardPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
                 'danger' => ColorConstant::MEDIUM_RED,
             ])
+            ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\Filament\Dashboard\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\Filament\Dashboard\Pages')
+            ->navigationGroups([
+                __('filament.cadastros.navigation_group'),
+                __('filament.support.navigation_group'),
+            ])
             ->pages([
                 Dashboard::class,
             ])
@@ -68,6 +74,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureDistributorIsActive::class,
             ])
             ->defaultAvatarProvider(RgbUiAvatarsProvider::class)
             ->spa(true)

@@ -21,7 +21,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->distributor = Distributor::factory()->create();
+        $this->distributor = Distributor::factory()->active()->create();
         $this->user = User::factory()->for($this->distributor)->create();
 
         $this->actingAs($this->user);

@@ -29,9 +29,12 @@ class SalesRepresentativeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Cadastros';
-
     protected static ?int $navigationSort = 4;
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('filament.cadastros.navigation_group');
+    }
 
     public static function form(Schema $schema): Schema
     {
