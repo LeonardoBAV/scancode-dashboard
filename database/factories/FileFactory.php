@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\FileTypeEnum;
 use App\Models\File;
-use App\Models\FileType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class FileFactory extends Factory
         return [
             'path' => 'files/'.fake()->uuid().'.pdf',
             'description' => fake()->optional()->sentence(),
-            'file_type_id' => FileType::factory(),
+            'type' => fake()->randomElement(FileTypeEnum::cases()),
         ];
     }
 }

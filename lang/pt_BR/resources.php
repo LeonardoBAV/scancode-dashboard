@@ -204,19 +204,19 @@ return [
         'table' => [
             'path' => 'Arquivo',
             'description' => 'Descrição',
-            'file_type_name' => 'Tipo de Arquivo',
+            'type' => 'Tipo',
         ],
         'infolist' => [
             'path' => 'Arquivo',
             'description' => 'Descrição',
-            'file_type_name' => 'Tipo de Arquivo',
+            'type' => 'Tipo',
         ],
         'form' => [
             'path' => 'Arquivo',
             'path_helper' => 'Selecione ou arraste um arquivo. Aguarde o upload terminar antes de salvar.',
             'path_uploading' => 'Enviando arquivo...',
             'description' => 'Descrição',
-            'file_type_name' => 'Tipo de Arquivo',
+            'type' => 'Tipo',
         ],
     ],
 

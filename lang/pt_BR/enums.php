@@ -8,4 +8,8 @@ return [
         'completed' => 'Completo',
         'cancelled' => 'Cancelado',
     ],
+    'file_type' => [
+        'app' => 'App',
+        'desktop' => 'Desktop',
+    ],
 ];

@@ -20,7 +20,7 @@ class FilesTable
             ->columns([
                 self::descriptionColumn(),
                 self::pathColumn(),
-                self::fileTypeColumn(),
+                self::typeColumn(),
                 self::createdAtColumn(),
                 self::updatedAtColumn(),
             ])
@@ -57,11 +57,11 @@ class FilesTable
             ->sortable();
     }
 
-    protected static function fileTypeColumn(): TextColumn
+    protected static function typeColumn(): TextColumn
     {
-        return TextColumn::make('fileType.name')
-            ->label(__('resources.file.table.file_type_name'))
-            ->searchable()
+        return TextColumn::make('type')
+            ->label(__('resources.file.table.type'))
+            ->state(fn (File $record): string => $record->type->label())
             ->sortable();
     }
 

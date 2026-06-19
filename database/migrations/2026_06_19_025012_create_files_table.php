@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('path');
             $table->text('description')->nullable();
-            $table->foreignId('file_type_id')->constrained('file_types')->restrictOnDelete();
+            $table->string('type');
             $table->timestamps();
         });
     }

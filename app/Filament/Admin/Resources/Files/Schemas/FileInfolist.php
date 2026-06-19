@@ -16,7 +16,7 @@ class FileInfolist
             ->components([
                 self::pathEntry(),
                 self::descriptionEntry(),
-                self::fileTypeEntry(),
+                self::typeEntry(),
                 self::createdAtEntry(),
                 self::updatedAtEntry(),
             ]);
@@ -40,10 +40,11 @@ class FileInfolist
             ->columnSpanFull();
     }
 
-    protected static function fileTypeEntry(): TextEntry
+    protected static function typeEntry(): TextEntry
     {
-        return TextEntry::make('fileType.name')
-            ->label(__('resources.file.infolist.file_type_name'));
+        return TextEntry::make('type')
+            ->label(__('resources.file.infolist.type'))
+            ->formatStateUsing(fn (File $record): string => $record->type->label());
     }
 
     protected static function createdAtEntry(): TextEntry

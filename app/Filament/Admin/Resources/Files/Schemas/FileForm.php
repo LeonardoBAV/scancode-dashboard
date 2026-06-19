@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\Files\Schemas;
 
-use App\Models\FileType;
-use Filament\Actions\Action;
+use App\Enums\FileTypeEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class FileForm
@@ -20,7 +18,7 @@ class FileForm
             ->components([
                 self::pathInput(),
                 self::descriptionInput(),
-                self::fileTypeInput(),
+                self::typeInput(),
             ]);
     }
 
@@ -48,29 +46,14 @@ class FileForm
             ->columnSpanFull();
     }
 
-    protected static function fileTypeInput(): Select
+    protected static function typeInput(): Select
     {
-        return Select::make('file_type_id')
-            ->label(__('resources.file.form.file_type_name'))
-            ->searchable()
-            ->preload()
+        return Select::make('type')
+            ->label(__('resources.file.form.type'))
+            ->options(collect(FileTypeEnum::cases())->mapWithKeys(
+                fn (FileTypeEnum $type): array => [$type->value => $type->label()],
+            ))
             ->required()
-            ->relationship('fileType', 'name')
-            ->createOptionAction(fn (Action $action): Action => $action->successNotificationTitle(__('filament-actions::create.single.notifications.created.title')))
-            ->editOptionAction(fn (Action $action): Action => $action->successNotificationTitle(__('filament-actions::edit.single.notifications.saved.title')))
-            ->createOptionForm([
-                self::fileTypeNameInput(),
-            ])
-            ->editOptionForm([
-                self::fileTypeNameInput(),
-            ]);
-    }
-
-    protected static function fileTypeNameInput(): TextInput
-    {
-        return TextInput::make('name')
-            ->label(__('resources.file.form.file_type_name'))
-            ->required()
-            ->unique(FileType::class, 'name');
+            ->native(false);
     }
 }
