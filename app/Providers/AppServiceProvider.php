@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.force_https')) {
+            URL::forceScheme('https');
+        }
+
         Storage::disk('local')->makeDirectory('livewire-tmp');
         Storage::disk(File::DISK)->makeDirectory('');
     }
