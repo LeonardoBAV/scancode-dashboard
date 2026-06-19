@@ -13,11 +13,14 @@ return new class extends Migration
     {
         $keeperIds = DB::table('order_items')
             ->selectRaw('MIN(id) as id')
-            ->groupBy('order_id', 'product_id');
+            ->groupBy('order_id', 'product_id')
+            ->pluck('id');
 
-        DB::table('order_items')
-            ->whereNotIn('id', $keeperIds)
-            ->delete();
+        if ($keeperIds->isNotEmpty()) {
+            DB::table('order_items')
+                ->whereNotIn('id', $keeperIds)
+                ->delete();
+        }
 
         Schema::table('order_items', function (Blueprint $table): void {
             $table->unique(['order_id', 'product_id']);
@@ -27,7 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('order_items', function (Blueprint $table): void {
+            $table->dropForeign(['order_id']);
             $table->dropUnique(['order_id', 'product_id']);
+            $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();
         });
     }
 };

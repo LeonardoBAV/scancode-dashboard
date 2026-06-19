@@ -90,38 +90,38 @@ return new class extends Migration
         });
 
         Schema::table('sales_representatives', function (Blueprint $table): void {
-            $table->dropUnique(['distributor_id', 'cpf']);
             $table->dropForeign(['distributor_id']);
+            $table->dropUnique(['distributor_id', 'cpf']);
             $table->dropColumn('distributor_id');
             $table->unique('cpf');
         });
 
         Schema::table('payment_methods', function (Blueprint $table): void {
-            $table->dropUnique(['distributor_id', 'name']);
             $table->dropForeign(['distributor_id']);
+            $table->dropUnique(['distributor_id', 'name']);
             $table->dropColumn('distributor_id');
             $table->unique('name');
         });
 
         Schema::table('clients', function (Blueprint $table): void {
-            $table->dropUnique(['distributor_id', 'cpf_cnpj']);
             $table->dropForeign(['distributor_id']);
+            $table->dropUnique(['distributor_id', 'cpf_cnpj']);
             $table->dropColumn('distributor_id');
             $table->unique('cpf_cnpj');
         });
 
         Schema::table('products', function (Blueprint $table): void {
+            $table->dropForeign(['distributor_id']);
             $table->dropUnique(['distributor_id', 'sku']);
             $table->dropUnique(['distributor_id', 'barcode']);
-            $table->dropForeign(['distributor_id']);
             $table->dropColumn('distributor_id');
             $table->unique('sku');
             $table->unique('barcode');
         });
 
         Schema::table('product_categories', function (Blueprint $table): void {
-            $table->dropUnique(['distributor_id', 'name']);
             $table->dropForeign(['distributor_id']);
+            $table->dropUnique(['distributor_id', 'name']);
             $table->dropColumn('distributor_id');
             $table->unique('name');
         });
