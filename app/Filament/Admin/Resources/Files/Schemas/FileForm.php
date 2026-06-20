@@ -31,7 +31,7 @@ class FileForm
             ->uploadingMessage(__('resources.file.form.path_uploading'))
             ->required()
             ->disk(File::DISK)
-            ->maxSize(51_200)
+            ->maxSize(307_200)
             ->downloadable()
             ->openable()
             ->columnSpanFull();
