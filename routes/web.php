@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\DownloadFileController;
 use App\Http\Middleware\EnsureDistributorIsActive;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn (): Factory|\Illuminate\Contracts\View\View => view('welcome'));
+Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth:web', EnsureDistributorIsActive::class])
     ->name('dashboard.')
