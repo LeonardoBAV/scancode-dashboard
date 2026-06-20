@@ -24,11 +24,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('app.force_https')) {
+        if (config('app.force_https') && ! $this->shouldSkipHttpsForAdminIpRequest()) {
             URL::forceScheme('https');
         }
 
         Storage::disk('local')->makeDirectory('livewire-tmp');
         Storage::disk(File::DISK)->makeDirectory('');
+    }
+
+    private function shouldSkipHttpsForAdminIpRequest(): bool
+    {
+        if ($this->app->runningInConsole()) {
+            return false;
+        }
+
+        $host = request()->getHost();
+
+        if (filter_var($host, FILTER_VALIDATE_IP) === false) {
+            return false;
+        }
+
+        return request()->is('admin', 'admin/*', 'livewire/*');
     }
 }
